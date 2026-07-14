@@ -1,5 +1,47 @@
 ---
-title: "technical-report"
-format: html
+title: "Bayesian Modelling of Grant Evaluation and Ranking"
+author: "Victor Sieber"
+format:
+  html:
+    toc: true
+    number-sections: true
+bibliography: references.bib
+execute:
+  echo: true
+  warning: false
+  message: false
 ---
 
+# Introduction
+
+## Project background
+
+## Research objectives
+
+# CRS Seed Grant 2026 evaluation
+
+## Evaluation procedure
+
+## Score structure
+
+## Funding rule
+
+# Data
+
+## Data structure
+
+## Data protection and anonymization
+
+# Literature and theoretical background
+
+# Reproduction of the existing analysis
+
+# Statistical methodology
+
+# Results
+
+# Discussion
+
+# Practical recommendations
+
+# References

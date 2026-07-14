@@ -26,3 +26,8 @@ secrets*
 tmp/
 cache/
 *.log
+
+# Quarto-generated files
+.quarto/
+report/technical-report.html
+report/technical-report_files/
