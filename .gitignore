@@ -1,0 +1,28 @@
+# R and RStudio local files
+.Rhistory
+.Rapp.history
+.RData
+.RDataTmp
+.Ruserdata
+.Rproj.user/
+
+# macOS
+.DS_Store
+
+# Data files
+# No data files are stored in this GitLab repository.
+data/*
+!data/README.md
+
+# Credentials and private files
+.env
+.env.*
+*.key
+*.pem
+credentials*
+secrets*
+
+# Temporary files
+tmp/
+cache/
+*.log
