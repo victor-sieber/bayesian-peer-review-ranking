@@ -14,7 +14,7 @@ data/*
 
 # Allow documentation files
 !data/README.md
-!data/re-identification-risk.md
+!data/Re-identification risk.md
 
 # Credentials and private files
 .env
