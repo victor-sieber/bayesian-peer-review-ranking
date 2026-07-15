@@ -9,10 +9,12 @@
 # macOS
 .DS_Store
 
-# Data files
-# No data files are stored in this GitLab repository.
+# No data files are stored in GitLab
 data/*
+
+# Allow documentation files
 !data/README.md
+!data/re-identification-risk.md
 
 # Credentials and private files
 .env
