@@ -59,11 +59,18 @@ and produces a text file with all of the info for documentation sake.
 - Discuss Pseudonymization with Supervisor and which files can be released on Zenodo
 - Document the anonymization process
 
-## 2026-07-17 — Documentation, Meeting & start with literature research
+## 2026-07-17 — Documentation, Meeting & FAIR Data
 
 ### Completed
+Documented the 1st weeks progress and infrastructure set up of the project
+Improve FAIRness of Data, created in CRS_private under the release candidates:
+- data_dictionary.csv which defines all variables, data types, score scales
+- anonymization_log.csv gives an overview of which variables were retained, removed or replaced
+- README.md which describes the dataset, evaluation process, file structure and validation
+- re-identification-risk.md which discloses the already mentioned re-id risk.
 
 ### Main findings
+- What it means for data to be FAIR and which documentation steps are needed
 
 ### Next steps
 
