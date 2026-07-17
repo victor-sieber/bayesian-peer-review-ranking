@@ -13,8 +13,9 @@ further investigation or discussion.
   
 ## Data preparation
 
-- Which variables are required in the anonymized dataset?[x]
+- Which variables are required in the anonymized dataset?[]
 - Which anonymized outputs are intended for later publication?[]
+- Would the size of the budget for each proposal be another datapoint to analyze?
 
 ## How to make data FAIR (Findable, Accesible, Interoperable, Reusable)
 - F: What should the final dataset title be,
