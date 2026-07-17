@@ -33,3 +33,6 @@ cache/
 .quarto/
 report/technical-report.html
 report/technical-report_files/
+
+# Private notes on Peter's workflow
+notes/peter-workflow.md
