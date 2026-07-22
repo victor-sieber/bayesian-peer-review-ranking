@@ -56,21 +56,77 @@ and produces a text file with all of the info for documentation sake.
 - Main Learnings: Use of readr and dplyr to go from raw data to pseudonymized data & R coding workflow
 
 ### Next steps
-- Discuss Pseudonymization with Supervisor and which files can be released on Zenodo
+- Discuss Pseudonymization with Supervisor and which files can be released on Zenodo (accessibility)
 - Document the anonymization process
 
 ## 2026-07-17 — Documentation, Meeting & FAIR Data
 
 ### Completed
 Documented the 1st weeks progress and infrastructure set up of the project
+
 Improve FAIRness of Data, created in CRS_private under the release candidates:
 - data_dictionary.csv which defines all variables, data types, score scales
 - anonymization_log.csv gives an overview of which variables were retained, removed or replaced
 - README.md which describes the dataset, evaluation process, file structure and validation
 - re-identification-risk.md which discloses the already mentioned re-id risk.
 
+Reviewed Peter Degen's Code for the evaluation of the Seed Grants 2026, additionally
+tried to run the code but as of now missing the necessary packages.
+Cloned his code from gitlab and downloaded the necessary packages -- ran the code.
+
+Added some questions in question text file for meeting with rachel.
+
 ### Main findings
 - What it means for data to be FAIR and which documentation steps are needed
+- Raise question to Data release on gitlab from the originial Seed Grant 2026 evaluation.
+
+
+### Next steps
+- Make sure to computationally reproduce the CRS 2026 Grant Evaluation process.
+- Begin with Literature review
+
+
+## 2026-07-20 — Reproduced 2026 CRS Grant Evaluation Process Code & Discussion Budget as Datapoint
+
+### Completed
+Fully ran Peter Degen's Code pipeline for the CRS Evaluation process
+Discussed release of Budget datapoint with Data Steward
+
+### Main findings
+The Budget data point is a secondary variable that can be intersting to analyze, however we want to focus on the overall-grade and bayesian ranking first.
+I would say for now we focus more on scores based on proposal quality and reviewer variability than the financial allocation of the budget,
+note:
+
+For the primary analysis, I assume that funding outcomes were driven by proposal quality and reviewer-specific scoring variability,
+while the requested budget served only as a separate justification check and did not directly determine the ranking,
+since all four proposals meeting the original qualification rule could be funded within the call’s approximate capacity of six projects.
+
+### Next steps
+- Literature Review
+
+## 2026-07-21 — Literature Review: Alvin's Msc Thesis (Introduction) & Rachel Heyard et al 2022 
+
+### Completed
+Went through Alvin's Msc Thesis Introduction which showes a mathematical abstraction of scores and rankings.
+Read Rachel Heyard's et al 2022 paper and made notes.
+
+### Main findings
+Mathematical abstraction of scores and ranks is useful for the notation in the technical report
+Rachel Heyard's Paper covers the bayesian ranking method that could be implemented in the small data set that I work with as an initial try.
+
+### Next steps
+- Structure of Technical Report and Research questions
+
+## 2026-07-22 — Documentation, Concrete Structure Technical Report & Research Questions
+
+### Completed
+Documented the last three days work
+
+Defined the research questions (3 primary, 1 secondary question)
+
+
+### Main findings
+
 
 ### Next steps
 

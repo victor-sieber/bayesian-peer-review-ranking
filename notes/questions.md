@@ -6,19 +6,20 @@ further investigation or discussion.
 ## Evaluation procedure
 
 - How exactly was the final ranking determined among proposals satisfying the
-  evaluation rule? [x]
+  evaluation rule? [x] --> Top 4 candidates
 - How should the separate overall score be interpreted relative to the
-  criterion scores?[x]
+  criterion scores?[x] --> Overall score is determined by the reviewer after having filled out the criterion scores,
+  however it is subjectively given independently of the values of the criterion scores. The overall scores determine funding.
   
   
 ## Data preparation
 
-- Which variables are required in the anonymized dataset?[]
-- Which anonymized outputs are intended for later publication?[]
-- Would the size of the budget for each proposal be another datapoint to analyze?
+- Which variables are required in the anonymized dataset?[x]
+- Which anonymized outputs are intended for later publication?[x]
+- Would the size of the budget for each proposal be another datapoint to analyze? [x] --> Yes but only in a second analyses
 
 ## How to make data FAIR (Findable, Accesible, Interoperable, Reusable)
-- F: What should the final dataset title be,
+- F: What should the final dataset title be []
 who should be listed as creators and contributors, and which keywords and project description should we use? []
 - A: After reviewing the residual risks, should the anonymized analytical dataset be openly available on Zenodo,
-restricted, or only described through metadata? []
+restricted, or only described through metadata? [x] --> Pseudononymized dataset should be available on Zenodo
