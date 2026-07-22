@@ -3,6 +3,15 @@
 This file collects questions that arise during the project and may require
 further investigation or discussion.
 
+## Research Questions to be answered in the technical report:
+# Primary:
+- RQ1 (Bayesian ranking): What posterior ranking is obtained from a hierarchical Bayesian model of the overall grades that accounts for reviewer-specific scoring tendencies, and how uncertain are the resulting ranks?
+- RQ2 (Model comparison): How does the Bayesian ranking compare with the original ranking and qualification procedure based on the two overall grades per proposal?
+- RQ3 (Model stability): How stable is Bayesian ranking when each proposal receives only two reviews and reviewer workloads are unequal?
+# Secondary:
+- RQ4 (Supporting criteria): How closely do the four supporting criterion scores correspond to the holistic overall grade, and would their equal-weight average have produced a materially different proposal ordering?
+
+
 ## Evaluation procedure
 
 - How exactly was the final ranking determined among proposals satisfying the
