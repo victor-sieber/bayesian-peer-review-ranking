@@ -1,47 +1,186 @@
 ---
 title: "Bayesian Modelling of Grant Evaluation and Ranking"
+subtitle: "A Case Study of the CRS Seed Grants 2026"
 author: "Victor Sieber"
+date: last-modified
+
 format:
   html:
     toc: true
     number-sections: true
-bibliography: references.bib
-execute:
-  echo: true
-  warning: false
-  message: false
+  pdf:
+    toc: true
+    number-sections: true
 ---
 
-# Introduction
+Abstract {.unnumbered}
 
-## Project background
+<!-- TODO: Write this last. Briefly summarize: - the evaluation problem; - the data; - the main Bayesian approach; - the most important empirical result; - the stability result; - the main recommendation. -->
 
-## Research objectives
+1. Introduction
+1.1 Grant evaluation under limited information
 
-# CRS Seed Grant 2026 evaluation
+<!-- TODO: Motivate why uncertainty matters in grant evaluation. Current motivating issues: - Lottery effects near the funding threshold: small differences in reviewer scores may determine whether otherwise similarly evaluated proposals receive funding. - Reviewer heterogeneity: differences in reviewer strictness or generosity can strongly affect proposal outcomes when each proposal is assessed by only two reviewers. - Hidden ranking uncertainty: deterministic averages and qualification thresholds produce a clear decision but do not show whether neighbouring proposals are meaningfully distinguishable. - Dependence on reviewer assignment: a proposal's outcome may partly depend on which reviewers happened to assess it, particularly in a small review panel. Keep this general. Unequal workloads and expertise-based assignment will be discussed in Chapter 2. -->
 
-## Evaluation procedure
+1.2 CRS Seed Grant evaluation 2026
 
-## Score structure
+<!-- TODO: Briefly introduce: - 42 proposals; - 9 reviewers; - 84 completed reviews; - four supporting criteria; - a separate holistic overall grade that determined qualification; - approximately six projects could be funded according to the original call; - four proposals satisfied the qualification rule. Keep this section concise. -->
 
-## Funding rule
+1.3 Original qualification procedure
 
-# Data
+<!-- TODO: Based on the CRS Seed Grants results page, the available funding was sufficient for the proposals that received the best overall score at least once and no score below the second-best overall score. Explain that this means: - at least one overall grade of 5; - no overall grade below 4. With exactly two reviews per proposal, show that this is equivalent to: mean overall grade >= 4.5. Clarify: - this was a score-based qualification threshold; - it was not a fixed top-four selection procedure; - four proposals happened to satisfy the rule; - funding capacity was non-binding because approximately six projects could be funded. -->
 
-## Data structure
+1.4 Motivation for Bayesian ranking
 
-## Data protection and anonymization
+<!-- TODO: Explain what the original procedure does not quantify: - reviewer-specific scoring tendencies; - uncertainty about proposal quality; - uncertainty in the resulting ranks; - whether neighbouring proposals are meaningfully distinguishable; - the possible effect of reviewer assignment. Do not yet claim that the Bayesian model solves all these problems. Present them as questions to investigate. -->
 
-# Literature and theoretical background
+1.5 Research questions
+Research Question 1
 
-# Reproduction of the existing analysis
+What posterior ranking is obtained from a hierarchical Bayesian model of the overall grades that accounts for reviewer-specific scoring tendencies, and how uncertain are the resulting ranks?
 
-# Statistical methodology
+Research Question 2
 
-# Results
+How does the Bayesian ranking compare with the original ranking and qualification procedure based on the two overall grades per proposal?
 
-# Discussion
+Research Question 3
 
-# Practical recommendations
+How stable is Bayesian ranking under a design with only two reviews per proposal, unequal reviewer workloads and possible reviewer heterogeneity?
 
-# References
+Research Question 4
+
+How closely do the four supporting criterion scores correspond to the holistic overall grade, and would an equal-weight average of the criteria have produced a materially different proposal ordering?
+
+1.6 Scope and intended contribution
+
+<!-- TODO: State the current project scope. Core scope: - the overall grade is the response used for the main Bayesian analysis; - the four criteria are analysed separately as supporting information; - requested budget is excluded; - the project studies proposal-quality evaluation rather than financial allocation; - the project applies and investigates an existing Bayesian-ranking approach rather than proposing a completely new method. Possible contribution: - application to a small and unbalanced review panel; - comparison with the original CRS procedure; - quantification of ranking uncertainty; - investigation of the supporting criteria; - assessment of stability under sparse review data. Keep the exact contribution provisional until the analysis is complete. -->
+
+1.7 Structure of the report
+
+<!-- TODO: Write this after the analysis and chapter structure are stable. -->
+
+2. Evaluation design and empirical benchmark
+2.1 Evaluation process and analytical data
+
+<!-- TODO: Describe: - the four supporting criteria; - the separate overall grade; - the integer score scale from 1 to 5; - one row per completed review; - 84 rows, 42 proposals and 9 reviewers; - exactly two reviews per proposal. Analytical variables: - proposal_id - reviewer_id - scientific_quality - community_building - scaling_potential - scientific_rigor - overall_grade -->
+
+2.2 Reviewer–proposal assignment
+
+<!-- TODO: Describe: - unequal reviewer workloads, approximately 6–12 proposals; - assignment based on expertise and availability; - the resulting unbalanced design. Investigate later: - reviewer workload distribution; - whether the reviewer–proposal assignment network is connected; - whether some reviewers have only weak connections to the rest of the panel. Do not commit yet to a specific graph or table. Use whichever representation is clearest after inspecting the data. -->
+
+2.3 Reconstruction of the original procedure
+
+<!-- TODO: - calculate the mean overall grade for every proposal; - verify which proposals satisfy mean overall grade >= 4.5; - verify that these correspond to the funded proposals; - identify ties and proposals immediately below the threshold. Include one concise benchmark table or figure. -->
+
+2.4 Reviewer scoring patterns and agreement
+
+<!-- TODO: Conduct a focused descriptive analysis. Possible summaries: - reviewer workloads; - distributions of overall grades; - reviewer-specific means and variability; - agreement between the two reviewers of each proposal; - absolute difference between paired overall grades. The exact summaries should depend on what is informative in the data. Use the term "reviewer scoring tendency" rather than automatically interpreting differences as bias. -->
+
+2.5 Supporting criteria and overall grade
+
+<!-- TODO: For each completed review, calculate the equal-weight criterion average: criterion_average = (scientific_quality + community_building + scaling_potential + scientific_rigor) / 4. Investigate: - relationships among the four criteria; - relationships between each criterion and the overall grade; - correspondence between the criterion average and overall grade; - cases where the criterion average and holistic grade differ substantially. Use descriptive statistics and rank-based measures where appropriate. Do not interpret the associations causally. -->
+
+2.6 Counterfactual criterion-based ordering
+
+<!-- TODO: At proposal level, compare: - ranking by mean overall grade; - ranking by the mean equal-weight criterion average. Possible outputs: - rank correlation; - proposals with large rank changes; - overlap among highly ranked proposals; - position of the four originally qualified proposals. This is a counterfactual comparison, not a reconstruction of the official evaluation procedure. End the chapter by explaining that the overall grade remains the response for the main Bayesian model because it was the defining score in the actual procedure. -->
+
+3. Bayesian ranking framework
+
+<!-- This is the main theoretical chapter. Its exact content should develop alongside the first model implementation. Only include theory that is needed to understand the analysis. -->
+
+3.1 Related Bayesian-ranking work
+
+<!-- TODO: Summarize the parts of Heyard et al. that are directly relevant: - the grant-ranking problem; - proposal and reviewer effects; - posterior expected ranks; - ranking uncertainty; - the role of the funding line; - the simulation study. Explain the main difference: - Heyard et al. study ranking uncertainty around a funding line; - CRS used a score-based qualification threshold with non-binding capacity. Add further literature only when it is needed to justify a modelling decision. -->
+
+3.2 Main statistical model
+
+<!-- TODO: Introduce notation and formulate the main model after reading Heyard et al. and attempting the first fit. Current provisional form: overall grade = overall scoring level + proposal effect + reviewer effect + residual variation. Define every model component clearly. Do not finalize the notation, likelihood or parameterization until the implementation has been tested. -->
+
+3.3 Bayesian concepts required for the model
+
+<!-- TODO: Explain only the concepts actually used: - likelihood; - prior; - posterior; - hierarchical model; - latent proposal effect; - posterior predictive distribution. Write this in parallel with model fitting. Do not create a general introduction to Bayesian statistics. -->
+
+3.4 Partial pooling and reviewer heterogeneity
+
+<!-- TODO: Explain: - why proposal effects should be partially pooled; - why reviewer effects should be partially pooled; - why this matters when proposals have only two reviews; - how unequal reviewer workloads affect the amount of information available. Use the fitted model or a small example to illustrate shrinkage. -->
+
+3.5 Priors, assumptions and identifiability
+
+<!-- TODO: Combine the closely related modelling choices here. Discuss: - prior specification; - sensitivity to priors in a small dataset; - identifiability of proposal and reviewer effects; - the reviewer–proposal assignment network; - expertise-based assignment; - conditional independence assumptions; - why reviewer effects cannot automatically be interpreted as pure bias. The exact level of detail should depend on which issues prove important in the fitted model. -->
+
+3.6 Treatment of the score scale
+
+<!-- TODO: - acknowledge that grades from 1 to 5 are ordinal; - explain why a continuous approximation may be used for the main analysis; - discuss the limitations of this approximation. An ordinal model should only be added if there is sufficient time and a clear reason. Otherwise, discuss it as a limitation or future extension. -->
+
+3.7 Posterior ranking quantities
+
+<!-- TODO: Define the ranking quantities actually used in the results. Likely quantities: - posterior proposal effects; - posterior rank distribution; - posterior expected rank; - posterior rank interval; - pairwise outranking probability; - probability of belonging to a selected top set. Include the expected-rank derivation if it is central to the final analysis. -->
+
+3.8 Computation and model assessment
+
+<!-- TODO: Briefly explain: - how the posterior is approximated; - the relevant MCMC diagnostics; - posterior predictive assessment; - how model problems were identified. Keep software-specific details short. Move extensive diagnostic output to an appendix only if necessary. -->
+
+4. Empirical Bayesian-ranking results
+
+<!-- The exact subsections in this chapter may be revised after the first model fit. -->
+
+4.1 Model fit and diagnostics
+
+<!-- TODO: - show that the model was fitted adequately; - report only the diagnostics needed to support the analysis; - describe any important model limitations. -->
+
+4.2 Proposal and reviewer effects
+
+<!-- TODO: Present the main posterior estimates. Possible content: - posterior proposal effects; - reviewer-specific scoring tendencies; - uncertainty in both types of effects; - evidence of shrinkage; - estimated variance components. The exact presentation should depend on which estimates are interpretable. -->
+
+4.3 Posterior proposal ranking
+
+<!-- TODO: Present the main ranking results. Possible quantities: - mean overall grade; - posterior expected rank; - posterior rank interval; - pairwise comparison probabilities; - probability of belonging to a relevant top set. Do not commit to including every quantity. Select those that best answer the research questions. -->
+
+4.4 Comparison with the original procedure
+
+<!-- TODO: Directly compare: - ranking by mean overall grade; - original qualification status; - Bayesian ranking; - Bayesian ranking uncertainty. Investigate: - whether reviewer adjustment changes the ordering; - whether the four originally qualified proposals remain highly ranked; - whether qualified and non-qualified proposals have overlapping rank uncertainty; - what information the Bayesian analysis adds beyond the threshold rule. -->
+
+5. Stability analysis
+
+<!-- This chapter is required, but its exact scope remains provisional. At minimum, conduct a small prior-sensitivity analysis. Add simulation only if the main model is working and time permits. -->
+
+5.1 Motivation
+
+<!-- TODO: Explain why stability matters because: - every proposal has only two reviews; - the reviewer panel is small; - workloads are unequal; - the ranking may depend on priors and modelling choices; - the true proposal ranking is not observed. -->
+
+5.2 Sensitivity of the real-data results
+
+<!-- TODO: Select a limited number of useful checks. At minimum: - prior sensitivity. Possible additional analysis: - small score perturbations; - alternative treatment of the score scale; - exclusion of selected observations or reviewers. Choose only analyses that are interpretable and feasible. -->
+
+5.3 Simulation study, if pursued
+
+<!-- DECISION POINT: Include this section only after the main Bayesian model is working. Possible objective: Under a CRS-like sparse evaluation design, when does hierarchical Bayesian ranking recover proposal ordering more reliably than ranking by mean overall grade? If pursued, keep the simulation compact: - preserve 42 proposals, 9 reviewers and two reviews per proposal; - use an unbalanced assignment design; - vary only a small number of parameters; - compare mean-score ranking with Bayesian ranking; - use a small set of clearly defined performance measures. If the simulation becomes too large for the available time, replace it with a smaller illustrative experiment and discuss broader simulation work as future research. -->
+
+5.4 Stability conclusions
+
+<!-- TODO: Summarize which conclusions from the empirical analysis appear robust and which remain sensitive. Relate these findings directly to Research Question 3. -->
+
+6. Discussion and recommendations
+6.1 Answers to the research questions
+
+<!-- TODO: Answer each research question explicitly. The structure can be: - Bayesian ranking and uncertainty; - comparison with the original procedure; - stability; - role of the supporting criteria. -->
+
+6.2 Recommendations for CRS
+
+<!-- TODO: Base recommendations only on results actually obtained. Possible themes: - whether Bayesian ranking should be used as decision support; - whether ranking uncertainty should be reported; - whether proposals near an uncertain boundary should receive additional review; - whether the reviewer-assignment design should be adjusted; - whether the role of the four supporting criteria should be clarified; - whether Bayesian ranking should be run prospectively in future calls. Do not finalize these recommendations before the analysis is complete. -->
+
+6.3 Limitations
+
+<!-- TODO: Discuss the limitations that materially affect interpretation. Likely limitations: - only two reviews per proposal; - only nine reviewers; - unequal and expertise-based assignment; - ordinal score scale; - small sample size; - prior and model dependence; - no observed true proposal quality; - one evaluation round only. Add simulation-related limitations only if simulation is conducted. -->
+
+6.4 Future work
+
+<!-- TODO: Mention only extensions that follow naturally from the completed project. Possible examples: - application to future CRS rounds; - prospective parallel testing; - ordinal models; - reviewer expertise; - multivariate modelling of the criteria; - larger simulation studies; - incorporation of budget constraints. -->
+
+7. Conclusion
+
+<!-- TODO: Approximately one page. Summarize: - what the Bayesian analysis contributed; - how it compared with the original procedure; - how much ranking uncertainty remained; - what the criteria analysis showed; - the main recommendation. Do not introduce new results. -->
+
+References {.unnumbered}
+
+::: {#refs}
