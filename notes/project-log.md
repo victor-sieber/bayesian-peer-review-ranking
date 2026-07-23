@@ -124,11 +124,13 @@ Documented the last three days work
 
 Defined the research questions (3 primary, 1 secondary question)
 
+Based on the research questions edited the structure of the technical report and wrote the to do's inside of the chapters.
 
 ### Main findings
-
+The research questions helped to define the scope of the report as it's clear where to start (Base model) and where to invest most amount of time (Bayesian ranking)
 
 ### Next steps
+- Start with chapters: 1.2 CRS Seed Grant evaluation 2026, 1.3 Original qualification procedure, 1.5 Research questions, 1.6 Scope and intended contribution
 
 
 #Template
