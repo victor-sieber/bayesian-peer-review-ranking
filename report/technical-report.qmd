@@ -4,6 +4,9 @@ subtitle: "A Case Study of the CRS Seed Grants 2026"
 author: "Victor Sieber"
 date: last-modified
 
+bibliography: references.bib
+link-citations: true
+
 format:
   html:
     toc: true
@@ -24,11 +27,13 @@ Abstract {.unnumbered}
 
 1.2 CRS Seed Grant evaluation 2026
 
-<!-- TODO: Briefly introduce: - 42 proposals; - 9 reviewers; - 84 completed reviews; - four supporting criteria; - a separate holistic overall grade that determined qualification; - approximately six projects could be funded according to the original call; - four proposals satisfied the qualification rule. Keep this section concise. -->
+The CRS Seed Grant evaluation round 2026 included 42 proposals assessed by a panel of nine reviewers. Each proposal received exactly two independent reviews, resulting in 84 completed review records. Reviewers evaluated each proposal on four supporting criteria: scientific quality and relevance for the call, prospects for community-building, potential for scaling, and commitment to scientific rigor. After filling out these scores, each reviewer assigned a separate holistic overall grade, which was the score used in the qualification procedure. The call indicated that approximately six projects could be funded [@crs2026seedgrantcall]. In the observed evaluation round, four proposals met the qualification rule and were therefore selected for funding.
 
 1.3 Original qualification procedure
 
-<!-- TODO: Based on the CRS Seed Grants results page, the available funding was sufficient for the proposals that received the best overall score at least once and no score below the second-best overall score. Explain that this means: - at least one overall grade of 5; - no overall grade below 4. With exactly two reviews per proposal, show that this is equivalent to: mean overall grade >= 4.5. Clarify: - this was a score-based qualification threshold; - it was not a fixed top-four selection procedure; - four proposals happened to satisfy the rule; - funding capacity was non-binding because approximately six projects could be funded. -->
+According to the published CRS Seed Grant results [@crs2026seedgrants], funding was available for proposals that received the highest overall grade from at least one reviewer and no grade below the second-highest category. Since the overall grade was scored on a scale from 1 to 5, this means that a proposal qualified if it received at least one grade of 5 and its second grade was at least 4. With exactly two reviews per proposal, the qualifying score combinations were therefore (5,5), (5,4), and (4,5). Equivalently, a proposal qualified if its mean overall grade was at least 4.5.
+
+This procedure should be interpreted as a score-based qualification threshold rather than as a fixed top-four selection rule. Four proposals happened to satisfy the threshold in the 2026 evaluation round. Since the call indicated that approximately six projects could be funded, the available funding capacity was not binding and no additional prioritization among qualified proposals was required.
 
 1.4 Motivation for Bayesian ranking
 
