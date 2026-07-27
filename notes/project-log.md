@@ -133,6 +133,31 @@ The research questions helped to define the scope of the report as it's clear wh
 - Start with chapters: 1.2 CRS Seed Grant evaluation 2026, 1.3 Original qualification procedure, 1.5 Research questions, 1.6 Scope and intended contribution
 
 
+## 2026-07-24 - Weekly Meeting, Kaplan et al. & filled out notes for literature read
+
+### Completed
+- Weekly meeting and discussed technical report structure
+- Read Kaplan et al.
+- Made notes for Kaplan -- keep in mind for doing motivation in introduction!
+
+### Main findings
+- Use Kaplan to show the problem of a small pool of reviewers for accuracy
+
+### Next steps
+- Add notes to github repo
+
+
+
+#Template
+## 2026-07-25 - Writing 1.2, 1.3 & research on bayesian modelling
+
+### Completed
+- Wrote part of the introduction, 1.2, 1.3
+- Studied the theoretical foundation of Rachel Heyard's continuous bayesian model
+
+### Next steps
+- Adapt Rachel's method with the R packages used in her paper (2022)
+
 #Template
 ## YYYY-MM-DD — Short description
 
