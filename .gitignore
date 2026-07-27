@@ -14,7 +14,6 @@ data/*
 
 # Allow documentation files
 !data/README.md
-!data/Re-identification risk.md
 
 # Credentials and private files
 .env
@@ -36,3 +35,6 @@ report/technical-report_files/
 
 # Private notes on Peter's workflow
 notes/peter-workflow.md
+
+# Local copies of academic papers
+notes/literature/papers/
