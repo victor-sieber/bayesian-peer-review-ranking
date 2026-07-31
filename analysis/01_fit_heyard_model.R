@@ -28,8 +28,23 @@ if (length(missing_packages) > 0) {
 
 # 3. Paths
 data_path <- "data/evaluation_anonymized.csv"
-results_dir <- "results/initial_heyard_model"
-figures_dir <- "figures/initial_heyard_model"
+
+model_path <- file.path(
+  "analysis",
+  "model",
+  "modified_jags_model.txt"
+)
+
+# Separate folders preserve the results from the original default model.
+results_dir <- file.path(
+  "results",
+  "modified_zero_mean_assessor"
+)
+
+figures_dir <- file.path(
+  "figures",
+  "modified_zero_mean_assessor"
+)
 
 dir.create(results_dir, recursive = TRUE, showWarnings = FALSE)
 dir.create(figures_dir, recursive = TRUE, showWarnings = FALSE)
@@ -37,6 +52,14 @@ dir.create(figures_dir, recursive = TRUE, showWarnings = FALSE)
 if (!file.exists(data_path)) {
   stop("Data file not found: ", data_path)
 }
+
+if (!file.exists(model_path)) {
+  stop("Modified JAGS model not found: ", model_path)
+}
+
+message("Using JAGS model: ", model_path)
+message("Results directory: ", results_dir)
+message("Figures directory: ", figures_dir)
 
 # 4. Read and validate data
 reviews <- read.csv(
@@ -128,10 +151,85 @@ write.csv(
 
 message("Originally qualified proposals: ", sum(original_benchmark$qualifies_original))
 
-# 6. Fit the continuous Bayesian hierarchical model
+# 6. Fit the modified continuous Bayesian hierarchical model
+
+# The modified JAGS model does not contain the reviewer-specific
+# mean parameter nu[l]. Therefore, nu must not be monitored.
+variables_to_sample <- c(
+  "proposal_intercept",
+  "tau_proposal",
+  "tau_assessor",
+  "rank_theta",
+  "assessor_intercept",
+  "sigma"
+)
+
+n_chains <- 4L
+n_proposals <- length(unique(reviews$proposal_id))
+n_reviewers <- length(unique(reviews$reviewer_id))
+
+# ERforResearch normally generates an initial value for nu[l].
+# Because nu[l] no longer exists, we provide custom initial
+# values containing only parameters in the modified model.
 set.seed(20260727)
 
-message("Starting the Bayesian model. This may take several minutes.")
+rng_names <- c(
+  "base::Wichmann-Hill",
+  "base::Marsaglia-Multicarry",
+  "base::Super-Duper",
+  "base::Mersenne-Twister"
+)
+
+rng_seeds <- sample.int(
+  1000000,
+  size = n_chains
+)
+
+initial_values_modified <- lapply(
+  seq_len(n_chains),
+  function(chain) {
+    list(
+      proposal_intercept = runif(
+        n_proposals,
+        min = -2,
+        max = 2
+      ),
+      
+      assessor_intercept = matrix(
+        runif(
+          n_proposals * n_reviewers,
+          min = -2,
+          max = 2
+        ),
+        nrow = n_proposals,
+        ncol = n_reviewers
+      ),
+      
+      sigma = runif(
+        1,
+        min = 0.000001,
+        max = 2
+      ),
+      
+      tau_proposal = runif(
+        1,
+        min = 0.000001,
+        max = 2
+      ),
+      
+      tau_assessor = runif(
+        1,
+        min = 0.000001,
+        max = 2
+      ),
+      
+      .RNG.name = rng_names[chain],
+      .RNG.seed = rng_seeds[chain]
+    )
+  }
+)
+
+message("Starting the modified Bayesian model. This may take several minutes.")
 
 mcmc_fit <- ERforResearch::get_mcmc_samples(
   data = reviews,
@@ -139,25 +237,31 @@ mcmc_fit <- ERforResearch::get_mcmc_samples(
   id_assessor = "reviewer_id",
   grade_variable = "overall_grade",
   
+  # Use our modified text file instead of the package default.
+  path_to_jags_model = model_path,
+  
   ordinal_scale = FALSE,
   heterogeneous_residuals = FALSE,
   
-  n_chains = 4,
+  n_chains = n_chains,
   n_iter = 50000,
   n_burnin = 10000,
   n_adapt = 10000,
   
-  # Same as n_iter: prevents repeated automatic extensions
+  # Same as n_iter: prevents repeated automatic extensions.
   max_iter = 50000,
   
   seed = 20260727,
   
-  # More practical for this first sparse-data fit
+  # Convergence threshold used for this baseline analysis.
   rhat_threshold = 1.1,
   
-  inits_type = "random",
   runjags_method = "parallel",
-  quiet = TRUE
+  quiet = TRUE,
+  
+  # nu is deliberately absent from both of these.
+  names_variables_to_sample = variables_to_sample,
+  initial_values = initial_values_modified
 )
 
 message("Bayesian sampling finished.")
