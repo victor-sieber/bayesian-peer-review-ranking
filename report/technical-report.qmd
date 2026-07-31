@@ -67,15 +67,40 @@ How closely do the four supporting criterion scores correspond to the holistic o
 2. Evaluation design and empirical benchmark
 2.1 Evaluation process and analytical data
 
-<!-- TODO: Describe: - the four supporting criteria; - the separate overall grade; - the integer score scale from 1 to 5; - one row per completed review; - 84 rows, 42 proposals and 9 reviewers; - exactly two reviews per proposal. Analytical variables: - proposal_id - reviewer_id - scientific_quality - community_building - scaling_potential - scientific_rigor - overall_grade -->
+The anonymized analytical dataset contains 84 completed reviews
+of 42 proposals by nine reviewers. Each proposal received exactly
+two independent reviews. Reviewer workloads were unequal because
+assignments were based on expertise and availability.
+
+Each review contains four supporting criterion scores and a separate
+holistic overall grade. All scores use an integer scale from 1 to 5,
+where higher values indicate a more favourable evaluation. The
+initial Bayesian model uses the holistic overall grade as its outcome.
+The four criterion scores are retained for a separate analysis of
+their relationship with the overall grade.
 
 2.2 Reviewer–proposal assignment
 
-<!-- TODO: Describe: - unequal reviewer workloads, approximately 6–12 proposals; - assignment based on expertise and availability; - the resulting unbalanced design. Investigate later: - reviewer workload distribution; - whether the reviewer–proposal assignment network is connected; - whether some reviewers have only weak connections to the rest of the panel. Do not commit yet to a specific graph or table. Use whichever representation is clearest after inspecting the data. -->
+The reviewer–proposal design is sparse and unbalanced. Each
+proposal was reviewed twice, whereas reviewers assessed different
+numbers of proposals. Assignments were not random but depended
+on expertise and availability.
+
+Consequently, estimated reviewer effects should be interpreted as
+scoring tendencies rather than direct evidence of reviewer bias.
+Differences attributed to reviewers may partly reflect differences
+in the types of proposals assigned to them.
 
 2.3 Reconstruction of the original procedure
 
-<!-- TODO: - calculate the mean overall grade for every proposal; - verify which proposals satisfy mean overall grade >= 4.5; - verify that these correspond to the funded proposals; - identify ties and proposals immediately below the threshold. Include one concise benchmark table or figure. -->
+The original CRS qualification rule required a proposal to receive
+at least one overall grade of 5 and no overall grade below 4. With
+exactly two reviews per proposal, the qualifying combinations were
+therefore (5,5), (5,4), and (4,5).
+
+Four of the 42 proposals met this rule. The procedure constituted
+a score-based qualification threshold rather than a fixed ranking
+in which exactly four proposals had to be selected.
 
 2.4 Reviewer scoring patterns and agreement
 
