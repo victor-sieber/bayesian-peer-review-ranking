@@ -147,8 +147,6 @@ The research questions helped to define the scope of the report as it's clear wh
 - Add notes to github repo
 
 
-
-#Template
 ## 2026-07-25 - Writing 1.2, 1.3 & research on bayesian modelling
 
 ### Completed
@@ -157,6 +155,75 @@ The research questions helped to define the scope of the report as it's clear wh
 
 ### Next steps
 - Adapt Rachel's method with the R packages used in her paper (2022)
+
+
+## 2026-07-27 - Prepared the Bayesian modelling setup
+
+### Completed
+- Reviewed the continuous hierarchical model from Heyard et al. and identified the required inputs: proposal_id, reviewer_id, and overall_grade.
+- Installed the required R packages and began configuring JAGS on macOS.
+- Defined the first model as a baseline using only the holistic overall grades.
+
+### Main findings
+- The model separates proposal effects, reviewer scoring tendencies, and residual variation.
+- The four supporting criteria are not part of this first model and will be analysed separately.
+
+### Next steps
+- Complete the JAGS configuration.
+- Adapt the ERforResearch workflow to the anonymized CRS dataset.
+
+
+## 2026-07-28 - Configured JAGS and resolved package issues
+
+### Completed
+- Installed JAGS through Homebrew and connected it to R through runjags.
+- Investigated problems with rjags and determined that the model could be run through the external JAGS executable instead.
+- Confirmed that JAGS 4.3.2 was detected successfully.
+
+### Main findings
+- rjags was not required for the selected runjags_method = "parallel" workflow.
+- The repeated macOS lipo warning did not prevent JAGS from running.
+
+### Next steps
+- Create the complete model-fitting script.
+- Validate the structure and contents of the anonymized dataset.
+
+
+## 2026-07-29 - Implemented the initial continuous Bayesian model
+
+### Completed
+- Created analysis/01_fit_heyard_model.R.
+- Added checks for 84 reviews, 42 proposals, 9 reviewers, valid 1–5 grades, and exactly two reviews per proposal.
+- Reconstructed the original CRS qualification rule and confirmed four qualifying proposals.
+- Started fitting the continuous Bayesian hierarchical model with four MCMC chains.
+
+### Main findings
+- The package’s strict convergence threshold caused repeated automatic extensions of the MCMC sampling.
+- The original qualification benchmark could be reproduced correctly before fitting the Bayesian model.
+
+### Next steps
+- Adjust the MCMC settings to prevent excessively long automatic extensions.
+- Complete the fit and inspect convergence diagnostics.
+
+
+## 2026-07-30 - Completed and validated the baseline model
+
+### Completed
+- Successfully fitted the initial continuous Bayesian model using overall_grade.
+- Generated the raw-average ranking, posterior-mean ranking, and expected ranking.
+- Saved the model summaries, ranking tables, qualification benchmark, session information, and comparison figure.
+- Checked MCMC convergence and obtained a maximum PSRF of 1.007729.
+- Committed and pushed the scripts on gitlab
+
+### Main findings
+- The four originally qualified proposals also occupied the first four posterior-mean ranking positions.
+- Proposals tied under the raw average were separated after accounting for reviewer scoring tendencies.
+- Exact proposal ranks remained uncertain despite good computational convergence.
+- Reviewer effects should be interpreted as scoring tendencies rather than proven bias.
+
+### Next steps
+Discuss the baseline model, priors, reviewer structure, and continuous-versus-ordinal specification with Rachel.
+Produce posterior rank uncertainty summaries before extending the analysis.
 
 #Template
 ## YYYY-MM-DD — Short description
