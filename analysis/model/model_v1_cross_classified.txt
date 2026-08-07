@@ -1,3 +1,9 @@
+# Model V1: CRS cross-classified Gaussian model
+# Main inference model for the CRS Seed Grant 2026 data.
+#
+# One proposal effect is shared across the two reviews of a proposal.
+# One reviewer effect is shared across all proposals reviewed by that reviewer.
+
 model{
   # Likelihood:
   for (i in 1:n) { # i indexes reviews, not proposals

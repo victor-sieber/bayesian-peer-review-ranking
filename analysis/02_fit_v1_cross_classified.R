@@ -1,6 +1,8 @@
-# Initial Heyard et al. (2022) model for the CRS Seed Grant 2026 data
+# Model V1: CRS cross-classified Gaussian model
+# Main inference model for the CRS Seed Grant 2026 data.
+#
 # Run from the evaluation-data project root with:
-# source("analysis/01_fit_heyard_model.R")
+# source("analysis/02_fit_v1_cross_classified.R")
 
 # 1. Make Homebrew JAGS visible to RStudio
 jags_path <- "/opt/homebrew/bin/jags"
@@ -27,23 +29,23 @@ if (length(missing_packages) > 0) {
 }
 
 # 3. Paths
+
 data_path <- "data/evaluation_anonymized.csv"
 
 model_path <- file.path(
   "analysis",
   "model",
-  "modified_jags_model.txt"
+  "model_v1_cross_classified.txt"
 )
 
-# Separate folders preserve the results from the original default model.
 results_dir <- file.path(
   "results",
-  "modified_zero_mean_assessor"
+  "model_v1_cross_classified"
 )
 
 figures_dir <- file.path(
   "figures",
-  "modified_zero_mean_assessor"
+  "model_v1_cross_classified"
 )
 
 dir.create(results_dir, recursive = TRUE, showWarnings = FALSE)
@@ -54,7 +56,7 @@ if (!file.exists(data_path)) {
 }
 
 if (!file.exists(model_path)) {
-  stop("Modified JAGS model not found: ", model_path)
+  stop("V1 JAGS model not found: ", model_path)
 }
 
 message("Using JAGS model: ", model_path)
@@ -151,10 +153,11 @@ write.csv(
 
 message("Originally qualified proposals: ", sum(original_benchmark$qualifies_original))
 
-# 6. Fit the modified continuous Bayesian hierarchical model
+# 6. Fit Model V1: cross-classified Gaussian model
 
-# The modified JAGS model does not contain the reviewer-specific
-# mean parameter nu[l]. Therefore, nu must not be monitored.
+# Model V1 has one persistent reviewer-level random effect
+# assessor_intercept[l] for each reviewer.
+# The separate Heyard parameter nu[l] is not present.
 variables_to_sample <- c(
   "proposal_intercept",
   "tau_proposal",
@@ -168,9 +171,9 @@ n_chains <- 4L
 n_proposals <- length(unique(reviews$proposal_id))
 n_reviewers <- length(unique(reviews$reviewer_id))
 
-# ERforResearch normally generates an initial value for nu[l].
-# Because nu[l] no longer exists, we provide custom initial
-# values containing only parameters in the modified model.
+# Custom initial values are supplied because V1 differs from
+# the package's Heyard reference model. In particular, V1 has
+# one reviewer-level assessor_intercept per reviewer and no nu[l].
 set.seed(20260727)
 
 rng_names <- c(
@@ -195,14 +198,10 @@ initial_values_modified <- lapply(
         max = 2
       ),
       
-      assessor_intercept = matrix(
-        runif(
-          n_proposals * n_reviewers,
-          min = -2,
-          max = 2
-        ),
-        nrow = n_proposals,
-        ncol = n_reviewers
+      assessor_intercept = runif(
+        n_reviewers,
+        min = -2,
+        max = 2
       ),
       
       sigma = runif(
@@ -229,7 +228,7 @@ initial_values_modified <- lapply(
   }
 )
 
-message("Starting the modified Bayesian model. This may take several minutes.")
+message("Starting Model V1 (cross-classified Gaussian). This may take several minutes.")
 
 mcmc_fit <- ERforResearch::get_mcmc_samples(
   data = reviews,
@@ -237,7 +236,7 @@ mcmc_fit <- ERforResearch::get_mcmc_samples(
   id_assessor = "reviewer_id",
   grade_variable = "overall_grade",
   
-  # Use our modified text file instead of the package default.
+  # Explicitly use the V1 cross-classified JAGS specification.
   path_to_jags_model = model_path,
   
   ordinal_scale = FALSE,
@@ -334,7 +333,7 @@ capture.output(
   file = file.path(results_dir, "session_info.txt")
 )
 
-message("Model finished.")
+message("Model V1 finished.")
 message("Ranking table: ", file.path(results_dir, "ranking_continuous.csv"))
 message("Figure: ", file.path(figures_dir, "ranking_comparison.png"))
 

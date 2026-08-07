@@ -1,6 +1,8 @@
-# Initial Heyard et al. (2022) model for the CRS Seed Grant 2026 data
+# Model V0: Heyard et al. reference specification
+# Direct continuous-model implementation used as the reference model.
+#
 # Run from the evaluation-data project root with:
-# source("analysis/01_fit_heyard_model.R")
+# source("analysis/01_fit_v0_heyard_reference.R")
 
 # 1. Make Homebrew JAGS visible to RStudio
 jags_path <- "/opt/homebrew/bin/jags"
@@ -27,9 +29,24 @@ if (length(missing_packages) > 0) {
 }
 
 # 3. Paths
+
 data_path <- "data/evaluation_anonymized.csv"
-results_dir <- "results/initial_heyard_model"
-figures_dir <- "figures/initial_heyard_model"
+
+model_path <- file.path(
+  "analysis",
+  "model",
+  "model_v0_heyard_reference.txt"
+)
+
+results_dir <- file.path(
+  "results",
+  "model_v0_heyard_reference"
+)
+
+figures_dir <- file.path(
+  "figures",
+  "model_v0_heyard_reference"
+)
 
 dir.create(results_dir, recursive = TRUE, showWarnings = FALSE)
 dir.create(figures_dir, recursive = TRUE, showWarnings = FALSE)
@@ -37,6 +54,14 @@ dir.create(figures_dir, recursive = TRUE, showWarnings = FALSE)
 if (!file.exists(data_path)) {
   stop("Data file not found: ", data_path)
 }
+
+if (!file.exists(model_path)) {
+  stop("V0 JAGS model not found: ", model_path)
+}
+
+message("Using JAGS model: ", model_path)
+message("Results directory: ", results_dir)
+message("Figures directory: ", figures_dir)
 
 # 4. Read and validate data
 reviews <- read.csv(
@@ -128,16 +153,18 @@ write.csv(
 
 message("Originally qualified proposals: ", sum(original_benchmark$qualifies_original))
 
-# 6. Fit the continuous Bayesian hierarchical model
+# 6. Fit Model V0: Heyard reference model
 set.seed(20260727)
 
-message("Starting the Bayesian model. This may take several minutes.")
+message("Starting Model V0 (Heyard reference). This may take several minutes.")
 
 mcmc_fit <- ERforResearch::get_mcmc_samples(
   data = reviews,
   id_proposal = "proposal_id",
   id_assessor = "reviewer_id",
   grade_variable = "overall_grade",
+  
+  path_to_jags_model = model_path,
   
   ordinal_scale = FALSE,
   heterogeneous_residuals = FALSE,
@@ -230,7 +257,7 @@ capture.output(
   file = file.path(results_dir, "session_info.txt")
 )
 
-message("Model finished.")
+message("Model V0 finished.")
 message("Ranking table: ", file.path(results_dir, "ranking_continuous.csv"))
 message("Figure: ", file.path(figures_dir, "ranking_comparison.png"))
 

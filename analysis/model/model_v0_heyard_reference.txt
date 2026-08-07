@@ -1,3 +1,7 @@
+# Model V0: Heyard et al. reference specification
+# Direct continuous-model implementation used as the reference model.
+# This file should remain unchanged when developing CRS-specific models.
+
 model{
       # Likelihood:
       for (i in 1:n) { # i is not the proposal but the review

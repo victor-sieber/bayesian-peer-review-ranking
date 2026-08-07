@@ -17,19 +17,3 @@ if (!requireNamespace("ERforResearch", quietly = TRUE)) {
 }
 
 message("Required R packages are installed.")
-
-# Check if the modified JAGS txt file exists
-MODEL_PATH <- file.path(
-  "analysis",
-  "model",
-  "modified_jags_model.txt"
-)
-
-if (!file.exists(MODEL_PATH)) {
-  warning(
-    "Modified JAGS model not found at: ",
-    MODEL_PATH
-  )
-} else {
-  message("Modified JAGS model found at: ", MODEL_PATH)
-}
