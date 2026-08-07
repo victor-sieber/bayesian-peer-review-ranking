@@ -225,6 +225,71 @@ The research questions helped to define the scope of the report as it's clear wh
 Discuss the baseline model, priors, reviewer structure, and continuous-versus-ordinal specification with Rachel.
 Produce posterior rank uncertainty summaries before extending the analysis.
 
+
+## 2026-08-03 — Revisited Bayesian model structure
+
+### Completed:
+- clarified the Heyard reference model and interpretation;
+- distinguished proposal effects, reviewer effects and proposal-reviewer effects;
+- considered consequences of only two reviews per proposal.
+
+### Main finding:
+- original Heyard structure is relatively complex for the sparse CRS setting.
+
+
+## 2026-08-04 — Defined V0 and V1
+
+### Completed:
+- retained original Heyard model as V0;
+- implemented Rachel’s cross-classified simplification as V1;
+- reorganized model files/scripts.
+
+### Main finding:
+- V1 uses one shared proposal effect and one shared reviewer-associated scoring effect.
+
+
+## 2026-08-05 — Fresh V0 fit
+
+### Completed:
+- reran V0 from clean setup;
+- checked convergence and qualification reconstruction.
+
+### Main finding:
+- V0 converged well, but rank uncertainty remained large.
+
+
+## 2026-08-06 — Fresh V1 fit
+
+### Completed:
+- fitted V1;
+- checked the expected 9 reviewer effects;
+- verified MCMC convergence.
+
+### Main finding:
+- V1 was computationally stable and suitable for direct comparison with V0.
+
+
+## 2026-08-07 — Model comparison and meeting with Rachel
+
+### Completed:
+- created 03_compare_v0_v1.R;
+- compared posterior ranks, expected ranks and rank uncertainty;
+- investigated P023/P032 pairwise probability;
+- meeting with Rachel.
+
+### Main findings:
+- V0/V1 rankings are very similar;
+- P023/P032 apparent reversal is essentially a posterior tie;
+- broad ranking uncertainty remains;
+- Rachel supported pursuing the graph/data-design direction after V1 validation and criterion analysis.
+
+### Next steps:
+- validate/stress-test V1;
+- descriptive criterion analysis;
+- revise technical-report structure;
+- begin graph-design literature/theory.
+
+
 #Template
 ## YYYY-MM-DD — Short description
 
