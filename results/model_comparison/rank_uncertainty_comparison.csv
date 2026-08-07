@@ -1,0 +1,85 @@
+"proposal_id","model","expected_rank_from_draws","rank_median","rank_q05","rank_q95","rank_interval_90_width"
+"P001","V0 Heyard reference",23.492575,24,4,41,37
+"P002","V0 Heyard reference",21.408815,21,3,40,37
+"P003","V0 Heyard reference",20.77295,20,3,40,37
+"P004","V0 Heyard reference",24.122685,25,4,41,37
+"P005","V0 Heyard reference",31.1624,35,8,42,34
+"P006","V0 Heyard reference",24.365485,26,4,41,37
+"P007","V0 Heyard reference",24.429455,26,4,41,37
+"P008","V0 Heyard reference",27.76836,30,6,42,36
+"P009","V0 Heyard reference",18.307745,17,2,39,37
+"P010","V0 Heyard reference",24.271505,25,4,41,37
+"P011","V0 Heyard reference",21.88793,22,3,40,37
+"P012","V0 Heyard reference",19.49293,19,2,39,37
+"P013","V0 Heyard reference",25.95185,28,5,41,36
+"P014","V0 Heyard reference",21.214425,21,3,40,37
+"P015","V0 Heyard reference",26.264375,28,5,41,36
+"P016","V0 Heyard reference",18.77507,18,2,39,37
+"P017","V0 Heyard reference",19.52195,19,2,39,37
+"P018","V0 Heyard reference",21.54479,22,3,40,37
+"P019","V0 Heyard reference",28.12426,31,6,42,36
+"P020","V0 Heyard reference",21.14026,21,3,40,37
+"P021","V0 Heyard reference",24.357355,26,4,41,37
+"P022","V0 Heyard reference",11.852955,8,1,35,34
+"P023","V0 Heyard reference",15.44817,13,1,37,36
+"P024","V0 Heyard reference",20.839125,21,3,40,37
+"P025","V0 Heyard reference",24.021225,25,4,41,37
+"P026","V0 Heyard reference",25.91839,28,5,41,36
+"P027","V0 Heyard reference",22.481025,23,4,40,36
+"P028","V0 Heyard reference",17.94198,16,2,38,36
+"P029","V0 Heyard reference",18.33408,17,2,38,36
+"P030","V0 Heyard reference",20.90321,21,3,40,37
+"P031","V0 Heyard reference",21.935955,22,3,40,37
+"P032","V0 Heyard reference",15.489685,13,1,37,36
+"P033","V0 Heyard reference",22.58491,23,4,40,36
+"P034","V0 Heyard reference",18.221225,17,2,39,37
+"P035","V0 Heyard reference",18.90833,18,2,39,37
+"P036","V0 Heyard reference",20.033775,19,3,39,36
+"P037","V0 Heyard reference",21.31205,21,3,40,37
+"P038","V0 Heyard reference",18.831785,18,2,39,37
+"P039","V0 Heyard reference",20.384435,20,3,39,36
+"P040","V0 Heyard reference",18.10519,17,2,38,36
+"P041","V0 Heyard reference",16.503935,15,2,38,36
+"P042","V0 Heyard reference",24.571395,26,4,41,37
+"P001","V1 cross-classified",23.85245,25,4,41,37
+"P002","V1 cross-classified",21.359385,21,3,40,37
+"P003","V1 cross-classified",21.2371,21,3,40,37
+"P004","V1 cross-classified",24.187815,25,4,41,37
+"P005","V1 cross-classified",31.03529,35,8,42,34
+"P006","V1 cross-classified",24.13848,25,4,41,37
+"P007","V1 cross-classified",24.28193,25,4,41,37
+"P008","V1 cross-classified",27.09459,29,6,42,36
+"P009","V1 cross-classified",18.576795,17,2,39,37
+"P010","V1 cross-classified",24.188375,25,4,41,37
+"P011","V1 cross-classified",21.59836,22,3,40,37
+"P012","V1 cross-classified",18.90756,18,2,39,37
+"P013","V1 cross-classified",26.48936,29,5,41,36
+"P014","V1 cross-classified",21.349665,21,3,40,37
+"P015","V1 cross-classified",26.63548,29,5,41,36
+"P016","V1 cross-classified",18.734585,18,2,39,37
+"P017","V1 cross-classified",18.94728,18,2,39,37
+"P018","V1 cross-classified",21.45853,21,3,40,37
+"P019","V1 cross-classified",27.237455,30,6,42,36
+"P020","V1 cross-classified",21.2364,21,3,40,37
+"P021","V1 cross-classified",24.200685,25,4,41,37
+"P022","V1 cross-classified",13.079265,10,1,36,35
+"P023","V1 cross-classified",15.87305,14,1,37,36
+"P024","V1 cross-classified",21.2171,21,3,40,37
+"P025","V1 cross-classified",24.11157,25,4,41,37
+"P026","V1 cross-classified",24.68449,26,4,41,37
+"P027","V1 cross-classified",23.59188,24,4,41,37
+"P028","V1 cross-classified",18.38988,17,2,39,37
+"P029","V1 cross-classified",18.49604,17,2,39,37
+"P030","V1 cross-classified",21.147555,21,3,40,37
+"P031","V1 cross-classified",21.526115,22,3,40,37
+"P032","V1 cross-classified",15.870785,14,1,37,36
+"P033","V1 cross-classified",21.81037,22,3,40,37
+"P034","V1 cross-classified",18.48697,17,2,39,37
+"P035","V1 cross-classified",18.83633,18,2,39,37
+"P036","V1 cross-classified",19.071145,18,2,39,37
+"P037","V1 cross-classified",21.35989,21,3,40,37
+"P038","V1 cross-classified",18.720435,18,2,39,37
+"P039","V1 cross-classified",21.03277,21,3,40,37
+"P040","V1 cross-classified",18.433855,17,2,39,37
+"P041","V1 cross-classified",16.21879,14,1,38,37
+"P042","V1 cross-classified",24.294145,25,4,41,37
