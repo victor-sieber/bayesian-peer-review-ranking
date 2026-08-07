@@ -23,8 +23,9 @@ model{
     proposal_intercept[j] ~ dnorm(0, inv_tau_proposal2)
   }
 
-  # Modified assessment effect:
-  # no reviewer-specific mean nu[l] is estimated
+  # Reviewer-level random effect:
+  # one persistent zero-centred scoring effect per reviewer.
+  # The separate Heyard parameter nu[l] is not present.
   for (l in 1:n_assessor){
     assessor_intercept[l] ~ dnorm(0, inv_tau_assessor2)
   }

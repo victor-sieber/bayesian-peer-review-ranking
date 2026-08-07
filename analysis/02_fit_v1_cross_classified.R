@@ -188,7 +188,7 @@ rng_seeds <- sample.int(
   size = n_chains
 )
 
-initial_values_modified <- lapply(
+initial_values_v1 <- lapply(
   seq_len(n_chains),
   function(chain) {
     list(
@@ -260,7 +260,7 @@ mcmc_fit <- ERforResearch::get_mcmc_samples(
   
   # nu is deliberately absent from both of these.
   names_variables_to_sample = variables_to_sample,
-  initial_values = initial_values_modified
+  initial_values = initial_values_v1
 )
 
 message("Bayesian sampling finished.")
@@ -312,7 +312,7 @@ ranking_plot <- ERforResearch::plotting_er_results(
   er_results = er_results,
   id_proposal = "id_proposal",
   how_many_fundable = NULL,
-  title = "CRS Seed Grant 2026",
+  title = "CRS Seed Grant 2026 — V1 cross-classified",
   ordering_increasing = TRUE,
   draw_funding_line = FALSE,
   result_show = TRUE,

@@ -236,7 +236,7 @@ ranking_plot <- ERforResearch::plotting_er_results(
   er_results = er_results,
   id_proposal = "id_proposal",
   how_many_fundable = NULL,
-  title = "CRS Seed Grant 2026",
+  title = "CRS Seed Grant 2026 — V0 Heyard reference",
   ordering_increasing = TRUE,
   draw_funding_line = FALSE,
   result_show = TRUE,
