@@ -38,3 +38,5 @@ notes/peter-workflow.md
 
 # Local copies of academic papers
 notes/literature/papers/
+# Large reproducible Bayesian fit objects
+results/**/*.rds
