@@ -69,7 +69,26 @@ primary literature rather than relying on general statements.
 
 ## CRS Seed Grant evaluation 2026
 
-The CRS Seed Grant evaluation round 2026 included 42 proposals assessed by a panel of nine reviewers. Each proposal received exactly two independent reviews, resulting in 84 completed review records. Reviewers evaluated each proposal on four supporting criteria: scientific quality and relevance for the call, prospects for community-building, potential for scaling, and commitment to scientific rigor. After filling out these scores, each reviewer assigned a separate holistic overall grade, which was the score used in the qualification procedure. The call indicated that approximately six projects could be funded [@crs2026seedgrantcall]. In the observed evaluation round, four proposals met the qualification rule and were therefore selected for funding.
+The Center for Reproducible Science and Research Synthesis (CRS) at the
+University of Zurich (UZH) works to advance scientific methods and practices
+that support trustworthy and reproducible research. Its activities include
+research on reproducibility, research synthesis, and meta-research
+[@crs2026seedgrantcall].
+
+In 2026, the CRS launched its first Seed Grant call to support early-stage
+projects and initiatives in research synthesis, meta-research, and related
+fields [@crs2026seedgrantcall]. The evaluation round included 42 proposals
+assessed by a panel of nine reviewers. Each proposal received exactly two
+independent reviews, resulting in 84 completed review records.
+
+Reviewers evaluated each proposal on four supporting criteria: scientific
+quality and relevance for the call, prospects for community-building,
+potential for scaling, and commitment to scientific rigor. After filling out
+these scores, each reviewer assigned a separate holistic overall grade, which
+was the score used in the qualification procedure. The call indicated that
+approximately six projects could be funded [@crs2026seedgrantcall]. In the
+observed evaluation round, four proposals met the qualification rule and were
+therefore selected for funding.
 
 
 ## Original qualification procedure
