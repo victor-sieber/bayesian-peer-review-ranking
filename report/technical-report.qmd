@@ -1,5 +1,5 @@
 ---
-title: "Bayesian Modelling of Grant Evaluation and Ranking"
+title: "Bayesian Ranking and Graph-Based Review Design under Sparse Evaluation Data"
 subtitle: "A Case Study of the CRS Seed Grants 2026"
 author: "Victor Sieber"
 date: last-modified
@@ -16,56 +16,165 @@ format:
     number-sections: true
 ---
 
-Abstract {.unnumbered}
+# Abstract {.unnumbered}
 
-<!-- TODO: Write this last. Briefly summarize: - the evaluation problem; - the data; - the main Bayesian approach; - the most important empirical result; - the stability result; - the main recommendation. -->
+<!-- TODO:
+Write this last.
 
-1. Introduction
-1.1 Grant evaluation under limited information
+Briefly summarize:
+- the evaluation problem;
+- the data;
+- the Bayesian modelling approach;
+- the main empirical findings;
+- the model-validation results;
+- the criterion analysis;
+- the graph-based review-design extension;
+- the main recommendation.
+-->
 
-<!-- TODO: Motivate why uncertainty matters in grant evaluation. Current motivating issues: - Lottery effects near the funding threshold: small differences in reviewer scores may determine whether otherwise similarly evaluated proposals receive funding. - Reviewer heterogeneity: differences in reviewer strictness or generosity can strongly affect proposal outcomes when each proposal is assessed by only two reviewers. - Hidden ranking uncertainty: deterministic averages and qualification thresholds produce a clear decision but do not show whether neighbouring proposals are meaningfully distinguishable. - Dependence on reviewer assignment: a proposal's outcome may partly depend on which reviewers happened to assess it, particularly in a small review panel. Keep this general. Unequal workloads and expertise-based assignment will be discussed in Chapter 2. -->
 
-1.2 CRS Seed Grant evaluation 2026
+# Introduction
+
+## Grant evaluation under limited information
+
+<!-- TODO:
+Motivate the general problem of evaluating proposals when only limited
+review information is available.
+
+Possible themes to investigate:
+- disagreement between reviewers;
+- uncertainty in proposal ordering;
+- instability of decisions for closely evaluated proposals;
+- limitations imposed by a small number of reviewers;
+- the role of chance in peer-review decisions.
+
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022):
+  motivation from low inter-rater reliability, uncertainty and chance in
+  grant evaluation, especially for proposals that are difficult to distinguish.
+- Kaplan et al. (2008):
+  relationship between number of reviewers, scoring precision and stability
+  of proposal rankings.
+- Graves et al. (2011):
+  variability in reviewer scores and consequences for proposal ranking and
+  funding decisions.
+- Walker / Alvin thesis:
+  useful orientation for the distinction between scores, rankings,
+  assessors and latent proposal quality.
+
+When drafting, identify which claims require direct citations to the
+primary literature rather than relying on general statements.
+-->
+
+
+## CRS Seed Grant evaluation 2026
 
 The CRS Seed Grant evaluation round 2026 included 42 proposals assessed by a panel of nine reviewers. Each proposal received exactly two independent reviews, resulting in 84 completed review records. Reviewers evaluated each proposal on four supporting criteria: scientific quality and relevance for the call, prospects for community-building, potential for scaling, and commitment to scientific rigor. After filling out these scores, each reviewer assigned a separate holistic overall grade, which was the score used in the qualification procedure. The call indicated that approximately six projects could be funded [@crs2026seedgrantcall]. In the observed evaluation round, four proposals met the qualification rule and were therefore selected for funding.
 
-1.3 Original qualification procedure
+
+## Original qualification procedure
 
 According to the published CRS Seed Grant results [@crs2026seedgrants], funding was available for proposals that received the highest overall grade from at least one reviewer and no grade below the second-highest category. Since the overall grade was scored on a scale from 1 to 5, this means that a proposal qualified if it received at least one grade of 5 and its second grade was at least 4. With exactly two reviews per proposal, the qualifying score combinations were therefore (5,5), (5,4), and (4,5). Equivalently, a proposal qualified if its mean overall grade was at least 4.5.
 
 This procedure should be interpreted as a score-based qualification threshold rather than as a fixed top-four selection rule. Four proposals happened to satisfy the threshold in the 2026 evaluation round. Since the call indicated that approximately six projects could be funded, the available funding capacity was not binding and no additional prioritization among qualified proposals was required.
 
-1.4 Motivation for Bayesian ranking
 
-<!-- TODO: Explain what the original procedure does not quantify: - reviewer-specific scoring tendencies; - uncertainty about proposal quality; - uncertainty in the resulting ranks; - whether neighbouring proposals are meaningfully distinguishable; - the possible effect of reviewer assignment. Do not yet claim that the Bayesian model solves all these problems. Present them as questions to investigate. -->
+## Motivation for Bayesian ranking
 
-1.5 Research questions
-Research Question 1
+<!-- TODO:
+Explain what is not visible from the original deterministic qualification
+procedure and motivate why uncertainty-aware modelling may be useful.
+
+Possible themes to investigate:
+- reviewer-associated scoring tendencies;
+- latent proposal quality;
+- uncertainty in resulting ranks;
+- whether neighbouring proposals are meaningfully distinguishable;
+- difference between assigning a numerical rank and having strong evidence
+  for the corresponding ordering.
+
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022):
+  Bayesian hierarchical grant-ranking model, expected ranks and uncertainty
+  around proposal comparisons.
+- Laird and Louis (1989), as referenced by Heyard:
+  empirical-Bayes ranking and uncertainty in rankings, if useful for the
+  theoretical discussion.
+- Goldstein and Spiegelhalter (1996), as referenced by Heyard:
+  limitations of league tables / rankings and uncertainty, if this becomes
+  useful for interpreting exact ranks.
+- Walker / Alvin thesis:
+  notation and conceptual distinction between observed scores, latent
+  proposal quality and final ordering.
+
+Investigate which of these sources are actually necessary before expanding
+the literature review.
+-->
+
+
+## Research questions
+
+### Research Question 1
 
 What posterior ranking is obtained from a hierarchical Bayesian model of the overall grades that accounts for reviewer-specific scoring tendencies, and how uncertain are the resulting ranks?
 
-Research Question 2
+### Research Question 2
 
-How does the Bayesian ranking compare with the original ranking and qualification procedure based on the two overall grades per proposal?
+How does the main Bayesian ranking model compare with the original ranking and qualification procedure based on the two overall grades per proposal?
 
-Research Question 3
+### Research Question 3
 
-How stable is Bayesian ranking under a design with only two reviews per proposal, unequal reviewer workloads and possible reviewer heterogeneity?
+Is the selected main Bayesian model sufficiently robust and adequate under model validation and sensitivity analysis?
 
-Research Question 4
+### Research Question 4
 
 How closely do the four supporting criterion scores correspond to the holistic overall grade, and would an equal-weight average of the criteria have produced a materially different proposal ordering?
 
-1.6 Scope and intended contribution
+### Research Question 5
 
-<!-- TODO: State the current project scope. Core scope: - the overall grade is the response used for the main Bayesian analysis; - the four criteria are analysed separately as supporting information; - requested budget is excluded; - the project studies proposal-quality evaluation rather than financial allocation; - the project applies and investigates an existing Bayesian-ranking approach rather than proposing a completely new method. Possible contribution: - application to a small and unbalanced review panel; - comparison with the original CRS procedure; - quantification of ranking uncertainty; - investigation of the supporting criteria; - assessment of stability under sparse review data. Keep the exact contribution provisional until the analysis is complete. -->
+Can the sparse reviewer–proposal design be used to identify where additional review effort may be most informative?
 
-1.7 Structure of the report
+<!-- TODO:
+Research Question 5 remains provisional until the review-design objective
+and the relevant notion of uncertainty have been studied more carefully.
+-->
 
-<!-- TODO: Write this after the analysis and chapter structure are stable. -->
 
-2. Evaluation design and empirical benchmark
-2.1 Evaluation process and analytical data
+## Scope and intended contribution
+
+<!-- TODO:
+Clarify the final scope once the remaining analyses are complete.
+
+Current scope to keep in mind:
+- the holistic overall grade is the response for the main Bayesian analysis;
+- the four supporting criteria are considered separately;
+- requested budget is outside the main statistical model;
+- V0 serves as the Heyard reference specification;
+- V1 is the CRS-specific main model;
+- model validation precedes the review-design extension;
+- the graph-based part concerns the design and allocation of review effort.
+
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022) as the main methodological reference.
+- Existing grant-review literature using multilevel or cross-classified models.
+- Existing literature on review allocation / experimental design before
+  making any novelty claim.
+
+Do not claim that the project introduces a new Bayesian or graph-theoretic
+method unless the literature review later justifies such a statement.
+-->
+
+
+## Structure of the report
+
+<!-- TODO:
+Write once the empirical analysis and graph-based extension are stable.
+-->
+
+
+# Evaluation design and descriptive analysis
+
+## Evaluation process and analytical data
 
 The anonymized analytical dataset contains 84 completed reviews
 of 42 proposals by nine reviewers. Each proposal received exactly
@@ -75,11 +184,12 @@ assignments were based on expertise and availability.
 Each review contains four supporting criterion scores and a separate
 holistic overall grade. All scores use an integer scale from 1 to 5,
 where higher values indicate a more favourable evaluation. The
-initial Bayesian model uses the holistic overall grade as its outcome.
-The four criterion scores are retained for a separate analysis of
-their relationship with the overall grade.
+Bayesian models use the holistic overall grade as their outcome.
+The four criterion scores are retained for a separate descriptive
+analysis of their relationship with the overall grade.
 
-2.2 Reviewer–proposal assignment
+
+## Reviewer–proposal assignment
 
 The reviewer–proposal design is sparse and unbalanced. Each
 proposal was reviewed twice, whereas reviewers assessed different
@@ -91,7 +201,25 @@ scoring tendencies rather than direct evidence of reviewer bias.
 Differences attributed to reviewers may partly reflect differences
 in the types of proposals assigned to them.
 
-2.3 Reconstruction of the original procedure
+<!-- LITERATURE TO INVESTIGATE:
+- Jayasinghe, Marsh and Bond (2003):
+  multilevel cross-classified modelling of grant-review data and separation
+  of assessor and researcher/proposal-related variation.
+  The paper is cited by Heyard and Eblen; obtain/read the primary article
+  before relying on it directly.
+- Heyard et al. (2022):
+  discussion of different assessor scoring habits and cross-classified
+  grant-review work.
+- Erosheva et al. (2020):
+  multilevel structure created by applications and reviewers.
+
+Investigate literature on how non-random reviewer assignment affects the
+interpretation of reviewer effects and whether stronger claims concerning
+identifiability require additional references.
+-->
+
+
+## Reconstruction of the original procedure
 
 The original CRS qualification rule required a proposal to receive
 at least one overall grade of 5 and no overall grade below 4. With
@@ -102,115 +230,753 @@ Four of the 42 proposals met this rule. The procedure constituted
 a score-based qualification threshold rather than a fixed ranking
 in which exactly four proposals had to be selected.
 
-2.4 Reviewer scoring patterns and agreement
 
-<!-- TODO: Conduct a focused descriptive analysis. Possible summaries: - reviewer workloads; - distributions of overall grades; - reviewer-specific means and variability; - agreement between the two reviewers of each proposal; - absolute difference between paired overall grades. The exact summaries should depend on what is informative in the data. Use the term "reviewer scoring tendency" rather than automatically interpreting differences as bias. -->
+## Reviewer scoring patterns and agreement
 
-2.5 Supporting criteria and overall grade
+<!-- TODO:
+Investigate which descriptive summaries are useful for understanding
+the reviewer panel and the amount of agreement in the observed data.
 
-<!-- TODO: For each completed review, calculate the equal-weight criterion average: criterion_average = (scientific_quality + community_building + scaling_potential + scientific_rigor) / 4. Investigate: - relationships among the four criteria; - relationships between each criterion and the overall grade; - correspondence between the criterion average and overall grade; - cases where the criterion average and holistic grade differ substantially. Use descriptive statistics and rank-based measures where appropriate. Do not interpret the associations causally. -->
+Possible themes:
+- reviewer workloads;
+- distribution of overall grades;
+- differences in reviewer scoring patterns;
+- agreement or disagreement between paired reviews.
 
-2.6 Counterfactual criterion-based ordering
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022):
+  inter-rater reliability and assessor scoring habits.
+- Kaplan et al. (2008):
+  reviewer variability, number of reviewers and precision.
+- Graves et al. (2011):
+  variation in peer-review scores and resulting instability.
+- Potential grant-review reliability literature referenced within these
+  papers if a more formal agreement discussion becomes necessary.
 
-<!-- TODO: At proposal level, compare: - ranking by mean overall grade; - ranking by the mean equal-weight criterion average. Possible outputs: - rank correlation; - proposals with large rank changes; - overlap among highly ranked proposals; - position of the four originally qualified proposals. This is a counterfactual comparison, not a reconstruction of the official evaluation procedure. End the chapter by explaining that the overall grade remains the response for the main Bayesian model because it was the defining score in the actual procedure. -->
+Keep observed reviewer differences descriptive unless stronger
+interpretations are supported by the assignment design and literature.
+-->
 
-3. Bayesian ranking framework
 
-<!-- This is the main theoretical chapter. Its exact content should develop alongside the first model implementation. Only include theory that is needed to understand the analysis. -->
+## Supporting criteria and holistic overall grade
 
-3.1 Related Bayesian-ranking work
+<!-- TODO:
+Investigate how the four supporting criteria relate to the separately
+assigned holistic overall grade.
 
-<!-- TODO: Summarize the parts of Heyard et al. that are directly relevant: - the grant-ranking problem; - proposal and reviewer effects; - posterior expected ranks; - ranking uncertainty; - the role of the funding line; - the simulation study. Explain the main difference: - Heyard et al. study ranking uncertainty around a funding line; - CRS used a score-based qualification threshold with non-binding capacity. Add further literature only when it is needed to justify a modelling decision. -->
+Possible questions:
+- how strongly do individual criteria correspond to the overall grade?
+- do the criteria appear to contribute similarly or differently?
+- where do criterion-based summaries and holistic judgments diverge?
 
-3.2 Main statistical model
+LITERATURE TO INVESTIGATE:
+- Erosheva et al. (2020):
+  relationship between criterion scores and preliminary overall impact scores;
+  idea of combining separate criteria into a holistic judgment.
+- Eblen et al. (2016):
+  relationship between individual criterion scores, overall impact scores
+  and grant outcomes.
+- Other criterion-scoring literature cited in these papers, if needed.
 
-<!-- TODO: Introduce notation and formulate the main model after reading Heyard et al. and attempting the first fit. Current provisional form: overall grade = overall scoring level + proposal effect + reviewer effect + residual variation. Define every model component clearly. Do not finalize the notation, likelihood or parameterization until the implementation has been tested. -->
+Important:
+These papers motivate studying the relationship between criteria and
+overall judgments. They do not automatically justify any particular
+equal-weight rule for the CRS data.
+-->
 
-3.3 Bayesian concepts required for the model
 
-<!-- TODO: Explain only the concepts actually used: - likelihood; - prior; - posterior; - hierarchical model; - latent proposal effect; - posterior predictive distribution. Write this in parallel with model fitting. Do not create a general introduction to Bayesian statistics. -->
+## Proposal-level criterion average versus overall-grade average
 
-3.4 Partial pooling and reviewer heterogeneity
+<!-- TODO:
+Investigate the proposal-level relationship discussed with Rachel:
+the summary of supporting criterion grades from the reviewer pair
+versus the average holistic overall grade from that pair.
 
-<!-- TODO: Explain: - why proposal effects should be partially pooled; - why reviewer effects should be partially pooled; - why this matters when proposals have only two reviews; - how unequal reviewer workloads affect the amount of information available. Use the fitted model or a small example to illustrate shrinkage. -->
+Questions to investigate:
+- how closely do these summaries correspond?
+- are there proposals for which they differ noticeably?
+- does the relative proposal ordering look different when criteria are
+  summarized with equal weights?
 
-3.5 Priors, assumptions and identifiability
+LITERATURE TO INVESTIGATE:
+- Erosheva et al. (2020):
+  criterion scores versus holistic overall evaluation.
+- Eblen et al. (2016):
+  differential relationship of criteria with overall evaluation and outcomes.
 
-<!-- TODO: Combine the closely related modelling choices here. Discuss: - prior specification; - sensitivity to priors in a small dataset; - identifiability of proposal and reviewer effects; - the reviewer–proposal assignment network; - expertise-based assignment; - conditional independence assumptions; - why reviewer effects cannot automatically be interpreted as pure bias. The exact level of detail should depend on which issues prove important in the fitted model. -->
+Frame the equal-weight criterion summary as a descriptive/counterfactual
+exercise unless literature or the CRS evaluation procedure supports a
+stronger interpretation.
+-->
 
-3.6 Treatment of the score scale
 
-<!-- TODO: - acknowledge that grades from 1 to 5 are ordinal; - explain why a continuous approximation may be used for the main analysis; - discuss the limitations of this approximation. An ordinal model should only be added if there is sufficient time and a clear reason. Otherwise, discuss it as a limitation or future extension. -->
+# Bayesian ranking framework
 
-3.7 Posterior ranking quantities
+## Related work
 
-<!-- TODO: Define the ranking quantities actually used in the results. Likely quantities: - posterior proposal effects; - posterior rank distribution; - posterior expected rank; - posterior rank interval; - pairwise outranking probability; - probability of belonging to a selected top set. Include the expected-rank derivation if it is central to the final analysis. -->
+<!-- TODO:
+Develop a focused literature review around the methods and problems that
+are actually used in the project.
 
-3.8 Computation and model assessment
+CORE LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022):
+  primary Bayesian-ranking reference.
+- Kaplan et al. (2008):
+  reviewer number and precision.
+- Graves et al. (2011):
+  uncertainty and instability in grant peer review.
+- Jayasinghe, Marsh and Bond (2003):
+  cross-classified modelling of grant peer-review data.
+- Walker / Alvin thesis:
+  useful secondary orientation to scoring and ranking models.
 
-<!-- TODO: Briefly explain: - how the posterior is approximated; - the relevant MCMC diagnostics; - posterior predictive assessment; - how model problems were identified. Keep software-specific details short. Move extensive diagnostic output to an appendix only if necessary. -->
+POSSIBLE FURTHER SOURCES TO INVESTIGATE:
+- papers referenced by Heyard on empirical-Bayes ranking;
+- grant-review reliability literature;
+- papers on uncertainty around funding lines;
+- literature needed later for graph-based review design.
 
-4. Empirical Bayesian-ranking results
+Keep this section focused rather than producing a general review of all
+Bayesian ranking methods.
+-->
 
-<!-- The exact subsections in this chapter may be revised after the first model fit. -->
 
-4.1 Model fit and diagnostics
+## V0: Heyard reference model
 
-<!-- TODO: - show that the model was fitted adequately; - report only the diagnostics needed to support the analysis; - describe any important model limitations. -->
+<!-- TODO:
+Present and explain the Heyard reference specification used as V0.
 
-4.2 Proposal and reviewer effects
+Investigate:
+- the interpretation of its different latent effects;
+- how assessor-specific scoring behaviour enters the model;
+- how proposal effects are converted into posterior rankings;
+- the role and interpretation of the priors.
 
-<!-- TODO: Present the main posterior estimates. Possible content: - posterior proposal effects; - reviewer-specific scoring tendencies; - uncertainty in both types of effects; - evidence of shrinkage; - estimated variance components. The exact presentation should depend on which estimates are interpretable. -->
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022), methodology section:
+  primary source for the model specification and expected-rank approach.
+- Walker / Alvin thesis:
+  useful secondary explanation of the Heyard model and latent proposal
+  quality, where helpful for understanding notation.
 
-4.3 Posterior proposal ranking
+Use Heyard as the primary methodological citation.
+-->
 
-<!-- TODO: Present the main ranking results. Possible quantities: - mean overall grade; - posterior expected rank; - posterior rank interval; - pairwise comparison probabilities; - probability of belonging to a relevant top set. Do not commit to including every quantity. Select those that best answer the research questions. -->
 
-4.4 Comparison with the original procedure
+## V1: CRS cross-classified model
 
-<!-- TODO: Directly compare: - ranking by mean overall grade; - original qualification status; - Bayesian ranking; - Bayesian ranking uncertainty. Investigate: - whether reviewer adjustment changes the ordering; - whether the four originally qualified proposals remain highly ranked; - whether qualified and non-qualified proposals have overlapping rank uncertainty; - what information the Bayesian analysis adds beyond the threshold rule. -->
+<!-- TODO:
+Explain the CRS-specific V1 model and why it is considered as the
+main model for this dataset.
 
-5. Stability analysis
+Questions to investigate:
+- how the cross-classified structure should be described formally;
+- how persistent proposal and reviewer effects are interpreted;
+- what is gained and lost relative to V0;
+- what limitations arise from the sparse and non-random assignment design.
 
-<!-- This chapter is required, but its exact scope remains provisional. At minimum, conduct a small prior-sensitivity analysis. Add simulation only if the main model is working and time permits. -->
+LITERATURE TO INVESTIGATE:
+- Jayasinghe, Marsh and Bond (2003):
+  primary candidate reference for cross-classified grant-review modelling.
+- Heyard et al. (2022):
+  discussion of cross-classified grant-review work and assessor effects.
+- Erosheva et al. (2020):
+  use of multilevel modelling for dependencies created by applications
+  and reviewers.
+- broader cross-classified mixed-model literature if needed for the
+  statistical explanation.
 
-5.1 Motivation
+LITERATURE GAP:
+Obtain and read the primary Jayasinghe et al. paper before using it as
+direct support for V1.
+-->
 
-<!-- TODO: Explain why stability matters because: - every proposal has only two reviews; - the reviewer panel is small; - workloads are unequal; - the ranking may depend on priors and modelling choices; - the true proposal ranking is not observed. -->
 
-5.2 Sensitivity of the real-data results
+## Partial pooling and variance components
 
-<!-- TODO: Select a limited number of useful checks. At minimum: - prior sensitivity. Possible additional analysis: - small score perturbations; - alternative treatment of the score scale; - exclusion of selected observations or reviewers. Choose only analyses that are interpretable and feasible. -->
+<!-- TODO:
+Investigate the role of partial pooling and variance decomposition in
+the sparse CRS evaluation design.
 
-5.3 Simulation study, if pursued
+Questions to investigate:
+- how information is shared across proposals and reviewers;
+- how proposal-, reviewer- and residual-level variation can be interpreted;
+- how sparse observations affect uncertainty in random effects;
+- whether ICC-type summaries are informative for this design.
 
-<!-- DECISION POINT: Include this section only after the main Bayesian model is working. Possible objective: Under a CRS-like sparse evaluation design, when does hierarchical Bayesian ranking recover proposal ordering more reliably than ranking by mean overall grade? If pursued, keep the simulation compact: - preserve 42 proposals, 9 reviewers and two reviews per proposal; - use an unbalanced assignment design; - vary only a small number of parameters; - compare mean-score ranking with Bayesian ranking; - use a small set of clearly defined performance measures. If the simulation becomes too large for the available time, replace it with a smaller illustrative experiment and discuss broader simulation work as future research. -->
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022):
+  hierarchical structure and reported reliability / ICC quantities.
+- Jayasinghe et al. (2003):
+  variance components in cross-classified grant-review data.
+- general multilevel-model literature if a formal explanation of ICC or
+  partial pooling requires a more standard methodological source.
+-->
 
-5.4 Stability conclusions
 
-<!-- TODO: Summarize which conclusions from the empirical analysis appear robust and which remain sensitive. Relate these findings directly to Research Question 3. -->
+## Priors, assumptions and identifiability
 
-6. Discussion and recommendations
-6.1 Answers to the research questions
+<!-- TODO:
+Investigate which modelling assumptions materially affect interpretation.
 
-<!-- TODO: Answer each research question explicitly. The structure can be: - Bayesian ranking and uncertainty; - comparison with the original procedure; - stability; - role of the supporting criteria. -->
+Themes:
+- prior specification;
+- amount of information in a small dataset;
+- sparse reviewer-proposal assignment;
+- unequal workloads;
+- expertise-based assignment;
+- distinction between reviewer-associated effects and reviewer bias;
+- identifiability of proposal and reviewer effects.
 
-6.2 Recommendations for CRS
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022):
+  prior choices, model assumptions and limitations.
+- Jayasinghe et al. (2003):
+  cross-classified reviewer/proposal structure.
+- standard Bayesian hierarchical-model references where necessary.
+- literature on incomplete or connected reviewer-item designs if this
+  becomes important for identifiability.
 
-<!-- TODO: Base recommendations only on results actually obtained. Possible themes: - whether Bayesian ranking should be used as decision support; - whether ranking uncertainty should be reported; - whether proposals near an uncertain boundary should receive additional review; - whether the reviewer-assignment design should be adjusted; - whether the role of the four supporting criteria should be clarified; - whether Bayesian ranking should be run prospectively in future calls. Do not finalize these recommendations before the analysis is complete. -->
+LITERATURE GAP:
+Investigate formal results connecting assignment connectivity with
+estimability/identifiability before making strong graph-based statements.
+-->
 
-6.3 Limitations
 
-<!-- TODO: Discuss the limitations that materially affect interpretation. Likely limitations: - only two reviews per proposal; - only nine reviewers; - unequal and expertise-based assignment; - ordinal score scale; - small sample size; - prior and model dependence; - no observed true proposal quality; - one evaluation round only. Add simulation-related limitations only if simulation is conducted. -->
+## Treatment of the 1–5 score scale
 
-6.4 Future work
+<!-- TODO:
+Investigate the consequences of treating the bounded ordinal grades
+as approximately continuous.
 
-<!-- TODO: Mention only extensions that follow naturally from the completed project. Possible examples: - application to future CRS rounds; - prospective parallel testing; - ordinal models; - reviewer expertise; - multivariate modelling of the criteria; - larger simulation studies; - incorporation of budget constraints. -->
+Questions:
+- why may a Gaussian approximation be reasonable or useful?
+- what assumptions does it imply?
+- where might it fail?
+- how should this limitation be assessed empirically?
 
-7. Conclusion
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022):
+  comparison/discussion of continuous and ordinal formulations.
+- general literature on ordinal versus Gaussian treatment if more support
+  is required.
 
-<!-- TODO: Approximately one page. Summarize: - what the Bayesian analysis contributed; - how it compared with the original procedure; - how much ranking uncertainty remained; - what the criteria analysis showed; - the main recommendation. Do not introduce new results. -->
+Do not introduce a full ordinal model solely because the scores are ordinal
+unless the validation results or literature indicate that it is necessary.
+-->
 
-References {.unnumbered}
+
+## Posterior ranking quantities
+
+<!-- TODO:
+Investigate the ranking quantities that are most informative for the
+final analysis.
+
+Possible concepts to study:
+- posterior proposal effects;
+- rank distributions;
+- expected rank;
+- uncertainty intervals for ranks;
+- pairwise proposal probabilities;
+- uncertainty about belonging to a decision-relevant set.
+
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022):
+  expected ranks, credible intervals and proposals of similar quality.
+- empirical-Bayes ranking literature referenced by Heyard if useful.
+- Walker / Alvin thesis:
+  distinction between latent quality and final ordering.
+
+Clarify which quantities answer the research questions rather than
+including every possible ranking summary.
+-->
+
+
+## Posterior computation and diagnostics
+
+<!-- TODO:
+Describe only the computational concepts needed to establish that the
+posterior calculations are trustworthy.
+
+Investigate:
+- appropriate MCMC convergence diagnostics;
+- effective sample size;
+- how much implementation detail belongs in the main report versus appendix.
+
+LITERATURE TO INVESTIGATE:
+- standard Bayesian / MCMC references where methodological claims require
+  support.
+- Gelman et al., Bayesian Data Analysis, referenced by Heyard, as a possible
+  general source.
+
+Avoid turning this into a general introduction to MCMC.
+-->
+
+
+# Bayesian ranking results
+
+## V0 results
+
+<!-- TODO:
+Present the V0 results needed to establish the reference analysis.
+
+When writing, connect interpretation back to the Heyard model rather
+than presenting output tables without context.
+-->
+
+
+## V1 results
+
+<!-- TODO:
+Present the main V1 results and investigate which posterior quantities
+are most useful for interpreting proposal and reviewer effects.
+
+Keep the distinction between reviewer-associated scoring tendency and
+causal reviewer bias explicit.
+-->
+
+
+## Comparison with the original CRS procedure
+
+<!-- TODO:
+Investigate what the Bayesian analysis adds relative to:
+- raw overall-grade summaries;
+- the original CRS qualification rule.
+
+Possible themes:
+- changes in ordering;
+- uncertainty hidden by deterministic ranks;
+- overlap between apparently neighbouring proposals;
+- relationship between qualification status and posterior ranking.
+
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022):
+  Bayesian ranking as decision support rather than purely deterministic
+  ranking.
+- Graves et al. (2011):
+  uncertainty in funding-relevant ranking decisions.
+-->
+
+
+## Comparison of V0 and V1
+
+<!-- TODO:
+Interpret the direct comparison between V0 and V1.
+
+Questions to investigate:
+- how materially do the rankings differ?
+- how similar is the uncertainty?
+- what do pairwise comparisons reveal that exact ranks do not?
+- does the simpler model preserve the substantive conclusions?
+
+Use the P023/P032 example if it remains informative in the final narrative.
+
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022) for interpretation of rank uncertainty.
+- broader ranking-uncertainty literature only if needed to explain why
+  exact numerical ranks can be misleading.
+-->
+
+
+# Validation and sensitivity analysis of V1
+
+## Motivation
+
+<!-- TODO:
+Motivate why V1 requires assessment beyond computational convergence
+before it is used as the main inferential model and as the basis of the
+review-design extension.
+
+LITERATURE TO INVESTIGATE:
+- general Bayesian model-checking literature;
+- Heyard et al. (2022) for model choices and limitations;
+- standard references on hierarchical-model validation if needed.
+-->
+
+
+## Variance decomposition and intraclass correlation
+
+<!-- TODO:
+Investigate whether variance decomposition and ICC-type summaries help
+describe the information structure of V1.
+
+Questions to investigate:
+- how much variation is associated with proposals, reviewers and remaining
+  review-level variation?
+- what does an ICC mean in this particular cross-classified setting?
+- how uncertain are these variance shares?
+- how should they be interpreted in relation to ranking uncertainty?
+
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022):
+  use and interpretation of ICC/reliability quantities in grant evaluation.
+- Jayasinghe et al. (2003):
+  cross-classified variance components in grant peer review.
+- standard multilevel-model literature for the precise definition and
+  interpretation of ICC in cross-classified models.
+
+Do not settle on a particular ICC definition until its interpretation for
+V1 has been checked carefully.
+-->
+
+
+## Posterior predictive assessment
+
+<!-- TODO:
+Investigate whether V1 can reproduce features of the observed evaluation data
+that matter for the project.
+
+Questions to investigate:
+- which observed summaries are most relevant for checking the model?
+- does the Gaussian specification capture important aspects of score behaviour?
+- does the bounded 1–5 scale reveal limitations?
+- does the model represent reviewer disagreement adequately?
+
+LITERATURE TO INVESTIGATE:
+- standard literature on posterior predictive checking.
+- Gelman et al., Bayesian Data Analysis, as a possible primary reference.
+- Heyard et al. (2022) for modelling assumptions specific to grant scores.
+
+The exact posterior predictive checks should be selected because they test
+important assumptions of V1, not simply because they are commonly used.
+-->
+
+
+## Prior sensitivity
+
+<!-- TODO:
+Investigate whether substantive conclusions depend strongly on the prior
+specification.
+
+Questions to investigate:
+- which priors are most influential in this small-data hierarchical model?
+- what alternative prior family would provide a meaningful comparison?
+- which posterior/ranking conclusions should be compared across priors?
+
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022):
+  baseline variance priors and discussion of possible alternatives.
+- standard literature on priors for hierarchical variance parameters,
+  if necessary.
+
+Keep the sensitivity analysis focused on whether conclusions are robust,
+rather than surveying a large number of priors.
+-->
+
+
+## Validation conclusion
+
+<!-- TODO:
+Summarize what the validation evidence implies about using V1 as the
+main model.
+
+Distinguish:
+- computational adequacy;
+- predictive adequacy;
+- sensitivity to prior choices;
+- unavoidable uncertainty caused by the data design.
+-->
+
+
+# Graph-based review design
+
+## Motivation
+
+<!-- TODO:
+Investigate whether the remaining ranking uncertainty can be reframed as
+a review-design problem.
+
+Questions to investigate:
+- how much of the uncertainty appears related to limited review information?
+- what is known about the value of additional reviewers?
+- when is adding review effort practically worthwhile?
+- should attention focus on single additional reviews or groups/budgets
+  of reviews?
+
+LITERATURE TO INVESTIGATE:
+- Kaplan et al. (2008):
+  number of reviewers, precision and instability of ranks with few reviews.
+- Graves et al. (2011):
+  consequences of reviewer variability for funding decisions.
+- Heyard et al. (2022):
+  fundamental limitations caused by finite reviewer resources and difficulty
+  distinguishing proposals of similar quality.
+
+These papers motivate the problem but do not by themselves establish
+the graph-theoretic approach.
+-->
+
+
+## Reviewer–proposal assignment as a bipartite graph
+
+<!-- TODO:
+Investigate whether representing the sparse assignment as a bipartite graph
+provides a useful mathematical description of the evaluation design.
+
+Questions to investigate:
+- what graph concepts are actually needed?
+- how should reviewer and proposal nodes be interpreted?
+- what aspects of sparse/unbalanced assignment are represented by the graph?
+- what notion of connectivity is statistically relevant?
+
+LITERATURE GAP:
+Find primary literature on:
+- bipartite representations of two-way / reviewer-item data;
+- incomplete block designs;
+- graph representations of experimental designs;
+- connectivity and estimability in incomplete designs.
+
+Do not introduce graph terminology merely for presentation; establish why
+it contributes to the statistical analysis.
+-->
+
+
+## Connection between graph structure and statistical uncertainty
+
+<!-- TODO:
+Investigate whether and how graph structure can be linked formally to
+uncertainty in V1.
+
+Questions to investigate:
+- how does the assignment structure enter the model's information?
+- under what assumptions can graph connectivity be related to precision?
+- what quantities from graph theory have an interpretation in terms of
+  posterior uncertainty?
+- which results are established in the literature and which are derived
+  specifically for the CRS model?
+
+LITERATURE GAP:
+Find primary literature on:
+- graph Laplacians and information matrices;
+- incomplete block / optimal experimental design;
+- effective resistance and uncertainty of contrasts;
+- statistical estimation on graphs;
+- reviewer-assignment or comparison-design problems.
+
+This connection must be mathematically justified before graph geometry
+is compared empirically with statistical uncertainty.
+-->
+
+
+## Measuring uncertainty
+
+<!-- TODO:
+Investigate what notion of uncertainty is appropriate for the review-design
+problem.
+
+Possible perspectives to investigate:
+- uncertainty in latent proposal differences;
+- uncertainty in proposal ranks;
+- uncertainty in pairwise ordering;
+- uncertainty in separating proposals into meaningful groups;
+- uncertainty specifically relevant to a qualification/funding decision.
+
+Also investigate whether global statistical uncertainty and
+decision-relevant uncertainty lead to different objectives.
+
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022):
+  expected ranks and funding-line uncertainty.
+- active-ranking / ranking-under-uncertainty literature.
+- Bayesian experimental-design literature.
+- decision-theoretic approaches if funding-set uncertainty becomes central.
+
+LITERATURE GAP:
+Identify established uncertainty/loss measures before defining a new
+project-specific one.
+-->
+
+
+## Allocation of additional reviews
+
+<!-- TODO:
+Investigate the value of collecting additional reviews under limited
+reviewer resources.
+
+Questions to investigate:
+- how should the value of an additional review be quantified?
+- is one additional review informative enough to be practically meaningful?
+- should the problem instead be formulated for a group or budget of
+  additional reviews?
+- how does the existing number of reviews affect the marginal value of
+  another review?
+- what operational constraints would matter in practice?
+
+LITERATURE TO INVESTIGATE:
+- optimal experimental design;
+- sequential / adaptive experimental design;
+- active ranking;
+- optimal allocation of comparisons;
+- reviewer-assignment optimization.
+
+LITERATURE GAP:
+Find papers specifically connecting assignment of reviewers or judges to
+ranking precision, preferably in peer-review or closely related settings.
+-->
+
+
+## Comparison of review-allocation strategies
+
+<!-- TODO:
+Investigate which alternative allocation principles are meaningful
+benchmarks for the CRS setting.
+
+Possible ideas to investigate:
+- allocation based on existing disagreement;
+- allocation focused on decision-relevant proposals;
+- allocation based on statistical information;
+- simple non-targeted baselines.
+
+Questions:
+- what uncertainty objective does each strategy implicitly target?
+- do different strategies identify similar or different proposals?
+- how should strategies be compared fairly under equal review budgets?
+
+LITERATURE TO INVESTIGATE:
+- active ranking;
+- optimal reviewer assignment;
+- Bayesian design;
+- literature on additional review around uncertain funding boundaries.
+
+Do not fix the final strategies until the uncertainty objective and
+mathematical framework have been justified.
+-->
+
+
+## Implications for sparse evaluation designs
+
+<!-- TODO:
+Investigate whether the ideas developed for CRS can be interpreted beyond
+the exact two-review-per-proposal design.
+
+Questions to investigate:
+- what parts of the framework depend specifically on two reviews?
+- how would the value of another review change when proposals already
+  have more reviews?
+- are there theoretical reasons to expect diminishing returns?
+- which conclusions are specific to this dataset and which might apply
+  more generally to sparse evaluation panels?
+
+LITERATURE TO INVESTIGATE:
+- Kaplan et al. (2008) for reviewer-number/precision relationships.
+- experimental-design literature on replication and marginal information.
+- reviewer-allocation literature for panels with different review loads.
+
+Treat any generalization beyond CRS cautiously unless supported by either
+theory, simulation or literature.
+-->
+
+
+# Discussion and recommendations
+
+## Answers to the research questions
+
+<!-- TODO:
+Answer each final research question explicitly using the completed analyses
+and only after the research questions have reached their final form.
+-->
+
+
+## Implications for CRS
+
+<!-- TODO:
+Investigate which practical recommendations are genuinely supported by
+the results.
+
+Possible themes:
+- Bayesian ranking as decision support;
+- communication of uncertainty;
+- interpretation of criterion scores;
+- whether additional reviews are useful;
+- how additional review effort might be targeted.
+
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022) for decision-support framing.
+- grant-review literature on reviewer numbers and reliability.
+- any review-design literature identified during Chapter 6.
+
+Avoid recommendations that go beyond what can be supported by one
+evaluation round.
+-->
+
+
+## Ranking uncertainty and decision uncertainty
+
+<!-- TODO:
+Investigate whether reducing uncertainty about the full latent ranking and
+reducing uncertainty around a funding/qualification decision are genuinely
+different objectives in this dataset.
+
+Questions to investigate:
+- do they prioritize the same proposals?
+- can a design improve global statistical certainty without materially
+  affecting the relevant decision set?
+- which objective would be more meaningful for CRS?
+
+LITERATURE TO INVESTIGATE:
+- Bayesian decision theory if needed;
+- Heyard et al. (2022) for uncertainty around a funding line;
+- active ranking literature distinguishing full-ranking and top-set objectives.
+-->
+
+
+## Limitations
+
+<!-- TODO:
+Discuss limitations that materially affect interpretation.
+
+Themes to revisit:
+- one evaluation round;
+- small reviewer panel;
+- limited reviews per proposal;
+- unequal workloads;
+- expertise-based non-random assignment;
+- bounded and ordinal grade scale;
+- model and prior dependence;
+- lack of observed true proposal quality;
+- feasibility constraints on hypothetical additional reviews;
+- assumptions needed for any graph-based design analysis.
+
+Use literature where it helps distinguish limitations specific to CRS
+from limitations known more generally in grant peer review.
+-->
+
+
+## Future work
+
+<!-- TODO:
+Identify extensions that follow naturally from the completed project.
+
+Potential themes to investigate:
+- application to future CRS rounds;
+- evaluation designs with more reviews per proposal;
+- ordinal modelling;
+- reviewer expertise or conflicts;
+- prospective testing of review-allocation rules;
+- broader simulation studies;
+- application to other sparse evaluation systems.
+
+Only retain extensions that make sense in light of the final results.
+-->
+
+
+# Conclusion
+
+<!-- TODO:
+Write this last.
+
+Summarize:
+- what was learned from the Bayesian ranking analysis;
+- what was learned from comparing and validating the models;
+- what the criterion analysis contributed;
+- what the review-design investigation showed;
+- the main practical conclusion.
+
+Do not introduce new literature, methods or results here.
+-->
+
+
+# References {.unnumbered}
 
 ::: {#refs}
+:::
