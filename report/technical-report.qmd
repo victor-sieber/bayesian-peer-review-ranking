@@ -37,35 +37,11 @@ Briefly summarize:
 
 ## Grant evaluation under limited information
 
-<!-- TODO:
-Motivate the general problem of evaluating proposals when only limited
-review information is available.
+Grant peer review converts a limited number of expert judgments into decisions that can have substantial consequences for applicants. The challenge is not only disagreement between reviewers, but also the risk of overinterpreting small score differences when each proposal is assessed by only a few reviewers. Kaplan et al. show directly that finer scoring precision requires increasingly many independent reviewers, and illustrate how rankings can vary strongly when only a small number of evaluations are available [@kaplan2008].
 
-Possible themes to investigate:
-- disagreement between reviewers;
-- uncertainty in proposal ordering;
-- instability of decisions for closely evaluated proposals;
-- limitations imposed by a small number of reviewers;
-- the role of chance in peer-review decisions.
+This uncertainty becomes particularly important when proposals are close in score or close to a decision boundary. In a retrospective analysis of Australian grant panels, Graves et al. found substantial instability in funding status after accounting for variability among panel members' scores [@graves2011]. Jayasinghe, Marsh and Bond reported low single-rater reliability in Australian Research Council grant assessments and used a multilevel cross-classified model to separate proposal- and assessor-related sources of variation [@jayasinghe2003]. Heyard et al. similarly motivate Bayesian ranking by low inter-rater reliability and by the difficulty of distinguishing proposals of similar quality near a funding line [@heyard2022]. These findings do not imply that peer review is uninformative; rather, they motivate distinguishing an observed numerical ordering from the strength of evidence supporting that ordering.
 
-LITERATURE TO INVESTIGATE:
-- Heyard et al. (2022):
-  motivation from low inter-rater reliability, uncertainty and chance in
-  grant evaluation, especially for proposals that are difficult to distinguish.
-- Kaplan et al. (2008):
-  relationship between number of reviewers, scoring precision and stability
-  of proposal rankings.
-- Graves et al. (2011):
-  variability in reviewer scores and consequences for proposal ranking and
-  funding decisions.
-- Walker / Alvin thesis:
-  useful orientation for the distinction between scores, rankings,
-  assessors and latent proposal quality.
-
-When drafting, identify which claims require direct citations to the
-primary literature rather than relying on general statements.
--->
-
+The present project studies this distinction in a deliberately small evaluation setting. With only two reviews per proposal, a method that reports a single rank without its uncertainty can appear more decisive than the available information warrants. The aim is therefore to model proposal and reviewer variation explicitly, quantify posterior uncertainty in the resulting ranks, and later ask whether the structure of the review design itself can indicate where additional review effort would be most informative.
 
 ## CRS Seed Grant evaluation 2026
 
@@ -93,43 +69,20 @@ therefore selected for funding.
 
 ## Original qualification procedure
 
-According to the published CRS Seed Grant results [@crs2026seedgrants], funding was available for proposals that received the highest overall grade from at least one reviewer and no grade below the second-highest category. Since the overall grade was scored on a scale from 1 to 5, this means that a proposal qualified if it received at least one grade of 5 and its second grade was at least 4. With exactly two reviews per proposal, the qualifying score combinations were therefore (5,5), (5,4), and (4,5). Equivalently, a proposal qualified if its mean overall grade was at least 4.5.
-
-This procedure should be interpreted as a score-based qualification threshold rather than as a fixed top-four selection rule. Four proposals happened to satisfy the threshold in the 2026 evaluation round. Since the call indicated that approximately six projects could be funded, the available funding capacity was not binding and no additional prioritization among qualified proposals was required.
+Funding eligibility was determined from the two holistic overall
+grades assigned to each proposal using a predefined qualification
+rule. The procedure therefore operated as a score-based threshold
+rather than as a complete ranking of all proposals. The rule and its
+reconstruction from the evaluation data are described in Section 2.3.
 
 
 ## Motivation for Bayesian ranking
 
-<!-- TODO:
-Explain what is not visible from the original deterministic qualification
-procedure and motivate why uncertainty-aware modelling may be useful.
+The original CRS procedure was transparent and easy to apply, but it did not quantify uncertainty around the observed overall grades. In particular, two proposals with similar score pairs can receive a definite relative ordering even when the evidence that one is better than the other is weak. With only two reviews per proposal, the observed scores also reflect both proposal-related variation and differences in reviewer scoring behaviour.
 
-Possible themes to investigate:
-- reviewer-associated scoring tendencies;
-- latent proposal quality;
-- uncertainty in resulting ranks;
-- whether neighbouring proposals are meaningfully distinguishable;
-- difference between assigning a numerical rank and having strong evidence
-  for the corresponding ordering.
+Bayesian hierarchical modelling provides a way to separate these sources of variation probabilistically. Heyard et al. model latent proposal effects together with assessor-related effects and rank proposals using the posterior distribution of the proposal effects rather than the raw score averages alone [@heyard2022]. Their expected-rank approach is designed to retain information about uncertainty instead of treating an estimated ordering as known with certainty.
 
-LITERATURE TO INVESTIGATE:
-- Heyard et al. (2022):
-  Bayesian hierarchical grant-ranking model, expected ranks and uncertainty
-  around proposal comparisons.
-- Laird and Louis (1989), as referenced by Heyard:
-  empirical-Bayes ranking and uncertainty in rankings, if useful for the
-  theoretical discussion.
-- Goldstein and Spiegelhalter (1996), as referenced by Heyard:
-  limitations of league tables / rankings and uncertainty, if this becomes
-  useful for interpreting exact ranks.
-- Walker / Alvin thesis:
-  notation and conceptual distinction between observed scores, latent
-  proposal quality and final ordering.
-
-Investigate which of these sources are actually necessary before expanding
-the literature review.
--->
-
+For the CRS data, the Bayesian analysis is therefore used as a decision-support and uncertainty-quantification tool rather than as a replacement rule that mechanically determines funding. The main questions are whether the broad ordering produced by the original procedure persists after accounting for reviewer-associated scoring tendencies, how uncertain the resulting ranks are, and whether apparently different exact ranks correspond to meaningful posterior evidence.
 
 ## Research questions
 
@@ -240,14 +193,9 @@ identifiability require additional references.
 
 ## Reconstruction of the original procedure
 
-The original CRS qualification rule required a proposal to receive
-at least one overall grade of 5 and no overall grade below 4. With
-exactly two reviews per proposal, the qualifying combinations were
-therefore (5,5), (5,4), and (4,5).
+According to the published CRS Seed Grant results [@crs2026seedgrants], funding was available for proposals that received the highest overall grade from at least one reviewer and no grade below the second-highest category. Since the overall grade was scored on a scale from 1 to 5, this means that a proposal qualified if it received at least one grade of 5 and its second grade was at least 4. With exactly two reviews per proposal, the qualifying score combinations were therefore (5,5), (5,4), and (4,5). Equivalently, a proposal qualified if its mean overall grade was at least 4.5.
 
-Four of the 42 proposals met this rule. The procedure constituted
-a score-based qualification threshold rather than a fixed ranking
-in which exactly four proposals had to be selected.
+This procedure should be interpreted as a score-based qualification threshold rather than as a fixed top-four selection rule. Four proposals happened to satisfy the threshold in the 2026 evaluation round. Since the call indicated that approximately six projects could be funded, the available funding capacity was not binding and no additional prioritization among qualified proposals was required.
 
 
 ## Reviewer scoring patterns and agreement
@@ -333,369 +281,412 @@ stronger interpretation.
 
 ## Related work
 
-<!-- TODO:
-Develop a focused literature review around the methods and problems that
-are actually used in the project.
+This project is primarily based on the Bayesian grant-ranking framework of Heyard et al. [@heyard2022]. Their model represents observed proposal scores through latent proposal effects and assessor-related effects, and derives posterior rank distributions and expected ranks from the proposal effects. The method was developed to support decisions when proposals near a funding line are difficult to distinguish.
 
-CORE LITERATURE TO INVESTIGATE:
-- Heyard et al. (2022):
-  primary Bayesian-ranking reference.
-- Kaplan et al. (2008):
-  reviewer number and precision.
-- Graves et al. (2011):
-  uncertainty and instability in grant peer review.
-- Jayasinghe, Marsh and Bond (2003):
-  cross-classified modelling of grant peer-review data.
-- Walker / Alvin thesis:
-  useful secondary orientation to scoring and ranking models.
+A complementary literature emphasizes the limited precision of grant review when only a small number of assessments are available. Kaplan et al. relate the number of reviewers to the precision of an estimated proposal score and show that increasingly fine distinctions require rapidly increasing numbers of reviewers [@kaplan2008]. Graves et al. study the downstream consequence for funding decisions and find substantial rank and funding instability under reviewer-score variability [@graves2011]. Together, these papers motivate treating rank uncertainty as a substantive feature of the evaluation rather than only a computational detail.
 
-POSSIBLE FURTHER SOURCES TO INVESTIGATE:
-- papers referenced by Heyard on empirical-Bayes ranking;
-- grant-review reliability literature;
-- papers on uncertainty around funding lines;
-- literature needed later for graph-based review design.
+The cross-classified structure of grant-review data is addressed directly by Jayasinghe, Marsh and Bond [@jayasinghe2003]. In their Australian Research Council data, some assessors evaluated more than one proposal while each proposal was evaluated by several assessors, so assessors and proposals could not be represented as a simple nested hierarchy. They therefore fitted random-intercept cross-classified models with separate assessor and proposal variance components. Their methodological argument is directly relevant to the CRS setting: ratings from the same reviewer across different proposals and ratings from different reviewers of the same proposal are not generally independent. The CRS model is simpler than theirs because no field-of-study level or assessor/researcher covariates are available, and it is Bayesian rather than fitted by iterative generalized least squares, but the basic proposal--reviewer crossing is the same.
 
-Keep this section focused rather than producing a general review of all
-Bayesian ranking methods.
--->
+Erosheva et al. likewise emphasize the multilevel structure of grant review and model dependencies induced by applications and reviewers [@erosheva2020]. Together with Jayasinghe et al. and Heyard et al., this provides the methodological basis for including both proposal and reviewer effects in the CRS-specific model.
 
+Finally, the four supporting criteria are treated separately from the Bayesian ranking model. Previous NIH analyses show that criterion scores can be strongly related to holistic overall-impact scores, while different criteria need not contribute equally [@eblen2016; @erosheva2020]. This motivated the descriptive comparison of the CRS criteria with the holistic overall grade presented in Sections 2.5 and 2.6.
 
 ## V0: Heyard reference model
 
-<!-- TODO:
-Present and explain the Heyard reference specification used as V0.
+The first fitted model, denoted V0, reproduces the continuous homogeneous-variance specification of Heyard et al. as the methodological reference model [@heyard2022]. Let $r=1,\ldots,84$ index completed reviews, let $p(r)$ denote the proposal reviewed in record $r$, and let $a(r)$ denote the reviewer. The observed holistic overall grade is $Y_r$, and $\bar{Y}$ denotes the observed mean overall grade across all reviews.
 
-Investigate:
-- the interpretation of its different latent effects;
-- how assessor-specific scoring behaviour enters the model;
-- how proposal effects are converted into posterior rankings;
-- the role and interpretation of the priors.
+The model used in the analysis is
 
-LITERATURE TO INVESTIGATE:
-- Heyard et al. (2022), methodology section:
-  primary source for the model specification and expected-rank approach.
-- Walker / Alvin thesis:
-  useful secondary explanation of the Heyard model and latent proposal
-  quality, where helpful for understanding notation.
+$$
+Y_r \mid \theta,\lambda
+\sim
+\mathcal{N}\!\left(
+\bar{Y}+\theta_{p(r)}+\lambda_{p(r),a(r)},\,\sigma^2
+\right),
+$$
 
-Use Heyard as the primary methodological citation.
--->
+with proposal effects
 
+$$
+\theta_i \sim \mathcal{N}(0,\tau_\theta^2),
+$$
+
+and proposal-reviewer assessment effects
+
+$$
+\lambda_{ij}\sim\mathcal{N}(\nu_j,\tau_\lambda^2),
+\qquad
+\nu_j\sim\mathcal{N}(0,0.5^2).
+$$
+
+Here $\theta_i$ is the latent proposal effect used for ranking. The parameter $\nu_j$ represents the persistent scoring tendency of reviewer $j$, whereas $\lambda_{ij}-\nu_j$ permits an additional assessment-specific deviation for reviewer $j$ on proposal $i$. The residual term, with standard deviation $\sigma$, captures variation not explained by these latent components. This is the same basic interpretation given by Heyard et al., where assessor-specific means allow for systematically stricter or more generous scoring habits [@heyard2022].
+
+The JAGS implementation assigns
+
+$$
+\sigma,\tau_\theta,\tau_\lambda
+\sim \operatorname{Uniform}(0,2),
+$$
+
+with the lower endpoint implemented numerically as $10^{-6}$. V0 is retained as a reference rather than assumed to be the best representation of the CRS data. In this dataset, every observed proposal-reviewer combination occurs only once, so the additional assessment-specific latent term is weakly informed at the individual edge level. This motivates comparison with the more parsimonious V1 specification below.
 
 ## V1: CRS cross-classified model
 
-<!-- TODO:
-Explain the CRS-specific V1 model and why it is considered as the
-main model for this dataset.
+The CRS-specific model V1 removes the proposal-reviewer-specific latent assessment term and retains one persistent proposal effect and one persistent reviewer effect. For review $r$,
 
-Questions to investigate:
-- how the cross-classified structure should be described formally;
-- how persistent proposal and reviewer effects are interpreted;
-- what is gained and lost relative to V0;
-- what limitations arise from the sparse and non-random assignment design.
+$$
+Y_r
+\sim
+\mathcal{N}\!\left(
+\bar{Y}+\theta_{p(r)}+b_{a(r)},\,\sigma^2
+\right),
+$$
 
-LITERATURE TO INVESTIGATE:
-- Jayasinghe, Marsh and Bond (2003):
-  primary candidate reference for cross-classified grant-review modelling.
-- Heyard et al. (2022):
-  discussion of cross-classified grant-review work and assessor effects.
-- Erosheva et al. (2020):
-  use of multilevel modelling for dependencies created by applications
-  and reviewers.
-- broader cross-classified mixed-model literature if needed for the
-  statistical explanation.
+where
 
-LITERATURE GAP:
-Obtain and read the primary Jayasinghe et al. paper before using it as
-direct support for V1.
--->
+$$
+\theta_i\sim\mathcal{N}(0,\tau_\theta^2),
+\qquad
+b_j\sim\mathcal{N}(0,\tau_b^2).
+$$
 
+Equivalently,
+
+$$
+Y_r=\bar{Y}+\theta_{p(r)}+b_{a(r)}+\varepsilon_r,
+\qquad
+\varepsilon_r\sim\mathcal{N}(0,\sigma^2).
+$$
+
+The proposal effect $\theta_i$ remains the latent quantity used for ranking. The reviewer effect $b_j$ is shared across every proposal assessed by reviewer $j$ and represents a reviewer-associated scoring tendency. It should not be interpreted as a causal measure of reviewer bias: reviewer assignments were based on expertise and availability rather than random allocation, so estimated reviewer differences can also reflect differences in the proposals assigned to each reviewer.
+
+V1 is cross-classified because each review is associated with both a proposal and a reviewer. Reviewers assess multiple proposals, while each proposal is assessed by multiple reviewers, so neither grouping is nested within the other. Jayasinghe et al. describe exactly this structural issue for grant peer review: when some assessors review multiple proposals and proposals receive ratings from multiple assessors, assessor and proposal effects are crossed rather than nested, and ignoring those dependencies can lead to model misspecification [@jayasinghe2003]. Their random-intercept formulation contains separate assessor and proposal components, closely paralleling the two crossed random effects in V1. The CRS model omits their additional field-of-study level and observed assessor/researcher covariates because these are not available in the anonymized CRS dataset.
+
+The crossing is highly incomplete in the CRS data. There are $42\times9=378$ possible proposal-reviewer combinations, but only 84 observed reviews. Unequal reviewer workloads are not in themselves incompatible with a cross-classified multilevel model; Jayasinghe et al. explicitly note that such models can accommodate unbalanced review counts [@jayasinghe2003]. The more important limitation for interpretation is that the CRS assignments were not randomized.
+
+As in V0, the scale parameters use
+
+$$
+\sigma,\tau_\theta,\tau_b
+\sim \operatorname{Uniform}(0,2).
+$$
+
+V1 is treated as the provisional main model because it represents the recurring proposal and reviewer structure directly while avoiding a separate latent effect for every one-off proposal-reviewer assessment. Its adequacy is not assumed from parsimony alone; Chapter 5 therefore assesses its variance structure, posterior predictive behaviour and prior sensitivity before it is used as the basis for the review-design extension.
+
+<!-- TODO: After completing the V1 validation and prior-sensitivity analysis in Chapter 5, revisit all wording that refers to V1 as the "provisional main model". If validation supports V1, update the wording to reflect that it is the main model used for subsequent analyses. If important inadequacies or strong prior sensitivity are found, revise Chapters 3–6 accordingly and document any replacement or sensitivity model. -->
 
 ## Partial pooling and variance components
 
-<!-- TODO:
-Investigate the role of partial pooling and variance decomposition in
-the sparse CRS evaluation design.
+Both V0 and V1 are hierarchical models and therefore use partial pooling. In V1, a proposal's latent effect is not estimated from its two observed reviews alone. Instead, the estimate also reflects the amount of variation between proposals observed across the full dataset. The prior $\theta_i\sim\mathcal{N}(0,\tau_\theta^2)$ therefore pulls proposal effects toward the overall proposal mean, with the strength of this shrinkage depending on the estimated between-proposal variance $\tau_\theta^2$. The same principle applies to reviewer effects through $b_j\sim\mathcal{N}(0,\tau_b^2)$, so estimates of reviewer-specific scoring tendencies are informed both by the reviews assigned to that reviewer and by the overall amount of variation between reviewers.
 
-Questions to investigate:
-- how information is shared across proposals and reviewers;
-- how proposal-, reviewer- and residual-level variation can be interpreted;
-- how sparse observations affect uncertainty in random effects;
-- whether ICC-type summaries are informative for this design.
+For V1, the marginal variance of an observed overall grade under the model is
 
-LITERATURE TO INVESTIGATE:
-- Heyard et al. (2022):
-  hierarchical structure and reported reliability / ICC quantities.
-- Jayasinghe et al. (2003):
-  variance components in cross-classified grant-review data.
-- general multilevel-model literature if a formal explanation of ICC or
-  partial pooling requires a more standard methodological source.
--->
+$$
+\operatorname{Var}(Y_r)
+=
+\tau_\theta^2+\tau_b^2+\sigma^2.
+$$
 
+The three components correspond respectively to between-proposal variation, between-reviewer variation in scoring tendency, and remaining review-level variation.
 
-## Priors, assumptions and identifiability
+Jayasinghe et al. define the intraproposal correlation in a cross-classified grant-review model as the correlation between two ratings of the same proposal by different assessors [@jayasinghe2003]. In V1 there is no additional field-of-study effect, so the corresponding proposal-level intraclass correlation is
 
-<!-- TODO:
-Investigate which modelling assumptions materially affect interpretation.
+$$
+\rho_{\mathrm{proposal}}
+=
+\frac{\tau_\theta^2}
+{\tau_\theta^2+\tau_b^2+\sigma^2}.
+$$
 
-Themes:
-- prior specification;
-- amount of information in a small dataset;
-- sparse reviewer-proposal assignment;
-- unequal workloads;
-- expertise-based assignment;
-- distinction between reviewer-associated effects and reviewer bias;
-- identifiability of proposal and reviewer effects.
+This quantity is also the model-implied correlation between two V1 ratings of the same proposal made by different reviewers. By the same covariance argument, two ratings made by the same reviewer for different proposals have model-implied correlation
 
-LITERATURE TO INVESTIGATE:
-- Heyard et al. (2022):
-  prior choices, model assumptions and limitations.
-- Jayasinghe et al. (2003):
-  cross-classified reviewer/proposal structure.
-- standard Bayesian hierarchical-model references where necessary.
-- literature on incomplete or connected reviewer-item designs if this
-  becomes important for identifiability.
+$$
+\rho_{\mathrm{reviewer}}
+=
+\frac{\tau_b^2}
+{\tau_\theta^2+\tau_b^2+\sigma^2}.
+$$
 
-LITERATURE GAP:
-Investigate formal results connecting assignment connectivity with
-estimability/identifiability before making strong graph-based statements.
--->
+The second quantity is useful as a reviewer-clustering summary, but it is not the same object as the intraproposal reliability measure emphasized by Jayasinghe et al. Chapter 5 therefore reports the posterior distributions of both variance shares while keeping their interpretations distinct. This is particularly relevant in the CRS setting because each proposal has only two reviews whereas every reviewer contributes repeated ratings.
 
+## Priors, assumptions and interpretation
+
+The two fitted models share several assumptions. First, conditional on their latent effects, overall grades are modelled with a common Gaussian residual variance. Second, proposal effects are exchangeable around zero. V1 additionally treats reviewer effects as exchangeable around zero. Third, $\bar{Y}$ is fixed at the observed overall mean rather than estimated as an additional intercept in the JAGS models.
+
+The scale priors are bounded uniform distributions on $(0,2)$, matching the reference implementation used for V0 and retained in V1 to make the model comparison interpretable. V0 additionally uses $\nu_j\sim\mathcal{N}(0,0.5^2)$ for reviewer-specific mean tendencies. Because the dataset is small and the variance components govern the degree of partial pooling, the dependence of the V1 results on these scale priors is examined explicitly in the sensitivity analysis in Chapter 5.
+
+The non-random assignment mechanism described in Sections 2.2 and 3.3 limits the interpretation of the reviewer effects. Cross-classified multilevel modelling can accommodate repeated reviewers and unequal review counts [@jayasinghe2003], but it does not remove the confounding between reviewer-associated scoring tendencies and differences in the proposals assigned to them. The reviewer effects are therefore interpreted as descriptive reviewer-associated tendencies rather than causal measures of reviewer bias.
+
+The consequences of the incomplete proposal--reviewer assignment structure for estimability and statistical information are considered more formally in the graph-based analysis in Chapter 6.
+
+<!-- TODO: After completing Chapter 6, revisit the final sentence and make the connection to the graph-based analysis more specific. -->
 
 ## Treatment of the 1–5 score scale
 
-<!-- TODO:
-Investigate the consequences of treating the bounded ordinal grades
-as approximately continuous.
+The holistic CRS overall grade is an ordered integer score from 1 to 5, but V0 and V1 treat it as approximately continuous and Gaussian. This implies that adjacent score categories are treated as equally spaced and that the latent Gaussian sampling distribution is not itself bounded to the interval $[1,5]$.
 
-Questions:
-- why may a Gaussian approximation be reasonable or useful?
-- what assumptions does it imply?
-- where might it fail?
-- how should this limitation be assessed empirically?
+This choice follows the continuous reference formulation of Heyard et al., who considered both continuous and ordinal Bayesian ranking models for bounded grant scores [@heyard2022]. In their simulation study, the simple normal-outcome model with homogeneous residual variance performed competitively despite its simpler specification, although the suitability of that approximation is context dependent.
 
-LITERATURE TO INVESTIGATE:
-- Heyard et al. (2022):
-  comparison/discussion of continuous and ordinal formulations.
-- general literature on ordinal versus Gaussian treatment if more support
-  is required.
+For the CRS data, the Gaussian formulation is retained initially because it gives a transparent model for proposal and reviewer effects and supports the later linear-algebraic review-design analysis. The approximation is nevertheless testable. The posterior predictive assessment in Chapter 5 will examine the replicated score distribution, including the frequency with which the Gaussian model generates values below 1 or above 5. A full ordinal model is therefore not introduced solely because the observed scale is ordinal; it remains a possible extension if the validation results indicate that the continuous approximation is inadequate.
 
-Do not introduce a full ordinal model solely because the scores are ordinal
-unless the validation results or literature indicate that it is necessary.
--->
-
+<!-- TODO: After completing Chaoter 5 and 6 the last paragraph may need to be adjusted to what we have really done not just planned... -->
 
 ## Posterior ranking quantities
 
-<!-- TODO:
-Investigate the ranking quantities that are most informative for the
-final analysis.
+The ranking is based on the posterior distribution of the proposal effects $\theta_1,\ldots,\theta_{42}$ rather than directly on the observed score averages. For posterior draw $s$, the rank of proposal $i$ is
 
-Possible concepts to study:
-- posterior proposal effects;
-- rank distributions;
-- expected rank;
-- uncertainty intervals for ranks;
-- pairwise proposal probabilities;
-- uncertainty about belonging to a decision-relevant set.
+$$
+R_i^{(s)}
+=
+1+\sum_{k\neq i}
+\mathbb{1}_{\{\theta_k^{(s)}>\theta_i^{(s)}\}},
+$$
 
-LITERATURE TO INVESTIGATE:
-- Heyard et al. (2022):
-  expected ranks, credible intervals and proposals of similar quality.
-- empirical-Bayes ranking literature referenced by Heyard if useful.
-- Walker / Alvin thesis:
-  distinction between latent quality and final ordering.
+where $\mathbb{1}_{\{\cdot\}}$ denotes the indicator function, equal to 1 when the condition in the subscript is satisfied and 0 otherwise. The sum therefore counts how many other proposals have a larger latent proposal effect than proposal $i$ in posterior draw $s$. Consequently, rank 1 corresponds to the proposal with the largest proposal effect. The posterior mean of this rank distribution is the expected rank,
 
-Clarify which quantities answer the research questions rather than
-including every possible ranking summary.
--->
+$$
+ER_i
+=
+\operatorname{E}\!\left[R_i\mid Y\right].
+$$
 
+Using the definition of $R_i$, this can equivalently be written as
+
+$$
+ER_i
+=
+1+\sum_{k\neq i}
+\mathbb{P}(\theta_k>\theta_i\mid Y).
+$$
+
+Thus, the expected rank of proposal $i$ can be interpreted as 1 plus the sum of the posterior probabilities that each competing proposal has a larger latent proposal effect. In practice, $ER_i$ is estimated from the MCMC output by computing $R_i^{(s)}$ for each posterior draw $s$ and averaging these sampled ranks,
+
+$$
+ER_i
+\approx
+\frac{1}{S}\sum_{s=1}^{S}R_i^{(s)},
+$$
+
+where $S$ denotes the number of posterior draws used for the calculation.
+
+Expected rank is the central ranking quantity in Heyard et al. because it incorporates both the estimated differences between proposal effects and the uncertainty in their relative ordering [@heyard2022]. With 42 proposals, the midpoint of the rank scale is $(42+1)/2=21.5$. When the posterior ordering of a proposal is highly uncertain, its expected rank can therefore move substantially away from its point rank and toward the middle of the rank scale.
+
+The analysis reports three related but distinct ranking summaries. The raw-score rank orders proposals using their average overall grade across the two reviews. The posterior-mean rank orders proposals according to the posterior means of their latent effects $\theta_i$. The expected rank, by contrast, averages each proposal's rank over the full posterior distribution and therefore accounts directly for uncertainty in the relative ordering. Posterior quantiles of $R_i$ are additionally used to construct rank-uncertainty intervals.
+
+Pairwise posterior probabilities such as
+
+$$
+\mathbb{P}(\theta_i>\theta_k\mid Y)
+$$
+
+provide a more direct comparison between two particular proposals. They are especially useful when different models produce different exact ranks even though the posterior evidence separating the two proposals is weak. This becomes particularly relevant in the V0--V1 comparison.
 
 ## Posterior computation and diagnostics
 
-<!-- TODO:
-Describe only the computational concepts needed to establish that the
-posterior calculations are trustworthy.
+Both models were fitted in JAGS from R. The V0 workflow uses the `ERforResearch` implementation with the explicit V0 JAGS model, while V1 uses a custom JAGS specification with one reviewer effect per reviewer. Each final fit used four chains, 10,000 adaptation iterations, 10,000 burn-in iterations and 50,000 sampling iterations per chain. The random seed was fixed at 20260727 for reproducibility.
 
-Investigate:
-- appropriate MCMC convergence diagnostics;
-- effective sample size;
-- how much implementation detail belongs in the main report versus appendix.
+The fitting scripts first validate the anonymized data structure and reconstruct the original CRS qualification indicator. They then save the fitted MCMC object and a parameter-summary CSV. Expected ranks and posterior-mean ranks are computed from the fitted posterior and saved separately. The comparison script does not refit either model: it reads the saved V0 and V1 fits and ranking tables, extracts posterior rank draws, computes rank-uncertainty summaries and pairwise probabilities, and writes the model-comparison tables.
 
-LITERATURE TO INVESTIGATE:
-- standard Bayesian / MCMC references where methodological claims require
-  support.
-- Gelman et al., Bayesian Data Analysis, referenced by Heyard, as a possible
-  general source.
-
-Avoid turning this into a general introduction to MCMC.
--->
-
+Computational convergence is assessed using the potential scale reduction factor (PSRF) and effective sample size (ESS) reported by the saved fits. These diagnostics establish whether the MCMC computation appears stable; they do not by themselves establish that the statistical model is adequate for the data. Posterior predictive checks and prior sensitivity are therefore treated separately in Chapter 5.
 
 # Bayesian ranking results
 
 ## V0 results
 
-<!-- TODO:
-Present the V0 results needed to establish the reference analysis.
+The V0 reference model produced a clear point ordering at the top of the posterior-mean ranking. Proposal P022, whose two overall grades average to 5.0, had posterior-mean rank 1 and expected rank 11.85. The three proposals with an average overall grade of 4.5 occupied the next three posterior-mean positions: P023 had rank 2 and expected rank 15.45, P032 rank 3 and expected rank 15.49, and P041 rank 4 and expected rank 16.50. These are exactly the four proposals that satisfied the original CRS qualification rule.
 
-When writing, connect interpretation back to the Heyard model rather
-than presenting output tables without context.
--->
+The difference between posterior-mean rank and expected rank is already informative. Although P022 is first when proposals are ordered by posterior mean $\theta_i$, its expected rank is 11.85 rather than close to 1. The corresponding 90% posterior rank interval extends from rank 1 to rank 35. The three other originally qualified proposals have 90% intervals of 1--37 for P023, 1--37 for P032, and 2--38 for P041. Thus, the fitted model preserves a clear point ordering while simultaneously indicating that the data provide little precision about the exact ranks.
 
+The MCMC diagnostics did not indicate a computational convergence problem. Across the monitored V0 parameters, the maximum PSRF was 1.0077 and the minimum effective sample size was 501. The weakest ESS occurred for $\tau_\lambda$ (stored as `tau_assessor`). These diagnostics support using the posterior draws for comparison, while the breadth of the rank distributions remains a substantive feature of the inference rather than an obvious MCMC failure.
 
 ## V1 results
 
-<!-- TODO:
-Present the main V1 results and investigate which posterior quantities
-are most useful for interpreting proposal and reviewer effects.
+The more parsimonious V1 model produced a very similar upper ordering. P022 remained at posterior-mean rank 1, with expected rank 13.08. P032 moved to posterior-mean rank 2 with expected rank 15.87, P023 moved to rank 3 with expected rank 15.87, and P041 remained rank 4 with expected rank 16.22. Again, the four proposals occupying the first four posterior-mean positions are exactly those that satisfied the original CRS qualification threshold.
 
-Keep the distinction between reviewer-associated scoring tendency and
-causal reviewer bias explicit.
--->
+Rank uncertainty remained large. The 90% posterior rank interval for P022 was 1--36; for P023 and P032 it was 1--37; and for P041 it was 1--38. The posterior-mean ordering should therefore not be read as evidence that these proposals are separated with comparable certainty to their integer rank labels. This distinction is central for interpreting V1 as an uncertainty-aware model rather than simply another deterministic ranking rule.
 
+The relationship between the three ranking summaries is illustrated in @fig-v1-ranking-comparison. In the figure, `Fixed` denotes the ranking obtained directly from the observed two-review average for each proposal, `Posterior Mean` denotes the ranking obtained by ordering proposals according to the posterior means of their latent effects $\theta_i$, and `ER` denotes the posterior expected rank obtained by averaging each proposal's rank across posterior draws. In all three cases, smaller rank values indicate better positions, with rank 1 corresponding to the highest-ranked proposal.
+
+![Proposal rankings under the observed-score ranking, posterior-mean ranking and posterior expected rank for the V1 cross-classified model. The movement of expected ranks toward the centre of the rank scale reflects substantial posterior uncertainty in the exact proposal ordering.](figures/model_comparison/ranking_comparison_V1.png){#fig-v1-ranking-comparison width=100%}
+
+V1 also showed favourable MCMC diagnostics. Its maximum PSRF was 1.0017 and its minimum effective sample size was 1,627, both associated with $\tau_\theta$ (stored as `tau_proposal`). All nine reviewer-effect 95% posterior intervals include zero in the saved V1 summary. This does not imply that reviewer variation is absent; it means that the dataset does not provide strong proposal-adjusted evidence for any single reviewer having a non-zero persistent effect. Reviewer effects are therefore described as reviewer-associated scoring tendencies and are examined further through the variance decomposition in Chapter 5.
 
 ## Comparison with the original CRS procedure
 
-<!-- TODO:
-Investigate what the Bayesian analysis adds relative to:
-- raw overall-grade summaries;
-- the original CRS qualification rule.
+The original CRS rule and the Bayesian models answer related but different questions. The CRS procedure applies the score-based qualification threshold described in Section 2.3 and does not require a complete ordering of all 42 proposals. By contrast, V0 and V1 estimate latent proposal effects for every proposal and quantify uncertainty in their relative ranks.
 
-Possible themes:
-- changes in ordering;
-- uncertainty hidden by deterministic ranks;
-- overlap between apparently neighbouring proposals;
-- relationship between qualification status and posterior ranking.
+At the top of the point ranking, the methods agree strongly. P022, P023, P032 and P041 are the four proposals that qualified under the original rule, and the same four occupy the first four posterior-mean ranks under both V0 and V1. The Bayesian analysis therefore does not reveal a wholesale reversal of the original outcome. Instead, its main added information is about how uncertain the apparent ordering is.
 
-LITERATURE TO INVESTIGATE:
-- Heyard et al. (2022):
-  Bayesian ranking as decision support rather than purely deterministic
-  ranking.
-- Graves et al. (2011):
-  uncertainty in funding-relevant ranking decisions.
--->
+That distinction matters because deterministic score summaries can conceal instability when proposals are difficult to separate. Graves et al. show that reviewer-score variability can translate into substantial rank and funding instability [@graves2011], while Heyard et al. use posterior rank uncertainty specifically to identify proposals whose quality is difficult to distinguish [@heyard2022]. In the CRS data, the broad posterior rank intervals show that agreement about which proposals look strongest from the observed scores should not be confused with precise knowledge of their latent ranks.
 
+The Bayesian analysis is therefore interpreted as complementary to the CRS qualification rule. It provides a probabilistic description of relative proposal quality and reviewer-associated variation; it does not retrospectively redefine the original threshold as a fixed top-four funding line.
 
 ## Comparison of V0 and V1
 
-<!-- TODO:
-Interpret the direct comparison between V0 and V1.
+The direct comparison shows that simplifying V0 to the cross-classified V1 model changes little about the substantive ranking. The Spearman correlation between the two posterior-mean rankings is 0.9951, and the Pearson correlation between expected ranks is 0.9916. Twenty-six of the 42 proposals change their exact posterior-mean rank, but the changes are small: the mean absolute change is 0.86 positions and the maximum is 3 positions. Thus, counting the number of proposals whose integer rank changes would substantially overstate the practical difference between the models.
 
-Questions to investigate:
-- how materially do the rankings differ?
-- how similar is the uncertainty?
-- what do pairwise comparisons reveal that exact ranks do not?
-- does the simpler model preserve the substantive conclusions?
+The close agreement in expected ranks is also visible in @fig-expected-rank-v0-v1, where most proposals lie close to the identity line.
 
-Use the P023/P032 example if it remains informative in the final narrative.
+![Posterior expected ranks under the V0 Heyard reference model and the V1 cross-classified model. The dashed identity line represents identical expected ranks under both models. The close concentration around this line shows that simplifying V0 to V1 has little effect on the overall expected-rank ordering.](figures/model_comparison/expected_rank_v0_vs_v1.png){#fig-expected-rank-v0-v1 width=90%}
 
-LITERATURE TO INVESTIGATE:
-- Heyard et al. (2022) for interpretation of rank uncertainty.
-- broader ranking-uncertainty literature only if needed to explain why
-  exact numerical ranks can be misleading.
--->
+Although the two models therefore produce very similar rankings overall, small changes in exact integer ranks can still occur when two proposals are nearly indistinguishable. The P023--P032 comparison provides a clear example. Under V0, P023 has posterior-mean rank 2 and P032 rank 3; under V1, this ordering reverses. Yet the posterior pairwise probability is
 
+$$
+\mathbb{P}(\theta_{032}>\theta_{023}\mid Y)=0.498955
+$$
+
+under V0 and
+
+$$
+\mathbb{P}(\theta_{032}>\theta_{023}\mid Y)=0.500470
+$$
+
+under V1. Both probabilities are essentially one half. The rank swap therefore reflects an almost exact posterior tie rather than meaningful evidence that one model identifies a different second-best proposal. This is a concrete example of why an exact integer rank can appear more decisive than the posterior comparison that produced it.
+
+Most importantly, V1 does not materially reduce rank uncertainty. The mean width of the 90% posterior rank interval is 36.50 positions under V0 and 36.74 under V1; the median width is 37 under both models. The large uncertainty therefore survives removal of V0's proposal-reviewer-specific assessment layer. V1 has somewhat more favourable computational diagnostics and a simpler interpretation, while preserving essentially the same ranking conclusions.
+
+This comparison supports using V1 as the provisional main model, but it does not by itself establish why rank uncertainty is so large. The sparse design--especially the fact that each proposal has only two reviews--is a plausible major source, consistent with the broader precision problem discussed by Kaplan et al. [@kaplan2008], but that explanation is investigated rather than assumed. The next step is therefore to validate V1 before using its posterior covariance structure in the review-design analysis.
 
 # Validation and sensitivity analysis of V1
 
 ## Motivation
 
-<!-- TODO:
-Motivate why V1 requires assessment beyond computational convergence
-before it is used as the main inferential model and as the basis of the
-review-design extension.
+The close agreement between V0 and V1 shows that the simpler V1 specification preserves the main ranking conclusions, but this comparison alone does not establish that V1 is an adequate working model for the CRS data. The validation therefore focuses on a small number of checks that address different aspects of the model: computational behaviour, the estimated variance structure, posterior predictive adequacy, and sensitivity to the prior specification.
 
-LITERATURE TO INVESTIGATE:
-- general Bayesian model-checking literature;
-- Heyard et al. (2022) for model choices and limitations;
-- standard references on hierarchical-model validation if needed.
--->
+The aim is not to establish V1 as the true data-generating mechanism. Rather, the objective is to determine whether its main inferential conclusions are sufficiently stable and whether it reproduces important features of the observed grades well enough to justify its use in the subsequent analyses. This is particularly relevant because the graph-based review-design extension later uses the covariance structure implied by V1.
 
+## Computational diagnostics
 
-## Variance decomposition and intraclass correlation
+Computational convergence was already summarized alongside the V1 ranking results in Chapter 4. The final V1 fit had a maximum PSRF of 1.0017 and a minimum effective sample size of 1,627, with the smallest ESS occurring for $\tau_\theta$. These values do not indicate an important convergence problem.
+
+<!-- Depending on plot results: Rather than repeating the numerical diagnostics in detail, this section supplements them with trace plots for the three V1 scale parameters $\tau_\theta$, $\tau_b$, and $\sigma$. These plots provide a visual check that the four MCMC chains explore the same posterior region without persistent trends or obvious chain separation. -->
 
 <!-- TODO:
-Investigate whether variance decomposition and ICC-type summaries help
-describe the information structure of V1.
+Add one compact figure containing trace plots for:
+- tau_theta;
+- tau_b;
+- sigma.
 
-Questions to investigate:
-- how much variation is associated with proposals, reviewers and remaining
-  review-level variation?
-- what does an ICC mean in this particular cross-classified setting?
-- how uncertain are these variance shares?
-- how should they be interpreted in relation to ranking uncertainty?
-
-LITERATURE TO INVESTIGATE:
-- Heyard et al. (2022):
-  use and interpretation of ICC/reliability quantities in grant evaluation.
-- Jayasinghe et al. (2003):
-  cross-classified variance components in grant peer review.
-- standard multilevel-model literature for the precise definition and
-  interpretation of ICC in cross-classified models.
-
-Do not settle on a particular ICC definition until its interpretation for
-V1 has been checked carefully.
+Keep the written discussion very short unless a plot reveals a problem.
+Do not repeat the full MCMC setup already described in Chapter 3 or the
+diagnostic results already reported in Chapter 4.
 -->
 
+## Variance decomposition and intraproposal correlation
+
+The variance decomposition defined in Section 3.4 is evaluated from the posterior draws of $\tau_\theta$, $\tau_b$, and $\sigma$. The objective is to determine how the model distributes variation between proposal effects, reviewer-associated scoring tendencies, and remaining review-level variation.
+
+The proposal variance share is interpreted as the model-implied intraproposal correlation introduced in Section 3.4, following the cross-classified reliability interpretation of Jayasinghe et al. [@jayasinghe2003]. The reviewer variance share is reported separately as a reviewer-clustering quantity rather than as a proposal-reliability measure.
+
+<!-- TODO:
+For every posterior draw calculate:
+- proposal variance share;
+- reviewer variance share;
+- residual variance share.
+
+Report posterior summaries and uncertainty intervals.
+
+Prefer one compact interval plot showing the posterior distributions or
+posterior means/medians with credible intervals for the three variance shares.
+
+Do not derive the ICC formulas again here; they are already defined in
+Section 3.4.
+
+Interpret the variance decomposition as a description of V1's estimated
+information structure. It is not, by itself, a goodness-of-fit test.
+-->
 
 ## Posterior predictive assessment
 
+Posterior predictive checks are used to assess whether data generated from the fitted V1 model resemble important features of the observed CRS grades. For posterior draw $s$, replicated grades are generated from the fitted sampling model using the corresponding posterior parameter values. The resulting replicated datasets are then compared with the observed data.
+
+The checks focus on features that are directly relevant to the assumptions and use of V1: the overall location and dispersion of the grades, disagreement between the two reviews of the same proposal, and the extent to which the Gaussian model generates values outside the observed 1--5 scale.
+
 <!-- TODO:
-Investigate whether V1 can reproduce features of the observed evaluation data
-that matter for the project.
+Generate posterior predictive replicated datasets Y_rep.
 
-Questions to investigate:
-- which observed summaries are most relevant for checking the model?
-- does the Gaussian specification capture important aspects of score behaviour?
-- does the bounded 1–5 scale reveal limitations?
-- does the model represent reviewer disagreement adequately?
+Use a small set of checks:
+1. observed versus replicated overall mean;
+2. observed versus replicated standard deviation;
+3. observed versus replicated within-proposal reviewer disagreement;
+4. posterior distribution of the proportion of replicated grades below 1
+   or above 5.
 
-LITERATURE TO INVESTIGATE:
-- standard literature on posterior predictive checking.
-- Gelman et al., Bayesian Data Analysis, as a possible primary reference.
-- Heyard et al. (2022) for modelling assumptions specific to grant scores.
+Present these primarily graphically rather than through large tables.
 
-The exact posterior predictive checks should be selected because they test
-important assumptions of V1, not simply because they are commonly used.
+If useful, add one simple comparison of the observed score distribution
+with posterior predictive distributions.
+
+Do not add many generic PPC statistics. Each check should correspond to
+an actual assumption or substantive feature of V1.
 -->
 
+<!-- MODEL-FORM DECISION:
+Only if the posterior predictive checks reveal an important failure of the
+Gaussian approximation should an ordinal V1 specification be fitted as an
+additional sensitivity analysis. Otherwise, retain the Gaussian model and
+discuss the bounded/ordinal scale as a limitation.
+-->
 
 ## Prior sensitivity
 
+The baseline V1 specification uses bounded uniform priors on the scale parameters. Because these parameters determine the amount of partial pooling and are estimated from a relatively small dataset, the stability of the main conclusions is assessed under one alternative regularizing prior specification.
+
+The purpose of this analysis is not to search across many possible priors, but to determine whether the substantive ranking and variance conclusions depend strongly on the particular baseline scale priors.
+
 <!-- TODO:
-Investigate whether substantive conclusions depend strongly on the prior
-specification.
+Fit one alternative V1 prior specification.
 
-Questions to investigate:
-- which priors are most influential in this small-data hierarchical model?
-- what alternative prior family would provide a meaningful comparison?
-- which posterior/ranking conclusions should be compared across priors?
+Current candidate:
+half-normal scale priors, for example
 
-LITERATURE TO INVESTIGATE:
-- Heyard et al. (2022):
-  baseline variance priors and discussion of possible alternatives.
-- standard literature on priors for hierarchical variance parameters,
-  if necessary.
+sigma, tau_theta, tau_b ~ half-Normal(0, 1).
 
-Keep the sensitivity analysis focused on whether conclusions are robust,
-rather than surveying a large number of priors.
+Compare baseline and sensitivity fits using:
+- posterior summaries of tau_theta, tau_b and sigma;
+- proposal and reviewer variance shares;
+- expected ranks;
+- correlation of expected ranks;
+- rank-uncertainty widths;
+- selected pairwise probabilities if useful.
+
+Use a baseline-versus-sensitivity expected-rank scatter plot as the main
+ranking comparison.
+
+Do not construct a large prior grid.
 -->
-
 
 ## Validation conclusion
 
 <!-- TODO:
-Summarize what the validation evidence implies about using V1 as the
-main model.
+Write after completing the checks.
 
-Distinguish:
-- computational adequacy;
-- predictive adequacy;
-- sensitivity to prior choices;
-- unavoidable uncertainty caused by the data design.
+Answer Research Question 3 directly.
+
+The conclusion should distinguish:
+- computational convergence;
+- estimated variance structure;
+- posterior predictive adequacy;
+- prior sensitivity.
+
+If all checks are broadly satisfactory:
+state that V1 is an adequate and sufficiently robust working model for the
+subsequent analyses, while retaining the limitations of the sparse,
+non-random review design and the Gaussian treatment of the score scale.
+
+If a minor limitation appears but rankings remain robust:
+retain V1 and state the limitation explicitly.
+
+Only introduce a replacement model if the diagnostics reveal a material
+failure that affects the substantive conclusions.
 -->
 
+<!-- OPTIONAL INFLUENCE CHECK:
+Do not perform leave-one-proposal-out or leave-one-reviewer-out analysis by
+default. If the main diagnostics suggest that the fit may be driven by one
+proposal or reviewer, add a small targeted exclusion analysis as a sensitivity
+check, preferably in an appendix.
+-->
 
 # Graph-based review design
 
@@ -994,6 +985,14 @@ Summarize:
 Do not introduce new literature, methods or results here.
 -->
 
+
+# Additional figures {.appendix}
+
+## V0 ranking comparison
+
+For completeness, @fig-v0-ranking-comparison shows the corresponding comparison for the V0 Heyard reference model. In the figure, `Fixed` denotes the ranking based directly on the observed two-review average, `Posterior Mean` denotes the ranking obtained from the posterior means of the latent proposal effects $\theta_i$, and `ER` denotes the posterior expected rank obtained by averaging proposal ranks across posterior draws. The same general movement of expected ranks toward the middle of the rank scale is visible under V0, consistent with the large posterior rank uncertainty reported in Chapter 4.
+
+![Proposal rankings under the observed-score ranking, posterior-mean ranking and posterior expected rank for the V0 Heyard reference model.](figures/model_comparison/ranking_comparison_V0.png){#fig-v0-ranking-comparison width=100%}
 
 # References {.unnumbered}
 
