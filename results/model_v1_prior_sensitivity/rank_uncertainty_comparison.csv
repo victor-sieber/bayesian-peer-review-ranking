@@ -1,0 +1,85 @@
+"proposal_id","model","expected_rank","q05","q95","interval_width"
+"P001","Baseline Uniform(0,2)",23.85245,4,41,37
+"P002","Baseline Uniform(0,2)",21.359385,3,40,37
+"P003","Baseline Uniform(0,2)",21.2371,3,40,37
+"P004","Baseline Uniform(0,2)",24.187815,4,41,37
+"P005","Baseline Uniform(0,2)",31.03529,8,42,34
+"P006","Baseline Uniform(0,2)",24.13848,4,41,37
+"P007","Baseline Uniform(0,2)",24.28193,4,41,37
+"P008","Baseline Uniform(0,2)",27.09459,6,42,36
+"P009","Baseline Uniform(0,2)",18.576795,2,39,37
+"P010","Baseline Uniform(0,2)",24.188375,4,41,37
+"P011","Baseline Uniform(0,2)",21.59836,3,40,37
+"P012","Baseline Uniform(0,2)",18.90756,2,39,37
+"P013","Baseline Uniform(0,2)",26.48936,5,41,36
+"P014","Baseline Uniform(0,2)",21.349665,3,40,37
+"P015","Baseline Uniform(0,2)",26.63548,5,41,36
+"P016","Baseline Uniform(0,2)",18.734585,2,39,37
+"P017","Baseline Uniform(0,2)",18.94728,2,39,37
+"P018","Baseline Uniform(0,2)",21.45853,3,40,37
+"P019","Baseline Uniform(0,2)",27.237455,6,42,36
+"P020","Baseline Uniform(0,2)",21.2364,3,40,37
+"P021","Baseline Uniform(0,2)",24.200685,4,41,37
+"P022","Baseline Uniform(0,2)",13.079265,1,36,35
+"P023","Baseline Uniform(0,2)",15.87305,1,37,36
+"P024","Baseline Uniform(0,2)",21.2171,3,40,37
+"P025","Baseline Uniform(0,2)",24.11157,4,41,37
+"P026","Baseline Uniform(0,2)",24.68449,4,41,37
+"P027","Baseline Uniform(0,2)",23.59188,4,41,37
+"P028","Baseline Uniform(0,2)",18.38988,2,39,37
+"P029","Baseline Uniform(0,2)",18.49604,2,39,37
+"P030","Baseline Uniform(0,2)",21.147555,3,40,37
+"P031","Baseline Uniform(0,2)",21.526115,3,40,37
+"P032","Baseline Uniform(0,2)",15.870785,1,37,36
+"P033","Baseline Uniform(0,2)",21.81037,3,40,37
+"P034","Baseline Uniform(0,2)",18.48697,2,39,37
+"P035","Baseline Uniform(0,2)",18.83633,2,39,37
+"P036","Baseline Uniform(0,2)",19.071145,2,39,37
+"P037","Baseline Uniform(0,2)",21.35989,3,40,37
+"P038","Baseline Uniform(0,2)",18.720435,2,39,37
+"P039","Baseline Uniform(0,2)",21.03277,3,40,37
+"P040","Baseline Uniform(0,2)",18.433855,2,39,37
+"P041","Baseline Uniform(0,2)",16.21879,1,38,37
+"P042","Baseline Uniform(0,2)",24.294145,4,41,37
+"P001","Half-normal(0,1)",23.777235,4,41,37
+"P002","Half-normal(0,1)",21.37421,3,40,37
+"P003","Half-normal(0,1)",21.262155,3,40,37
+"P004","Half-normal(0,1)",24.05543,4,41,37
+"P005","Half-normal(0,1)",30.80499,8,42,34
+"P006","Half-normal(0,1)",24.132355,4,41,37
+"P007","Half-normal(0,1)",24.189645,4,41,37
+"P008","Half-normal(0,1)",26.92234,5,42,37
+"P009","Half-normal(0,1)",18.671255,2,39,37
+"P010","Half-normal(0,1)",24.075035,4,41,37
+"P011","Half-normal(0,1)",21.596845,3,40,37
+"P012","Half-normal(0,1)",18.97319,2,39,37
+"P013","Half-normal(0,1)",26.294385,5,41,36
+"P014","Half-normal(0,1)",21.34937,3,40,37
+"P015","Half-normal(0,1)",26.377725,5,41,36
+"P016","Half-normal(0,1)",18.815385,2,39,37
+"P017","Half-normal(0,1)",18.998335,2,39,37
+"P018","Half-normal(0,1)",21.48275,3,40,37
+"P019","Half-normal(0,1)",26.981795,5,42,37
+"P020","Half-normal(0,1)",21.23705,3,40,37
+"P021","Half-normal(0,1)",24.154,4,41,37
+"P022","Half-normal(0,1)",13.362645,1,36,35
+"P023","Half-normal(0,1)",16.06335,1,38,37
+"P024","Half-normal(0,1)",21.230675,3,40,37
+"P025","Half-normal(0,1)",24.007585,4,41,37
+"P026","Half-normal(0,1)",24.6124,4,41,37
+"P027","Half-normal(0,1)",23.53374,4,41,37
+"P028","Half-normal(0,1)",18.5255,2,39,37
+"P029","Half-normal(0,1)",18.58169,2,39,37
+"P030","Half-normal(0,1)",21.22056,3,40,37
+"P031","Half-normal(0,1)",21.61409,3,40,37
+"P032","Half-normal(0,1)",16.041695,1,38,37
+"P033","Half-normal(0,1)",21.76245,3,40,37
+"P034","Half-normal(0,1)",18.61275,2,39,37
+"P035","Half-normal(0,1)",18.866075,2,39,37
+"P036","Half-normal(0,1)",19.17532,2,39,37
+"P037","Half-normal(0,1)",21.369375,3,40,37
+"P038","Half-normal(0,1)",18.79668,2,39,37
+"P039","Half-normal(0,1)",21.051,3,40,37
+"P040","Half-normal(0,1)",18.482125,2,39,37
+"P041","Half-normal(0,1)",16.36845,1,38,37
+"P042","Half-normal(0,1)",24.196365,4,41,37

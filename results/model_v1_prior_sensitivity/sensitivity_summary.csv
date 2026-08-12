@@ -1,0 +1,12 @@
+"metric","value"
+"Spearman posterior-mean rank correlation",0.999027631472328
+"Pearson expected-rank correlation",0.999941531218219
+"Proposals changing posterior-mean rank",6
+"Mean absolute posterior-mean rank change",0.19047619047619
+"Maximum absolute posterior-mean rank change",2
+"Mean absolute expected-rank change",0.0932714285714286
+"Maximum absolute expected-rank change",0.283380000000001
+"Mean baseline 90% rank interval width",36.7380952380952
+"Mean half-normal 90% rank interval width",36.8333333333333
+"Median baseline 90% rank interval width",37
+"Median half-normal 90% rank interval width",37

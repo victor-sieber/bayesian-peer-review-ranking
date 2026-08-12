@@ -1,0 +1,62 @@
+# Model V1 prior-sensitivity specification
+#
+# Same cross-classified Gaussian likelihood as baseline V1.
+# The only substantive change is the prior on the three
+# standard-deviation parameters.
+
+model{
+
+  for (i in 1:n) {
+    grade[i] ~ dnorm(mu[i], inv_sigma2)
+
+    mu[i] <- overall_mean +
+             proposal_intercept[num_proposal[i]] +
+             assessor_intercept[num_assessor[i]]
+  }
+
+  rank_theta[1:n_proposal] <- rank(-proposal_intercept[])
+
+  for (j in 1:n_proposal){
+    proposal_intercept[j] ~ dnorm(
+      0,
+      inv_tau_proposal2
+    )
+  }
+
+  for (l in 1:n_assessor){
+    assessor_intercept[l] ~ dnorm(
+      0,
+      inv_tau_assessor2
+    )
+  }
+
+  sigma ~ dnorm(
+    0,
+    1
+  ) T(0.000001,)
+
+  inv_sigma2 <- pow(
+    sigma,
+    -2
+  )
+
+  tau_proposal ~ dnorm(
+    0,
+    1
+  ) T(0.000001,)
+
+  inv_tau_proposal2 <- pow(
+    tau_proposal,
+    -2
+  )
+
+  tau_assessor ~ dnorm(
+    0,
+    1
+  ) T(0.000001,)
+
+  inv_tau_assessor2 <- pow(
+    tau_assessor,
+    -2
+  )
+}
