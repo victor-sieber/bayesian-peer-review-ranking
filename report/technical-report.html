@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Victor Sieber">
+<meta name="dcterms.date" content="2026-08-11">
+
+<title>Bayesian Ranking and Graph-Based Review Design under Sparse Evaluation Data</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="technical-report_files/libs/clipboard/clipboard.min.js"></script>
+<script src="technical-report_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="technical-report_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="technical-report_files/libs/quarto-html/popper.min.js"></script>
+<script src="technical-report_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="technical-report_files/libs/quarto-html/anchor.min.js"></script>
+<link href="technical-report_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="technical-report_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="technical-report_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="technical-report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="technical-report_files/libs/bootstrap/bootstrap-138a6193a3bd40baf1e627da441a4734.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract">Abstract</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a>
+  <ul class="collapse">
+  <li><a href="#grant-evaluation-under-limited-information" id="toc-grant-evaluation-under-limited-information" class="nav-link" data-scroll-target="#grant-evaluation-under-limited-information"><span class="header-section-number">1.1</span> Grant evaluation under limited information</a></li>
+  <li><a href="#crs-seed-grant-evaluation-2026" id="toc-crs-seed-grant-evaluation-2026" class="nav-link" data-scroll-target="#crs-seed-grant-evaluation-2026"><span class="header-section-number">1.2</span> CRS Seed Grant evaluation 2026</a></li>
+  <li><a href="#original-qualification-procedure" id="toc-original-qualification-procedure" class="nav-link" data-scroll-target="#original-qualification-procedure"><span class="header-section-number">1.3</span> Original qualification procedure</a></li>
+  <li><a href="#motivation-for-bayesian-ranking" id="toc-motivation-for-bayesian-ranking" class="nav-link" data-scroll-target="#motivation-for-bayesian-ranking"><span class="header-section-number">1.4</span> Motivation for Bayesian ranking</a></li>
+  <li><a href="#research-questions" id="toc-research-questions" class="nav-link" data-scroll-target="#research-questions"><span class="header-section-number">1.5</span> Research questions</a>
+  <ul class="collapse">
+  <li><a href="#research-question-1" id="toc-research-question-1" class="nav-link" data-scroll-target="#research-question-1"><span class="header-section-number">1.5.1</span> Research Question 1</a></li>
+  <li><a href="#research-question-2" id="toc-research-question-2" class="nav-link" data-scroll-target="#research-question-2"><span class="header-section-number">1.5.2</span> Research Question 2</a></li>
+  <li><a href="#research-question-3" id="toc-research-question-3" class="nav-link" data-scroll-target="#research-question-3"><span class="header-section-number">1.5.3</span> Research Question 3</a></li>
+  <li><a href="#research-question-4" id="toc-research-question-4" class="nav-link" data-scroll-target="#research-question-4"><span class="header-section-number">1.5.4</span> Research Question 4</a></li>
+  <li><a href="#research-question-5" id="toc-research-question-5" class="nav-link" data-scroll-target="#research-question-5"><span class="header-section-number">1.5.5</span> Research Question 5</a></li>
+  </ul></li>
+  <li><a href="#scope-and-intended-contribution" id="toc-scope-and-intended-contribution" class="nav-link" data-scroll-target="#scope-and-intended-contribution"><span class="header-section-number">1.6</span> Scope and intended contribution</a></li>
+  <li><a href="#structure-of-the-report" id="toc-structure-of-the-report" class="nav-link" data-scroll-target="#structure-of-the-report"><span class="header-section-number">1.7</span> Structure of the report</a></li>
+  </ul></li>
+  <li><a href="#evaluation-design-and-descriptive-analysis" id="toc-evaluation-design-and-descriptive-analysis" class="nav-link" data-scroll-target="#evaluation-design-and-descriptive-analysis"><span class="header-section-number">2</span> Evaluation design and descriptive analysis</a>
+  <ul class="collapse">
+  <li><a href="#evaluation-process-and-analytical-data" id="toc-evaluation-process-and-analytical-data" class="nav-link" data-scroll-target="#evaluation-process-and-analytical-data"><span class="header-section-number">2.1</span> Evaluation process and analytical data</a></li>
+  <li><a href="#reviewerproposal-assignment" id="toc-reviewerproposal-assignment" class="nav-link" data-scroll-target="#reviewerproposal-assignment"><span class="header-section-number">2.2</span> Reviewer–proposal assignment</a></li>
+  <li><a href="#reconstruction-of-the-original-procedure" id="toc-reconstruction-of-the-original-procedure" class="nav-link" data-scroll-target="#reconstruction-of-the-original-procedure"><span class="header-section-number">2.3</span> Reconstruction of the original procedure</a></li>
+  <li><a href="#reviewer-scoring-patterns-and-agreement" id="toc-reviewer-scoring-patterns-and-agreement" class="nav-link" data-scroll-target="#reviewer-scoring-patterns-and-agreement"><span class="header-section-number">2.4</span> Reviewer scoring patterns and agreement</a></li>
+  <li><a href="#supporting-criteria-and-holistic-overall-grade" id="toc-supporting-criteria-and-holistic-overall-grade" class="nav-link" data-scroll-target="#supporting-criteria-and-holistic-overall-grade"><span class="header-section-number">2.5</span> Supporting criteria and holistic overall grade</a></li>
+  <li><a href="#proposal-level-criterion-average-versus-overall-grade-average" id="toc-proposal-level-criterion-average-versus-overall-grade-average" class="nav-link" data-scroll-target="#proposal-level-criterion-average-versus-overall-grade-average"><span class="header-section-number">2.6</span> Proposal-level criterion average versus overall-grade average</a></li>
+  </ul></li>
+  <li><a href="#bayesian-ranking-framework" id="toc-bayesian-ranking-framework" class="nav-link" data-scroll-target="#bayesian-ranking-framework"><span class="header-section-number">3</span> Bayesian ranking framework</a>
+  <ul class="collapse">
+  <li><a href="#related-work" id="toc-related-work" class="nav-link" data-scroll-target="#related-work"><span class="header-section-number">3.1</span> Related work</a></li>
+  <li><a href="#v0-heyard-reference-model" id="toc-v0-heyard-reference-model" class="nav-link" data-scroll-target="#v0-heyard-reference-model"><span class="header-section-number">3.2</span> V0: Heyard reference model</a></li>
+  <li><a href="#v1-crs-cross-classified-model" id="toc-v1-crs-cross-classified-model" class="nav-link" data-scroll-target="#v1-crs-cross-classified-model"><span class="header-section-number">3.3</span> V1: CRS cross-classified model</a></li>
+  <li><a href="#partial-pooling-and-variance-components" id="toc-partial-pooling-and-variance-components" class="nav-link" data-scroll-target="#partial-pooling-and-variance-components"><span class="header-section-number">3.4</span> Partial pooling and variance components</a></li>
+  <li><a href="#priors-assumptions-and-interpretation" id="toc-priors-assumptions-and-interpretation" class="nav-link" data-scroll-target="#priors-assumptions-and-interpretation"><span class="header-section-number">3.5</span> Priors, assumptions and interpretation</a></li>
+  <li><a href="#treatment-of-the-15-score-scale" id="toc-treatment-of-the-15-score-scale" class="nav-link" data-scroll-target="#treatment-of-the-15-score-scale"><span class="header-section-number">3.6</span> Treatment of the 1–5 score scale</a></li>
+  <li><a href="#posterior-ranking-quantities" id="toc-posterior-ranking-quantities" class="nav-link" data-scroll-target="#posterior-ranking-quantities"><span class="header-section-number">3.7</span> Posterior ranking quantities</a></li>
+  <li><a href="#posterior-computation-and-diagnostics" id="toc-posterior-computation-and-diagnostics" class="nav-link" data-scroll-target="#posterior-computation-and-diagnostics"><span class="header-section-number">3.8</span> Posterior computation and diagnostics</a></li>
+  </ul></li>
+  <li><a href="#bayesian-ranking-results" id="toc-bayesian-ranking-results" class="nav-link" data-scroll-target="#bayesian-ranking-results"><span class="header-section-number">4</span> Bayesian ranking results</a>
+  <ul class="collapse">
+  <li><a href="#v0-results" id="toc-v0-results" class="nav-link" data-scroll-target="#v0-results"><span class="header-section-number">4.1</span> V0 results</a></li>
+  <li><a href="#v1-results" id="toc-v1-results" class="nav-link" data-scroll-target="#v1-results"><span class="header-section-number">4.2</span> V1 results</a></li>
+  <li><a href="#comparison-with-the-original-crs-procedure" id="toc-comparison-with-the-original-crs-procedure" class="nav-link" data-scroll-target="#comparison-with-the-original-crs-procedure"><span class="header-section-number">4.3</span> Comparison with the original CRS procedure</a></li>
+  <li><a href="#comparison-of-v0-and-v1" id="toc-comparison-of-v0-and-v1" class="nav-link" data-scroll-target="#comparison-of-v0-and-v1"><span class="header-section-number">4.4</span> Comparison of V0 and V1</a></li>
+  </ul></li>
+  <li><a href="#validation-and-sensitivity-analysis-of-v1" id="toc-validation-and-sensitivity-analysis-of-v1" class="nav-link" data-scroll-target="#validation-and-sensitivity-analysis-of-v1"><span class="header-section-number">5</span> Validation and sensitivity analysis of V1</a>
+  <ul class="collapse">
+  <li><a href="#motivation" id="toc-motivation" class="nav-link" data-scroll-target="#motivation"><span class="header-section-number">5.1</span> Motivation</a></li>
+  <li><a href="#computational-diagnostics" id="toc-computational-diagnostics" class="nav-link" data-scroll-target="#computational-diagnostics"><span class="header-section-number">5.2</span> Computational diagnostics</a></li>
+  <li><a href="#variance-decomposition-and-intraproposal-correlation" id="toc-variance-decomposition-and-intraproposal-correlation" class="nav-link" data-scroll-target="#variance-decomposition-and-intraproposal-correlation"><span class="header-section-number">5.3</span> Variance decomposition and intraproposal correlation</a></li>
+  <li><a href="#posterior-predictive-assessment" id="toc-posterior-predictive-assessment" class="nav-link" data-scroll-target="#posterior-predictive-assessment"><span class="header-section-number">5.4</span> Posterior predictive assessment</a></li>
+  <li><a href="#prior-sensitivity" id="toc-prior-sensitivity" class="nav-link" data-scroll-target="#prior-sensitivity"><span class="header-section-number">5.5</span> Prior sensitivity</a></li>
+  <li><a href="#validation-conclusion" id="toc-validation-conclusion" class="nav-link" data-scroll-target="#validation-conclusion"><span class="header-section-number">5.6</span> Validation conclusion</a></li>
+  </ul></li>
+  <li><a href="#graph-based-review-design" id="toc-graph-based-review-design" class="nav-link" data-scroll-target="#graph-based-review-design"><span class="header-section-number">6</span> Graph-based review design</a>
+  <ul class="collapse">
+  <li><a href="#motivation-1" id="toc-motivation-1" class="nav-link" data-scroll-target="#motivation-1"><span class="header-section-number">6.1</span> Motivation</a></li>
+  <li><a href="#reviewerproposal-assignment-as-a-bipartite-graph" id="toc-reviewerproposal-assignment-as-a-bipartite-graph" class="nav-link" data-scroll-target="#reviewerproposal-assignment-as-a-bipartite-graph"><span class="header-section-number">6.2</span> Reviewer–proposal assignment as a bipartite graph</a></li>
+  <li><a href="#connection-between-graph-structure-and-statistical-uncertainty" id="toc-connection-between-graph-structure-and-statistical-uncertainty" class="nav-link" data-scroll-target="#connection-between-graph-structure-and-statistical-uncertainty"><span class="header-section-number">6.3</span> Connection between graph structure and statistical uncertainty</a></li>
+  <li><a href="#measuring-uncertainty" id="toc-measuring-uncertainty" class="nav-link" data-scroll-target="#measuring-uncertainty"><span class="header-section-number">6.4</span> Measuring uncertainty</a></li>
+  <li><a href="#allocation-of-additional-reviews" id="toc-allocation-of-additional-reviews" class="nav-link" data-scroll-target="#allocation-of-additional-reviews"><span class="header-section-number">6.5</span> Allocation of additional reviews</a></li>
+  <li><a href="#comparison-of-review-allocation-strategies" id="toc-comparison-of-review-allocation-strategies" class="nav-link" data-scroll-target="#comparison-of-review-allocation-strategies"><span class="header-section-number">6.6</span> Comparison of review-allocation strategies</a></li>
+  <li><a href="#implications-for-sparse-evaluation-designs" id="toc-implications-for-sparse-evaluation-designs" class="nav-link" data-scroll-target="#implications-for-sparse-evaluation-designs"><span class="header-section-number">6.7</span> Implications for sparse evaluation designs</a></li>
+  </ul></li>
+  <li><a href="#discussion-and-recommendations" id="toc-discussion-and-recommendations" class="nav-link" data-scroll-target="#discussion-and-recommendations"><span class="header-section-number">7</span> Discussion and recommendations</a>
+  <ul class="collapse">
+  <li><a href="#answers-to-the-research-questions" id="toc-answers-to-the-research-questions" class="nav-link" data-scroll-target="#answers-to-the-research-questions"><span class="header-section-number">7.1</span> Answers to the research questions</a></li>
+  <li><a href="#implications-for-crs" id="toc-implications-for-crs" class="nav-link" data-scroll-target="#implications-for-crs"><span class="header-section-number">7.2</span> Implications for CRS</a></li>
+  <li><a href="#ranking-uncertainty-and-decision-uncertainty" id="toc-ranking-uncertainty-and-decision-uncertainty" class="nav-link" data-scroll-target="#ranking-uncertainty-and-decision-uncertainty"><span class="header-section-number">7.3</span> Ranking uncertainty and decision uncertainty</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations"><span class="header-section-number">7.4</span> Limitations</a></li>
+  <li><a href="#future-work" id="toc-future-work" class="nav-link" data-scroll-target="#future-work"><span class="header-section-number">7.5</span> Future work</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">8</span> Conclusion</a></li>
+  
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="technical-report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Bayesian Ranking and Graph-Based Review Design under Sparse Evaluation Data</h1>
+<p class="subtitle lead">A Case Study of the CRS Seed Grants 2026</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Victor Sieber </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 11, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="abstract" class="level1 unnumbered">
+<h1 class="unnumbered">Abstract</h1>
+<!-- TODO:
+Write this last.
+
+Briefly summarize:
+- the evaluation problem;
+- the data;
+- the Bayesian modelling approach;
+- the main empirical findings;
+- the model-validation results;
+- the criterion analysis;
+- the graph-based review-design extension;
+- the main recommendation.
+-->
+</section>
+<section id="introduction" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
+<section id="grant-evaluation-under-limited-information" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="grant-evaluation-under-limited-information"><span class="header-section-number">1.1</span> Grant evaluation under limited information</h2>
+<p>Grant peer review converts a limited number of expert judgments into decisions that can have substantial consequences for applicants. The challenge is not only disagreement between reviewers, but also the risk of overinterpreting small score differences when each proposal is assessed by only a few reviewers. Kaplan et al.&nbsp;show directly that finer scoring precision requires increasingly many independent reviewers, and illustrate how rankings can vary strongly when only a small number of evaluations are available <span class="citation" data-cites="kaplan2008">(<a href="#ref-kaplan2008" role="doc-biblioref">Kaplan et al. 2008</a>)</span>.</p>
+<p>This uncertainty becomes particularly important when proposals are close in score or close to a decision boundary. In a retrospective analysis of Australian grant panels, Graves et al.&nbsp;found substantial instability in funding status after accounting for variability among panel members’ scores <span class="citation" data-cites="graves2011">(<a href="#ref-graves2011" role="doc-biblioref">Graves et al. 2011</a>)</span>. Jayasinghe, Marsh and Bond reported low single-rater reliability in Australian Research Council grant assessments and used a multilevel cross-classified model to separate proposal- and assessor-related sources of variation <span class="citation" data-cites="jayasinghe2003">(<a href="#ref-jayasinghe2003" role="doc-biblioref">Jayasinghe et al. 2003</a>)</span>. Heyard et al.&nbsp;similarly motivate Bayesian ranking by low inter-rater reliability and by the difficulty of distinguishing proposals of similar quality near a funding line <span class="citation" data-cites="heyard2022">(<a href="#ref-heyard2022" role="doc-biblioref">Heyard et al. 2022</a>)</span>. These findings do not imply that peer review is uninformative; rather, they motivate distinguishing an observed numerical ordering from the strength of evidence supporting that ordering.</p>
+<p>The present project studies this distinction in a deliberately small evaluation setting. With only two reviews per proposal, a method that reports a single rank without its uncertainty can appear more decisive than the available information warrants. The aim is therefore to model proposal and reviewer variation explicitly, quantify posterior uncertainty in the resulting ranks, and later ask whether the structure of the review design itself can indicate where additional review effort would be most informative.</p>
+</section>
+<section id="crs-seed-grant-evaluation-2026" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="crs-seed-grant-evaluation-2026"><span class="header-section-number">1.2</span> CRS Seed Grant evaluation 2026</h2>
+<p>The Center for Reproducible Science and Research Synthesis (CRS) at the University of Zurich (UZH) works to advance scientific methods and practices that support trustworthy and reproducible research. Its activities include research on reproducibility, research synthesis, and meta-research <span class="citation" data-cites="crs2026seedgrantcall">(<a href="#ref-crs2026seedgrantcall" role="doc-biblioref">Center for Reproducible Science and Research Synthesis 2026</a>)</span>.</p>
+<p>In 2026, the CRS launched its first Seed Grant call to support early-stage projects and initiatives in research synthesis, meta-research, and related fields <span class="citation" data-cites="crs2026seedgrantcall">(<a href="#ref-crs2026seedgrantcall" role="doc-biblioref">Center for Reproducible Science and Research Synthesis 2026</a>)</span>. The evaluation round included 42 proposals assessed by a panel of nine reviewers. Each proposal received exactly two independent reviews, resulting in 84 completed review records.</p>
+<p>Reviewers evaluated each proposal on four supporting criteria: scientific quality and relevance for the call, prospects for community-building, potential for scaling, and commitment to scientific rigor. After filling out these scores, each reviewer assigned a separate holistic overall grade, which was the score used in the qualification procedure. The call indicated that approximately six projects could be funded <span class="citation" data-cites="crs2026seedgrantcall">(<a href="#ref-crs2026seedgrantcall" role="doc-biblioref">Center for Reproducible Science and Research Synthesis 2026</a>)</span>. In the observed evaluation round, four proposals met the qualification rule and were therefore selected for funding.</p>
+</section>
+<section id="original-qualification-procedure" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="original-qualification-procedure"><span class="header-section-number">1.3</span> Original qualification procedure</h2>
+<p>Funding eligibility was determined from the two holistic overall grades assigned to each proposal using a predefined qualification rule. The procedure therefore operated as a score-based threshold rather than as a complete ranking of all proposals. The rule and its reconstruction from the evaluation data are described in Section 2.3.</p>
+</section>
+<section id="motivation-for-bayesian-ranking" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="motivation-for-bayesian-ranking"><span class="header-section-number">1.4</span> Motivation for Bayesian ranking</h2>
+<p>The original CRS procedure was transparent and easy to apply, but it did not quantify uncertainty around the observed overall grades. In particular, two proposals with similar score pairs can receive a definite relative ordering even when the evidence that one is better than the other is weak. With only two reviews per proposal, the observed scores also reflect both proposal-related variation and differences in reviewer scoring behaviour.</p>
+<p>Bayesian hierarchical modelling provides a way to separate these sources of variation probabilistically. Heyard et al.&nbsp;model latent proposal effects together with assessor-related effects and rank proposals using the posterior distribution of the proposal effects rather than the raw score averages alone <span class="citation" data-cites="heyard2022">(<a href="#ref-heyard2022" role="doc-biblioref">Heyard et al. 2022</a>)</span>. Their expected-rank approach is designed to retain information about uncertainty instead of treating an estimated ordering as known with certainty.</p>
+<p>For the CRS data, the Bayesian analysis is therefore used as a decision-support and uncertainty-quantification tool rather than as a replacement rule that mechanically determines funding. The main questions are whether the broad ordering produced by the original procedure persists after accounting for reviewer-associated scoring tendencies, how uncertain the resulting ranks are, and whether apparently different exact ranks correspond to meaningful posterior evidence.</p>
+</section>
+<section id="research-questions" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="research-questions"><span class="header-section-number">1.5</span> Research questions</h2>
+<section id="research-question-1" class="level3" data-number="1.5.1">
+<h3 data-number="1.5.1" class="anchored" data-anchor-id="research-question-1"><span class="header-section-number">1.5.1</span> Research Question 1</h3>
+<p>What posterior ranking is obtained from a hierarchical Bayesian model of the overall grades that accounts for reviewer-specific scoring tendencies, and how uncertain are the resulting ranks?</p>
+</section>
+<section id="research-question-2" class="level3" data-number="1.5.2">
+<h3 data-number="1.5.2" class="anchored" data-anchor-id="research-question-2"><span class="header-section-number">1.5.2</span> Research Question 2</h3>
+<p>How does the main Bayesian ranking model compare with the original ranking and qualification procedure based on the two overall grades per proposal?</p>
+</section>
+<section id="research-question-3" class="level3" data-number="1.5.3">
+<h3 data-number="1.5.3" class="anchored" data-anchor-id="research-question-3"><span class="header-section-number">1.5.3</span> Research Question 3</h3>
+<p>Is the selected main Bayesian model sufficiently robust and adequate under model validation and sensitivity analysis?</p>
+</section>
+<section id="research-question-4" class="level3" data-number="1.5.4">
+<h3 data-number="1.5.4" class="anchored" data-anchor-id="research-question-4"><span class="header-section-number">1.5.4</span> Research Question 4</h3>
+<p>How closely do the four supporting criterion scores correspond to the holistic overall grade, and would an equal-weight average of the criteria have produced a materially different proposal ordering?</p>
+</section>
+<section id="research-question-5" class="level3" data-number="1.5.5">
+<h3 data-number="1.5.5" class="anchored" data-anchor-id="research-question-5"><span class="header-section-number">1.5.5</span> Research Question 5</h3>
+<p>Can the sparse reviewer–proposal design be used to identify where additional review effort may be most informative?</p>
+<!-- TODO:
+Research Question 5 remains provisional until the review-design objective
+and the relevant notion of uncertainty have been studied more carefully.
+-->
+</section>
+</section>
+<section id="scope-and-intended-contribution" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="scope-and-intended-contribution"><span class="header-section-number">1.6</span> Scope and intended contribution</h2>
+<!-- TODO:
+Clarify the final scope once the remaining analyses are complete.
+
+Current scope to keep in mind:
+- the holistic overall grade is the response for the main Bayesian analysis;
+- the four supporting criteria are considered separately;
+- requested budget is outside the main statistical model;
+- V0 serves as the Heyard reference specification;
+- V1 is the CRS-specific main model;
+- model validation precedes the review-design extension;
+- the graph-based part concerns the design and allocation of review effort.
+
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022) as the main methodological reference.
+- Existing grant-review literature using multilevel or cross-classified models.
+- Existing literature on review allocation / experimental design before
+  making any novelty claim.
+
+Do not claim that the project introduces a new Bayesian or graph-theoretic
+method unless the literature review later justifies such a statement.
+-->
+</section>
+<section id="structure-of-the-report" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="structure-of-the-report"><span class="header-section-number">1.7</span> Structure of the report</h2>
+<!-- TODO:
+Write once the empirical analysis and graph-based extension are stable.
+-->
+</section>
+</section>
+<section id="evaluation-design-and-descriptive-analysis" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Evaluation design and descriptive analysis</h1>
+<section id="evaluation-process-and-analytical-data" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="evaluation-process-and-analytical-data"><span class="header-section-number">2.1</span> Evaluation process and analytical data</h2>
+<p>The anonymized analytical dataset contains 84 completed reviews of 42 proposals by nine reviewers. Each proposal received exactly two independent reviews. Reviewer workloads were unequal because assignments were based on expertise and availability.</p>
+<p>Each review contains four supporting criterion scores and a separate holistic overall grade. All scores use an integer scale from 1 to 5, where higher values indicate a more favourable evaluation. The Bayesian models use the holistic overall grade as their outcome. The four criterion scores are retained for a separate descriptive analysis of their relationship with the overall grade.</p>
+</section>
+<section id="reviewerproposal-assignment" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="reviewerproposal-assignment"><span class="header-section-number">2.2</span> Reviewer–proposal assignment</h2>
+<p>The reviewer–proposal design is sparse and unbalanced. Each proposal was reviewed twice, whereas reviewers assessed different numbers of proposals. Assignments were not random but depended on expertise and availability.</p>
+<p>Consequently, estimated reviewer effects should be interpreted as scoring tendencies rather than direct evidence of reviewer bias. Differences attributed to reviewers may partly reflect differences in the types of proposals assigned to them.</p>
+<!-- LITERATURE TO INVESTIGATE:
+- Jayasinghe, Marsh and Bond (2003):
+  multilevel cross-classified modelling of grant-review data and separation
+  of assessor and researcher/proposal-related variation.
+  The paper is cited by Heyard and Eblen; obtain/read the primary article
+  before relying on it directly.
+- Heyard et al. (2022):
+  discussion of different assessor scoring habits and cross-classified
+  grant-review work.
+- Erosheva et al. (2020):
+  multilevel structure created by applications and reviewers.
+
+Investigate literature on how non-random reviewer assignment affects the
+interpretation of reviewer effects and whether stronger claims concerning
+identifiability require additional references.
+-->
+</section>
+<section id="reconstruction-of-the-original-procedure" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="reconstruction-of-the-original-procedure"><span class="header-section-number">2.3</span> Reconstruction of the original procedure</h2>
+<p>According to the published CRS Seed Grant results <span class="citation" data-cites="crs2026seedgrants">(<a href="#ref-crs2026seedgrants" role="doc-biblioref">Center for Reproducible Science 2026</a>)</span>, funding was available for proposals that received the highest overall grade from at least one reviewer and no grade below the second-highest category. Since the overall grade was scored on a scale from 1 to 5, this means that a proposal qualified if it received at least one grade of 5 and its second grade was at least 4. With exactly two reviews per proposal, the qualifying score combinations were therefore (5,5), (5,4), and (4,5). Equivalently, a proposal qualified if its mean overall grade was at least 4.5.</p>
+<p>This procedure should be interpreted as a score-based qualification threshold rather than as a fixed top-four selection rule. Four proposals happened to satisfy the threshold in the 2026 evaluation round. Since the call indicated that approximately six projects could be funded, the available funding capacity was not binding and no additional prioritization among qualified proposals was required.</p>
+</section>
+<section id="reviewer-scoring-patterns-and-agreement" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="reviewer-scoring-patterns-and-agreement"><span class="header-section-number">2.4</span> Reviewer scoring patterns and agreement</h2>
+<!-- TODO:
+Investigate which descriptive summaries are useful for understanding
+the reviewer panel and the amount of agreement in the observed data.
+
+Possible themes:
+- reviewer workloads;
+- distribution of overall grades;
+- differences in reviewer scoring patterns;
+- agreement or disagreement between paired reviews.
+
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022):
+  inter-rater reliability and assessor scoring habits.
+- Kaplan et al. (2008):
+  reviewer variability, number of reviewers and precision.
+- Graves et al. (2011):
+  variation in peer-review scores and resulting instability.
+- Potential grant-review reliability literature referenced within these
+  papers if a more formal agreement discussion becomes necessary.
+
+Keep observed reviewer differences descriptive unless stronger
+interpretations are supported by the assignment design and literature.
+-->
+</section>
+<section id="supporting-criteria-and-holistic-overall-grade" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="supporting-criteria-and-holistic-overall-grade"><span class="header-section-number">2.5</span> Supporting criteria and holistic overall grade</h2>
+<!-- TODO:
+Investigate how the four supporting criteria relate to the separately
+assigned holistic overall grade.
+
+Possible questions:
+- how strongly do individual criteria correspond to the overall grade?
+- do the criteria appear to contribute similarly or differently?
+- where do criterion-based summaries and holistic judgments diverge?
+
+LITERATURE TO INVESTIGATE:
+- Erosheva et al. (2020):
+  relationship between criterion scores and preliminary overall impact scores;
+  idea of combining separate criteria into a holistic judgment.
+- Eblen et al. (2016):
+  relationship between individual criterion scores, overall impact scores
+  and grant outcomes.
+- Other criterion-scoring literature cited in these papers, if needed.
+
+Important:
+These papers motivate studying the relationship between criteria and
+overall judgments. They do not automatically justify any particular
+equal-weight rule for the CRS data.
+-->
+</section>
+<section id="proposal-level-criterion-average-versus-overall-grade-average" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="proposal-level-criterion-average-versus-overall-grade-average"><span class="header-section-number">2.6</span> Proposal-level criterion average versus overall-grade average</h2>
+<!-- TODO:
+Investigate the proposal-level relationship discussed with Rachel:
+the summary of supporting criterion grades from the reviewer pair
+versus the average holistic overall grade from that pair.
+
+Questions to investigate:
+- how closely do these summaries correspond?
+- are there proposals for which they differ noticeably?
+- does the relative proposal ordering look different when criteria are
+  summarized with equal weights?
+
+LITERATURE TO INVESTIGATE:
+- Erosheva et al. (2020):
+  criterion scores versus holistic overall evaluation.
+- Eblen et al. (2016):
+  differential relationship of criteria with overall evaluation and outcomes.
+
+Frame the equal-weight criterion summary as a descriptive/counterfactual
+exercise unless literature or the CRS evaluation procedure supports a
+stronger interpretation.
+-->
+</section>
+</section>
+<section id="bayesian-ranking-framework" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Bayesian ranking framework</h1>
+<section id="related-work" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="related-work"><span class="header-section-number">3.1</span> Related work</h2>
+<p>This project is primarily based on the Bayesian grant-ranking framework of Heyard et al. <span class="citation" data-cites="heyard2022">(<a href="#ref-heyard2022" role="doc-biblioref">Heyard et al. 2022</a>)</span>. Their model represents observed proposal scores through latent proposal effects and assessor-related effects, and derives posterior rank distributions and expected ranks from the proposal effects. The method was developed to support decisions when proposals near a funding line are difficult to distinguish.</p>
+<p>A complementary literature emphasizes the limited precision of grant review when only a small number of assessments are available. Kaplan et al.&nbsp;relate the number of reviewers to the precision of an estimated proposal score and show that increasingly fine distinctions require rapidly increasing numbers of reviewers <span class="citation" data-cites="kaplan2008">(<a href="#ref-kaplan2008" role="doc-biblioref">Kaplan et al. 2008</a>)</span>. Graves et al.&nbsp;study the downstream consequence for funding decisions and find substantial rank and funding instability under reviewer-score variability <span class="citation" data-cites="graves2011">(<a href="#ref-graves2011" role="doc-biblioref">Graves et al. 2011</a>)</span>. Together, these papers motivate treating rank uncertainty as a substantive feature of the evaluation rather than only a computational detail.</p>
+<p>The cross-classified structure of grant-review data is addressed directly by Jayasinghe, Marsh and Bond <span class="citation" data-cites="jayasinghe2003">(<a href="#ref-jayasinghe2003" role="doc-biblioref">Jayasinghe et al. 2003</a>)</span>. In their Australian Research Council data, some assessors evaluated more than one proposal while each proposal was evaluated by several assessors, so assessors and proposals could not be represented as a simple nested hierarchy. They therefore fitted random-intercept cross-classified models with separate assessor and proposal variance components. Their methodological argument is directly relevant to the CRS setting: ratings from the same reviewer across different proposals and ratings from different reviewers of the same proposal are not generally independent. The CRS model is simpler than theirs because no field-of-study level or assessor/researcher covariates are available, and it is Bayesian rather than fitted by iterative generalized least squares, but the basic proposal–reviewer crossing is the same.</p>
+<p>Erosheva et al.&nbsp;likewise emphasize the multilevel structure of grant review and model dependencies induced by applications and reviewers <span class="citation" data-cites="erosheva2020">(<a href="#ref-erosheva2020" role="doc-biblioref">Erosheva et al. 2020</a>)</span>. Together with Jayasinghe et al.&nbsp;and Heyard et al., this provides the methodological basis for including both proposal and reviewer effects in the CRS-specific model.</p>
+<p>Finally, the four supporting criteria are treated separately from the Bayesian ranking model. Previous NIH analyses show that criterion scores can be strongly related to holistic overall-impact scores, while different criteria need not contribute equally <span class="citation" data-cites="eblen2016 erosheva2020">(<a href="#ref-eblen2016" role="doc-biblioref">Eblen et al. 2016</a>; <a href="#ref-erosheva2020" role="doc-biblioref">Erosheva et al. 2020</a>)</span>. This motivated the descriptive comparison of the CRS criteria with the holistic overall grade presented in Sections 2.5 and 2.6.</p>
+</section>
+<section id="v0-heyard-reference-model" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="v0-heyard-reference-model"><span class="header-section-number">3.2</span> V0: Heyard reference model</h2>
+<p>The first fitted model, denoted V0, reproduces the continuous homogeneous-variance specification of Heyard et al.&nbsp;as the methodological reference model <span class="citation" data-cites="heyard2022">(<a href="#ref-heyard2022" role="doc-biblioref">Heyard et al. 2022</a>)</span>. Let <span class="math inline">\(r=1,\ldots,84\)</span> index completed reviews, let <span class="math inline">\(p(r)\)</span> denote the proposal reviewed in record <span class="math inline">\(r\)</span>, and let <span class="math inline">\(a(r)\)</span> denote the reviewer. The observed holistic overall grade is <span class="math inline">\(Y_r\)</span>, and <span class="math inline">\(\bar{Y}\)</span> denotes the observed mean overall grade across all reviews.</p>
+<p>The model used in the analysis is</p>
+<p><span class="math display">\[
+Y_r \mid \theta,\lambda
+\sim
+\mathcal{N}\!\left(
+\bar{Y}+\theta_{p(r)}+\lambda_{p(r),a(r)},\,\sigma^2
+\right),
+\]</span></p>
+<p>with proposal effects</p>
+<p><span class="math display">\[
+\theta_i \sim \mathcal{N}(0,\tau_\theta^2),
+\]</span></p>
+<p>and proposal-reviewer assessment effects</p>
+<p><span class="math display">\[
+\lambda_{ij}\sim\mathcal{N}(\nu_j,\tau_\lambda^2),
+\qquad
+\nu_j\sim\mathcal{N}(0,0.5^2).
+\]</span></p>
+<p>Here <span class="math inline">\(\theta_i\)</span> is the latent proposal effect used for ranking. The parameter <span class="math inline">\(\nu_j\)</span> represents the persistent scoring tendency of reviewer <span class="math inline">\(j\)</span>, whereas <span class="math inline">\(\lambda_{ij}-\nu_j\)</span> permits an additional assessment-specific deviation for reviewer <span class="math inline">\(j\)</span> on proposal <span class="math inline">\(i\)</span>. The residual term, with standard deviation <span class="math inline">\(\sigma\)</span>, captures variation not explained by these latent components. This is the same basic interpretation given by Heyard et al., where assessor-specific means allow for systematically stricter or more generous scoring habits <span class="citation" data-cites="heyard2022">(<a href="#ref-heyard2022" role="doc-biblioref">Heyard et al. 2022</a>)</span>.</p>
+<p>The JAGS implementation assigns</p>
+<p><span class="math display">\[
+\sigma,\tau_\theta,\tau_\lambda
+\sim \operatorname{Uniform}(0,2),
+\]</span></p>
+<p>with the lower endpoint implemented numerically as <span class="math inline">\(10^{-6}\)</span>. V0 is retained as a reference rather than assumed to be the best representation of the CRS data. In this dataset, every observed proposal-reviewer combination occurs only once, so the additional assessment-specific latent term is weakly informed at the individual edge level. This motivates comparison with the more parsimonious V1 specification below.</p>
+</section>
+<section id="v1-crs-cross-classified-model" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="v1-crs-cross-classified-model"><span class="header-section-number">3.3</span> V1: CRS cross-classified model</h2>
+<p>The CRS-specific model V1 removes the proposal-reviewer-specific latent assessment term and retains one persistent proposal effect and one persistent reviewer effect. For review <span class="math inline">\(r\)</span>,</p>
+<p><span class="math display">\[
+Y_r
+\sim
+\mathcal{N}\!\left(
+\bar{Y}+\theta_{p(r)}+b_{a(r)},\,\sigma^2
+\right),
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\theta_i\sim\mathcal{N}(0,\tau_\theta^2),
+\qquad
+b_j\sim\mathcal{N}(0,\tau_b^2).
+\]</span></p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+Y_r=\bar{Y}+\theta_{p(r)}+b_{a(r)}+\varepsilon_r,
+\qquad
+\varepsilon_r\sim\mathcal{N}(0,\sigma^2).
+\]</span></p>
+<p>The proposal effect <span class="math inline">\(\theta_i\)</span> remains the latent quantity used for ranking. The reviewer effect <span class="math inline">\(b_j\)</span> is shared across every proposal assessed by reviewer <span class="math inline">\(j\)</span> and represents a reviewer-associated scoring tendency. It should not be interpreted as a causal measure of reviewer bias: reviewer assignments were based on expertise and availability rather than random allocation, so estimated reviewer differences can also reflect differences in the proposals assigned to each reviewer.</p>
+<p>V1 is cross-classified because each review is associated with both a proposal and a reviewer. Reviewers assess multiple proposals, while each proposal is assessed by multiple reviewers, so neither grouping is nested within the other. Jayasinghe et al.&nbsp;describe exactly this structural issue for grant peer review: when some assessors review multiple proposals and proposals receive ratings from multiple assessors, assessor and proposal effects are crossed rather than nested, and ignoring those dependencies can lead to model misspecification <span class="citation" data-cites="jayasinghe2003">(<a href="#ref-jayasinghe2003" role="doc-biblioref">Jayasinghe et al. 2003</a>)</span>. Their random-intercept formulation contains separate assessor and proposal components, closely paralleling the two crossed random effects in V1. The CRS model omits their additional field-of-study level and observed assessor/researcher covariates because these are not available in the anonymized CRS dataset.</p>
+<p>The crossing is highly incomplete in the CRS data. There are <span class="math inline">\(42\times9=378\)</span> possible proposal-reviewer combinations, but only 84 observed reviews. Unequal reviewer workloads are not in themselves incompatible with a cross-classified multilevel model; Jayasinghe et al.&nbsp;explicitly note that such models can accommodate unbalanced review counts <span class="citation" data-cites="jayasinghe2003">(<a href="#ref-jayasinghe2003" role="doc-biblioref">Jayasinghe et al. 2003</a>)</span>. The more important limitation for interpretation is that the CRS assignments were not randomized.</p>
+<p>As in V0, the scale parameters use</p>
+<p><span class="math display">\[
+\sigma,\tau_\theta,\tau_b
+\sim \operatorname{Uniform}(0,2).
+\]</span></p>
+<p>V1 is treated as the provisional main model because it represents the recurring proposal and reviewer structure directly while avoiding a separate latent effect for every one-off proposal-reviewer assessment. Its adequacy is not assumed from parsimony alone; Chapter 5 therefore assesses its variance structure, posterior predictive behaviour and prior sensitivity before it is used as the basis for the review-design extension.</p>
+<!-- TODO: After completing the V1 validation and prior-sensitivity analysis in Chapter 5, revisit all wording that refers to V1 as the "provisional main model". If validation supports V1, update the wording to reflect that it is the main model used for subsequent analyses. If important inadequacies or strong prior sensitivity are found, revise Chapters 3–6 accordingly and document any replacement or sensitivity model. -->
+</section>
+<section id="partial-pooling-and-variance-components" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="partial-pooling-and-variance-components"><span class="header-section-number">3.4</span> Partial pooling and variance components</h2>
+<p>Both V0 and V1 are hierarchical models and therefore use partial pooling. In V1, a proposal’s latent effect is not estimated from its two observed reviews alone. Instead, the estimate also reflects the amount of variation between proposals observed across the full dataset. The prior <span class="math inline">\(\theta_i\sim\mathcal{N}(0,\tau_\theta^2)\)</span> therefore pulls proposal effects toward the overall proposal mean, with the strength of this shrinkage depending on the estimated between-proposal variance <span class="math inline">\(\tau_\theta^2\)</span>. The same principle applies to reviewer effects through <span class="math inline">\(b_j\sim\mathcal{N}(0,\tau_b^2)\)</span>, so estimates of reviewer-specific scoring tendencies are informed both by the reviews assigned to that reviewer and by the overall amount of variation between reviewers.</p>
+<p>For V1, the marginal variance of an observed overall grade under the model is</p>
+<p><span class="math display">\[
+\operatorname{Var}(Y_r)
+=
+\tau_\theta^2+\tau_b^2+\sigma^2.
+\]</span></p>
+<p>The three components correspond respectively to between-proposal variation, between-reviewer variation in scoring tendency, and remaining review-level variation.</p>
+<p>Jayasinghe et al.&nbsp;define the intraproposal correlation in a cross-classified grant-review model as the correlation between two ratings of the same proposal by different assessors <span class="citation" data-cites="jayasinghe2003">(<a href="#ref-jayasinghe2003" role="doc-biblioref">Jayasinghe et al. 2003</a>)</span>. In V1 there is no additional field-of-study effect, so the corresponding proposal-level intraclass correlation is</p>
+<p><span class="math display">\[
+\rho_{\mathrm{proposal}}
+=
+\frac{\tau_\theta^2}
+{\tau_\theta^2+\tau_b^2+\sigma^2}.
+\]</span></p>
+<p>This quantity is also the model-implied correlation between two V1 ratings of the same proposal made by different reviewers. By the same covariance argument, two ratings made by the same reviewer for different proposals have model-implied correlation</p>
+<p><span class="math display">\[
+\rho_{\mathrm{reviewer}}
+=
+\frac{\tau_b^2}
+{\tau_\theta^2+\tau_b^2+\sigma^2}.
+\]</span></p>
+<p>The second quantity is useful as a reviewer-clustering summary, but it is not the same object as the intraproposal reliability measure emphasized by Jayasinghe et al.&nbsp;Chapter 5 therefore reports the posterior distributions of both variance shares while keeping their interpretations distinct. This is particularly relevant in the CRS setting because each proposal has only two reviews whereas every reviewer contributes repeated ratings.</p>
+</section>
+<section id="priors-assumptions-and-interpretation" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="priors-assumptions-and-interpretation"><span class="header-section-number">3.5</span> Priors, assumptions and interpretation</h2>
+<p>The two fitted models share several assumptions. First, conditional on their latent effects, overall grades are modelled with a common Gaussian residual variance. Second, proposal effects are exchangeable around zero. V1 additionally treats reviewer effects as exchangeable around zero. Third, <span class="math inline">\(\bar{Y}\)</span> is fixed at the observed overall mean rather than estimated as an additional intercept in the JAGS models.</p>
+<p>The scale priors are bounded uniform distributions on <span class="math inline">\((0,2)\)</span>, matching the reference implementation used for V0 and retained in V1 to make the model comparison interpretable. V0 additionally uses <span class="math inline">\(\nu_j\sim\mathcal{N}(0,0.5^2)\)</span> for reviewer-specific mean tendencies. Because the dataset is small and the variance components govern the degree of partial pooling, the dependence of the V1 results on these scale priors is examined explicitly in the sensitivity analysis in Chapter 5.</p>
+<p>The non-random assignment mechanism described in Sections 2.2 and 3.3 limits the interpretation of the reviewer effects. Cross-classified multilevel modelling can accommodate repeated reviewers and unequal review counts <span class="citation" data-cites="jayasinghe2003">(<a href="#ref-jayasinghe2003" role="doc-biblioref">Jayasinghe et al. 2003</a>)</span>, but it does not remove the confounding between reviewer-associated scoring tendencies and differences in the proposals assigned to them. The reviewer effects are therefore interpreted as descriptive reviewer-associated tendencies rather than causal measures of reviewer bias.</p>
+<p>The consequences of the incomplete proposal–reviewer assignment structure for estimability and statistical information are considered more formally in the graph-based analysis in Chapter 6.</p>
+<!-- TODO: After completing Chapter 6, revisit the final sentence and make the connection to the graph-based analysis more specific. -->
+</section>
+<section id="treatment-of-the-15-score-scale" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="treatment-of-the-15-score-scale"><span class="header-section-number">3.6</span> Treatment of the 1–5 score scale</h2>
+<p>The holistic CRS overall grade is an ordered integer score from 1 to 5, but V0 and V1 treat it as approximately continuous and Gaussian. This implies that adjacent score categories are treated as equally spaced and that the latent Gaussian sampling distribution is not itself bounded to the interval <span class="math inline">\([1,5]\)</span>.</p>
+<p>This choice follows the continuous reference formulation of Heyard et al., who considered both continuous and ordinal Bayesian ranking models for bounded grant scores <span class="citation" data-cites="heyard2022">(<a href="#ref-heyard2022" role="doc-biblioref">Heyard et al. 2022</a>)</span>. In their simulation study, the simple normal-outcome model with homogeneous residual variance performed competitively despite its simpler specification, although the suitability of that approximation is context dependent.</p>
+<p>For the CRS data, the Gaussian formulation is retained initially because it gives a transparent model for proposal and reviewer effects and supports the later linear-algebraic review-design analysis. The approximation is nevertheless testable. The posterior predictive assessment in Chapter 5 will examine the replicated score distribution, including the frequency with which the Gaussian model generates values below 1 or above 5. A full ordinal model is therefore not introduced solely because the observed scale is ordinal; it remains a possible extension if the validation results indicate that the continuous approximation is inadequate.</p>
+<!-- TODO: After completing Chaoter 5 and 6 the last paragraph may need to be adjusted to what we have really done not just planned... -->
+</section>
+<section id="posterior-ranking-quantities" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="posterior-ranking-quantities"><span class="header-section-number">3.7</span> Posterior ranking quantities</h2>
+<p>The ranking is based on the posterior distribution of the proposal effects <span class="math inline">\(\theta_1,\ldots,\theta_{42}\)</span> rather than directly on the observed score averages. For posterior draw <span class="math inline">\(s\)</span>, the rank of proposal <span class="math inline">\(i\)</span> is</p>
+<p><span class="math display">\[
+R_i^{(s)}
+=
+1+\sum_{k\neq i}
+\mathbb{1}_{\{\theta_k^{(s)}&gt;\theta_i^{(s)}\}},
+\]</span></p>
+<p>where <span class="math inline">\(\mathbb{1}_{\{\cdot\}}\)</span> denotes the indicator function, equal to 1 when the condition in the subscript is satisfied and 0 otherwise. The sum therefore counts how many other proposals have a larger latent proposal effect than proposal <span class="math inline">\(i\)</span> in posterior draw <span class="math inline">\(s\)</span>. Consequently, rank 1 corresponds to the proposal with the largest proposal effect. The posterior mean of this rank distribution is the expected rank,</p>
+<p><span class="math display">\[
+ER_i
+=
+\operatorname{E}\!\left[R_i\mid Y\right].
+\]</span></p>
+<p>Using the definition of <span class="math inline">\(R_i\)</span>, this can equivalently be written as</p>
+<p><span class="math display">\[
+ER_i
+=
+1+\sum_{k\neq i}
+\mathbb{P}(\theta_k&gt;\theta_i\mid Y).
+\]</span></p>
+<p>Thus, the expected rank of proposal <span class="math inline">\(i\)</span> can be interpreted as 1 plus the sum of the posterior probabilities that each competing proposal has a larger latent proposal effect. In practice, <span class="math inline">\(ER_i\)</span> is estimated from the MCMC output by computing <span class="math inline">\(R_i^{(s)}\)</span> for each posterior draw <span class="math inline">\(s\)</span> and averaging these sampled ranks,</p>
+<p><span class="math display">\[
+ER_i
+\approx
+\frac{1}{S}\sum_{s=1}^{S}R_i^{(s)},
+\]</span></p>
+<p>where <span class="math inline">\(S\)</span> denotes the number of posterior draws used for the calculation.</p>
+<p>Expected rank is the central ranking quantity in Heyard et al.&nbsp;because it incorporates both the estimated differences between proposal effects and the uncertainty in their relative ordering <span class="citation" data-cites="heyard2022">(<a href="#ref-heyard2022" role="doc-biblioref">Heyard et al. 2022</a>)</span>. With 42 proposals, the midpoint of the rank scale is <span class="math inline">\((42+1)/2=21.5\)</span>. When the posterior ordering of a proposal is highly uncertain, its expected rank can therefore move substantially away from its point rank and toward the middle of the rank scale.</p>
+<p>The analysis reports three related but distinct ranking summaries. The raw-score rank orders proposals using their average overall grade across the two reviews. The posterior-mean rank orders proposals according to the posterior means of their latent effects <span class="math inline">\(\theta_i\)</span>. The expected rank, by contrast, averages each proposal’s rank over the full posterior distribution and therefore accounts directly for uncertainty in the relative ordering. Posterior quantiles of <span class="math inline">\(R_i\)</span> are additionally used to construct rank-uncertainty intervals.</p>
+<p>Pairwise posterior probabilities such as</p>
+<p><span class="math display">\[
+\mathbb{P}(\theta_i&gt;\theta_k\mid Y)
+\]</span></p>
+<p>provide a more direct comparison between two particular proposals. They are especially useful when different models produce different exact ranks even though the posterior evidence separating the two proposals is weak. This becomes particularly relevant in the V0–V1 comparison.</p>
+</section>
+<section id="posterior-computation-and-diagnostics" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="posterior-computation-and-diagnostics"><span class="header-section-number">3.8</span> Posterior computation and diagnostics</h2>
+<p>Both models were fitted in JAGS from R. The V0 workflow uses the <code>ERforResearch</code> implementation with the explicit V0 JAGS model, while V1 uses a custom JAGS specification with one reviewer effect per reviewer. Each final fit used four chains, 10,000 adaptation iterations, 10,000 burn-in iterations and 50,000 sampling iterations per chain. The random seed was fixed at 20260727 for reproducibility.</p>
+<p>The fitting scripts first validate the anonymized data structure and reconstruct the original CRS qualification indicator. They then save the fitted MCMC object and a parameter-summary CSV. Expected ranks and posterior-mean ranks are computed from the fitted posterior and saved separately. The comparison script does not refit either model: it reads the saved V0 and V1 fits and ranking tables, extracts posterior rank draws, computes rank-uncertainty summaries and pairwise probabilities, and writes the model-comparison tables.</p>
+<p>Computational convergence is assessed using the potential scale reduction factor (PSRF) and effective sample size (ESS) reported by the saved fits. These diagnostics establish whether the MCMC computation appears stable; they do not by themselves establish that the statistical model is adequate for the data. Posterior predictive checks and prior sensitivity are therefore treated separately in Chapter 5.</p>
+</section>
+</section>
+<section id="bayesian-ranking-results" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Bayesian ranking results</h1>
+<section id="v0-results" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="v0-results"><span class="header-section-number">4.1</span> V0 results</h2>
+<p>The V0 reference model produced a clear point ordering at the top of the posterior-mean ranking. Proposal P022, whose two overall grades average to 5.0, had posterior-mean rank 1 and expected rank 11.85. The three proposals with an average overall grade of 4.5 occupied the next three posterior-mean positions: P023 had rank 2 and expected rank 15.45, P032 rank 3 and expected rank 15.49, and P041 rank 4 and expected rank 16.50. These are exactly the four proposals that satisfied the original CRS qualification rule.</p>
+<p>The difference between posterior-mean rank and expected rank is already informative. Although P022 is first when proposals are ordered by posterior mean <span class="math inline">\(\theta_i\)</span>, its expected rank is 11.85 rather than close to 1. The corresponding 90% posterior rank interval extends from rank 1 to rank 35. The three other originally qualified proposals have 90% intervals of 1–37 for P023, 1–37 for P032, and 2–38 for P041. Thus, the fitted model preserves a clear point ordering while simultaneously indicating that the data provide little precision about the exact ranks.</p>
+<p>The MCMC diagnostics did not indicate a computational convergence problem. Across the monitored V0 parameters, the maximum PSRF was 1.0077 and the minimum effective sample size was 501. The weakest ESS occurred for <span class="math inline">\(\tau_\lambda\)</span> (stored as <code>tau_assessor</code>). These diagnostics support using the posterior draws for comparison, while the breadth of the rank distributions remains a substantive feature of the inference rather than an obvious MCMC failure.</p>
+</section>
+<section id="v1-results" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="v1-results"><span class="header-section-number">4.2</span> V1 results</h2>
+<p>The more parsimonious V1 model produced a very similar upper ordering. P022 remained at posterior-mean rank 1, with expected rank 13.08. P032 moved to posterior-mean rank 2 with expected rank 15.87, P023 moved to rank 3 with expected rank 15.87, and P041 remained rank 4 with expected rank 16.22. Again, the four proposals occupying the first four posterior-mean positions are exactly those that satisfied the original CRS qualification threshold.</p>
+<p>Rank uncertainty remained large. The 90% posterior rank interval for P022 was 1–36; for P023 and P032 it was 1–37; and for P041 it was 1–38. The posterior-mean ordering should therefore not be read as evidence that these proposals are separated with comparable certainty to their integer rank labels. This distinction is central for interpreting V1 as an uncertainty-aware model rather than simply another deterministic ranking rule.</p>
+<p>The relationship between the three ranking summaries is illustrated in <a href="#fig-v1-ranking-comparison" class="quarto-xref">Figure&nbsp;1</a>. In the figure, <code>Fixed</code> denotes the ranking obtained directly from the observed two-review average for each proposal, <code>Posterior Mean</code> denotes the ranking obtained by ordering proposals according to the posterior means of their latent effects <span class="math inline">\(\theta_i\)</span>, and <code>ER</code> denotes the posterior expected rank obtained by averaging each proposal’s rank across posterior draws. In all three cases, smaller rank values indicate better positions, with rank 1 corresponding to the highest-ranked proposal.</p>
+<div id="fig-v1-ranking-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-v1-ranking-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/model_comparison/ranking_comparison_V1.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-v1-ranking-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Proposal rankings under the observed-score ranking, posterior-mean ranking and posterior expected rank for the V1 cross-classified model. The movement of expected ranks toward the centre of the rank scale reflects substantial posterior uncertainty in the exact proposal ordering.
+</figcaption>
+</figure>
+</div>
+<p>V1 also showed favourable MCMC diagnostics. Its maximum PSRF was 1.0017 and its minimum effective sample size was 1,627, both associated with <span class="math inline">\(\tau_\theta\)</span> (stored as <code>tau_proposal</code>). All nine reviewer-effect 95% posterior intervals include zero in the saved V1 summary. This does not imply that reviewer variation is absent; it means that the dataset does not provide strong proposal-adjusted evidence for any single reviewer having a non-zero persistent effect. Reviewer effects are therefore described as reviewer-associated scoring tendencies and are examined further through the variance decomposition in Chapter 5.</p>
+</section>
+<section id="comparison-with-the-original-crs-procedure" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="comparison-with-the-original-crs-procedure"><span class="header-section-number">4.3</span> Comparison with the original CRS procedure</h2>
+<p>The original CRS rule and the Bayesian models answer related but different questions. The CRS procedure applies the score-based qualification threshold described in Section 2.3 and does not require a complete ordering of all 42 proposals. By contrast, V0 and V1 estimate latent proposal effects for every proposal and quantify uncertainty in their relative ranks.</p>
+<p>At the top of the point ranking, the methods agree strongly. P022, P023, P032 and P041 are the four proposals that qualified under the original rule, and the same four occupy the first four posterior-mean ranks under both V0 and V1. The Bayesian analysis therefore does not reveal a wholesale reversal of the original outcome. Instead, its main added information is about how uncertain the apparent ordering is.</p>
+<p>That distinction matters because deterministic score summaries can conceal instability when proposals are difficult to separate. Graves et al.&nbsp;show that reviewer-score variability can translate into substantial rank and funding instability <span class="citation" data-cites="graves2011">(<a href="#ref-graves2011" role="doc-biblioref">Graves et al. 2011</a>)</span>, while Heyard et al.&nbsp;use posterior rank uncertainty specifically to identify proposals whose quality is difficult to distinguish <span class="citation" data-cites="heyard2022">(<a href="#ref-heyard2022" role="doc-biblioref">Heyard et al. 2022</a>)</span>. In the CRS data, the broad posterior rank intervals show that agreement about which proposals look strongest from the observed scores should not be confused with precise knowledge of their latent ranks.</p>
+<p>The Bayesian analysis is therefore interpreted as complementary to the CRS qualification rule. It provides a probabilistic description of relative proposal quality and reviewer-associated variation; it does not retrospectively redefine the original threshold as a fixed top-four funding line.</p>
+</section>
+<section id="comparison-of-v0-and-v1" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="comparison-of-v0-and-v1"><span class="header-section-number">4.4</span> Comparison of V0 and V1</h2>
+<p>The direct comparison shows that simplifying V0 to the cross-classified V1 model changes little about the substantive ranking. The Spearman correlation between the two posterior-mean rankings is 0.9951, and the Pearson correlation between expected ranks is 0.9916. Twenty-six of the 42 proposals change their exact posterior-mean rank, but the changes are small: the mean absolute change is 0.86 positions and the maximum is 3 positions. Thus, counting the number of proposals whose integer rank changes would substantially overstate the practical difference between the models.</p>
+<p>The close agreement in expected ranks is also visible in <a href="#fig-expected-rank-v0-v1" class="quarto-xref">Figure&nbsp;2</a>, where most proposals lie close to the identity line.</p>
+<div id="fig-expected-rank-v0-v1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-expected-rank-v0-v1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/model_comparison/expected_rank_v0_vs_v1.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-expected-rank-v0-v1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Posterior expected ranks under the V0 Heyard reference model and the V1 cross-classified model. The dashed identity line represents identical expected ranks under both models. The close concentration around this line shows that simplifying V0 to V1 has little effect on the overall expected-rank ordering.
+</figcaption>
+</figure>
+</div>
+<p>Although the two models therefore produce very similar rankings overall, small changes in exact integer ranks can still occur when two proposals are nearly indistinguishable. The P023–P032 comparison provides a clear example. Under V0, P023 has posterior-mean rank 2 and P032 rank 3; under V1, this ordering reverses. Yet the posterior pairwise probability is</p>
+<p><span class="math display">\[
+\mathbb{P}(\theta_{032}&gt;\theta_{023}\mid Y)=0.498955
+\]</span></p>
+<p>under V0 and</p>
+<p><span class="math display">\[
+\mathbb{P}(\theta_{032}&gt;\theta_{023}\mid Y)=0.500470
+\]</span></p>
+<p>under V1. Both probabilities are essentially one half. The rank swap therefore reflects an almost exact posterior tie rather than meaningful evidence that one model identifies a different second-best proposal. This is a concrete example of why an exact integer rank can appear more decisive than the posterior comparison that produced it.</p>
+<p>Most importantly, V1 does not materially reduce rank uncertainty. The mean width of the 90% posterior rank interval is 36.50 positions under V0 and 36.74 under V1; the median width is 37 under both models. The large uncertainty therefore survives removal of V0’s proposal-reviewer-specific assessment layer. V1 has somewhat more favourable computational diagnostics and a simpler interpretation, while preserving essentially the same ranking conclusions.</p>
+<p>This comparison supports using V1 as the provisional main model, but it does not by itself establish why rank uncertainty is so large. The sparse design–especially the fact that each proposal has only two reviews–is a plausible major source, consistent with the broader precision problem discussed by Kaplan et al. <span class="citation" data-cites="kaplan2008">(<a href="#ref-kaplan2008" role="doc-biblioref">Kaplan et al. 2008</a>)</span>, but that explanation is investigated rather than assumed. The next step is therefore to validate V1 before using its posterior covariance structure in the review-design analysis.</p>
+</section>
+</section>
+<section id="validation-and-sensitivity-analysis-of-v1" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Validation and sensitivity analysis of V1</h1>
+<section id="motivation" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="motivation"><span class="header-section-number">5.1</span> Motivation</h2>
+<p>The close agreement between V0 and V1 shows that the simpler V1 specification preserves the main ranking conclusions, but this comparison alone does not establish that V1 is an adequate working model for the CRS data. The validation therefore focuses on a small number of checks that address different aspects of the model: computational behaviour, the estimated variance structure, posterior predictive adequacy, and sensitivity to the prior specification.</p>
+<p>The aim is not to establish V1 as the true data-generating mechanism. Rather, the objective is to determine whether its main inferential conclusions are sufficiently stable and whether it reproduces important features of the observed grades well enough to justify its use in the subsequent analyses. This is particularly relevant because the graph-based review-design extension later uses the covariance structure implied by V1.</p>
+</section>
+<section id="computational-diagnostics" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="computational-diagnostics"><span class="header-section-number">5.2</span> Computational diagnostics</h2>
+<p>Computational convergence was already summarized alongside the V1 ranking results in Chapter 4. The final V1 fit had a maximum PSRF of 1.0017 and a minimum effective sample size of 1,627, with the smallest ESS occurring for <span class="math inline">\(\tau_\theta\)</span>. These values do not indicate an important convergence problem.</p>
+<p>Rather than repeating the numerical diagnostics in detail, this section supplements them with trace plots for the three V1 scale parameters <span class="math inline">\(\tau_\theta\)</span>, <span class="math inline">\(\tau_b\)</span>, and <span class="math inline">\(\sigma\)</span>. These plots provide a visual check that the four MCMC chains explore the same posterior region without persistent trends or obvious chain separation.</p>
+<!-- TODO:
+Add one compact figure containing trace plots for:
+- tau_theta;
+- tau_b;
+- sigma.
+
+Keep the written discussion very short unless a plot reveals a problem.
+Do not repeat the full MCMC setup already described in Chapter 3 or the
+diagnostic results already reported in Chapter 4.
+-->
+</section>
+<section id="variance-decomposition-and-intraproposal-correlation" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="variance-decomposition-and-intraproposal-correlation"><span class="header-section-number">5.3</span> Variance decomposition and intraproposal correlation</h2>
+<p>The variance decomposition defined in Section 3.4 is evaluated from the posterior draws of <span class="math inline">\(\tau_\theta\)</span>, <span class="math inline">\(\tau_b\)</span>, and <span class="math inline">\(\sigma\)</span>. The objective is to determine how the model distributes variation between proposal effects, reviewer-associated scoring tendencies, and remaining review-level variation.</p>
+<p>The proposal variance share is interpreted as the model-implied intraproposal correlation introduced in Section 3.4, following the cross-classified reliability interpretation of Jayasinghe et al. <span class="citation" data-cites="jayasinghe2003">(<a href="#ref-jayasinghe2003" role="doc-biblioref">Jayasinghe et al. 2003</a>)</span>. The reviewer variance share is reported separately as a reviewer-clustering quantity rather than as a proposal-reliability measure.</p>
+<!-- TODO:
+For every posterior draw calculate:
+- proposal variance share;
+- reviewer variance share;
+- residual variance share.
+
+Report posterior summaries and uncertainty intervals.
+
+Prefer one compact interval plot showing the posterior distributions or
+posterior means/medians with credible intervals for the three variance shares.
+
+Do not derive the ICC formulas again here; they are already defined in
+Section 3.4.
+
+Interpret the variance decomposition as a description of V1's estimated
+information structure. It is not, by itself, a goodness-of-fit test.
+-->
+</section>
+<section id="posterior-predictive-assessment" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="posterior-predictive-assessment"><span class="header-section-number">5.4</span> Posterior predictive assessment</h2>
+<p>Posterior predictive checks are used to assess whether data generated from the fitted V1 model resemble important features of the observed CRS grades. For posterior draw <span class="math inline">\(s\)</span>, replicated grades are generated from the fitted sampling model using the corresponding posterior parameter values. The resulting replicated datasets are then compared with the observed data.</p>
+<p>The checks focus on features that are directly relevant to the assumptions and use of V1: the overall location and dispersion of the grades, disagreement between the two reviews of the same proposal, and the extent to which the Gaussian model generates values outside the observed 1–5 scale.</p>
+<!-- TODO:
+Generate posterior predictive replicated datasets Y_rep.
+
+Use a small set of checks:
+1. observed versus replicated overall mean;
+2. observed versus replicated standard deviation;
+3. observed versus replicated within-proposal reviewer disagreement;
+4. posterior distribution of the proportion of replicated grades below 1
+   or above 5.
+
+Present these primarily graphically rather than through large tables.
+
+If useful, add one simple comparison of the observed score distribution
+with posterior predictive distributions.
+
+Do not add many generic PPC statistics. Each check should correspond to
+an actual assumption or substantive feature of V1.
+-->
+<!-- MODEL-FORM DECISION:
+Only if the posterior predictive checks reveal an important failure of the
+Gaussian approximation should an ordinal V1 specification be fitted as an
+additional sensitivity analysis. Otherwise, retain the Gaussian model and
+discuss the bounded/ordinal scale as a limitation.
+-->
+</section>
+<section id="prior-sensitivity" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="prior-sensitivity"><span class="header-section-number">5.5</span> Prior sensitivity</h2>
+<p>The baseline V1 specification uses bounded uniform priors on the scale parameters. Because these parameters determine the amount of partial pooling and are estimated from a relatively small dataset, the stability of the main conclusions is assessed under one alternative regularizing prior specification.</p>
+<p>The purpose of this analysis is not to search across many possible priors, but to determine whether the substantive ranking and variance conclusions depend strongly on the particular baseline scale priors.</p>
+<!-- TODO:
+Fit one alternative V1 prior specification.
+
+Current candidate:
+half-normal scale priors, for example
+
+sigma, tau_theta, tau_b ~ half-Normal(0, 1).
+
+Compare baseline and sensitivity fits using:
+- posterior summaries of tau_theta, tau_b and sigma;
+- proposal and reviewer variance shares;
+- expected ranks;
+- correlation of expected ranks;
+- rank-uncertainty widths;
+- selected pairwise probabilities if useful.
+
+Use a baseline-versus-sensitivity expected-rank scatter plot as the main
+ranking comparison.
+
+Do not construct a large prior grid.
+-->
+</section>
+<section id="validation-conclusion" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="validation-conclusion"><span class="header-section-number">5.6</span> Validation conclusion</h2>
+<!-- TODO:
+Write after completing the checks.
+
+Answer Research Question 3 directly.
+
+The conclusion should distinguish:
+- computational convergence;
+- estimated variance structure;
+- posterior predictive adequacy;
+- prior sensitivity.
+
+If all checks are broadly satisfactory:
+state that V1 is an adequate and sufficiently robust working model for the
+subsequent analyses, while retaining the limitations of the sparse,
+non-random review design and the Gaussian treatment of the score scale.
+
+If a minor limitation appears but rankings remain robust:
+retain V1 and state the limitation explicitly.
+
+Only introduce a replacement model if the diagnostics reveal a material
+failure that affects the substantive conclusions.
+-->
+<!-- OPTIONAL INFLUENCE CHECK:
+Do not perform leave-one-proposal-out or leave-one-reviewer-out analysis by
+default. If the main diagnostics suggest that the fit may be driven by one
+proposal or reviewer, add a small targeted exclusion analysis as a sensitivity
+check, preferably in an appendix.
+-->
+</section>
+</section>
+<section id="graph-based-review-design" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Graph-based review design</h1>
+<section id="motivation-1" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="motivation-1"><span class="header-section-number">6.1</span> Motivation</h2>
+<!-- TODO:
+Investigate whether the remaining ranking uncertainty can be reframed as
+a review-design problem.
+
+Questions to investigate:
+- how much of the uncertainty appears related to limited review information?
+- what is known about the value of additional reviewers?
+- when is adding review effort practically worthwhile?
+- should attention focus on single additional reviews or groups/budgets
+  of reviews?
+
+LITERATURE TO INVESTIGATE:
+- Kaplan et al. (2008):
+  number of reviewers, precision and instability of ranks with few reviews.
+- Graves et al. (2011):
+  consequences of reviewer variability for funding decisions.
+- Heyard et al. (2022):
+  fundamental limitations caused by finite reviewer resources and difficulty
+  distinguishing proposals of similar quality.
+
+These papers motivate the problem but do not by themselves establish
+the graph-theoretic approach.
+-->
+</section>
+<section id="reviewerproposal-assignment-as-a-bipartite-graph" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="reviewerproposal-assignment-as-a-bipartite-graph"><span class="header-section-number">6.2</span> Reviewer–proposal assignment as a bipartite graph</h2>
+<!-- TODO:
+Investigate whether representing the sparse assignment as a bipartite graph
+provides a useful mathematical description of the evaluation design.
+
+Questions to investigate:
+- what graph concepts are actually needed?
+- how should reviewer and proposal nodes be interpreted?
+- what aspects of sparse/unbalanced assignment are represented by the graph?
+- what notion of connectivity is statistically relevant?
+
+LITERATURE GAP:
+Find primary literature on:
+- bipartite representations of two-way / reviewer-item data;
+- incomplete block designs;
+- graph representations of experimental designs;
+- connectivity and estimability in incomplete designs.
+
+Do not introduce graph terminology merely for presentation; establish why
+it contributes to the statistical analysis.
+-->
+</section>
+<section id="connection-between-graph-structure-and-statistical-uncertainty" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="connection-between-graph-structure-and-statistical-uncertainty"><span class="header-section-number">6.3</span> Connection between graph structure and statistical uncertainty</h2>
+<!-- TODO:
+Investigate whether and how graph structure can be linked formally to
+uncertainty in V1.
+
+Questions to investigate:
+- how does the assignment structure enter the model's information?
+- under what assumptions can graph connectivity be related to precision?
+- what quantities from graph theory have an interpretation in terms of
+  posterior uncertainty?
+- which results are established in the literature and which are derived
+  specifically for the CRS model?
+
+LITERATURE GAP:
+Find primary literature on:
+- graph Laplacians and information matrices;
+- incomplete block / optimal experimental design;
+- effective resistance and uncertainty of contrasts;
+- statistical estimation on graphs;
+- reviewer-assignment or comparison-design problems.
+
+This connection must be mathematically justified before graph geometry
+is compared empirically with statistical uncertainty.
+-->
+</section>
+<section id="measuring-uncertainty" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="measuring-uncertainty"><span class="header-section-number">6.4</span> Measuring uncertainty</h2>
+<!-- TODO:
+Investigate what notion of uncertainty is appropriate for the review-design
+problem.
+
+Possible perspectives to investigate:
+- uncertainty in latent proposal differences;
+- uncertainty in proposal ranks;
+- uncertainty in pairwise ordering;
+- uncertainty in separating proposals into meaningful groups;
+- uncertainty specifically relevant to a qualification/funding decision.
+
+Also investigate whether global statistical uncertainty and
+decision-relevant uncertainty lead to different objectives.
+
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022):
+  expected ranks and funding-line uncertainty.
+- active-ranking / ranking-under-uncertainty literature.
+- Bayesian experimental-design literature.
+- decision-theoretic approaches if funding-set uncertainty becomes central.
+
+LITERATURE GAP:
+Identify established uncertainty/loss measures before defining a new
+project-specific one.
+-->
+</section>
+<section id="allocation-of-additional-reviews" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="allocation-of-additional-reviews"><span class="header-section-number">6.5</span> Allocation of additional reviews</h2>
+<!-- TODO:
+Investigate the value of collecting additional reviews under limited
+reviewer resources.
+
+Questions to investigate:
+- how should the value of an additional review be quantified?
+- is one additional review informative enough to be practically meaningful?
+- should the problem instead be formulated for a group or budget of
+  additional reviews?
+- how does the existing number of reviews affect the marginal value of
+  another review?
+- what operational constraints would matter in practice?
+
+LITERATURE TO INVESTIGATE:
+- optimal experimental design;
+- sequential / adaptive experimental design;
+- active ranking;
+- optimal allocation of comparisons;
+- reviewer-assignment optimization.
+
+LITERATURE GAP:
+Find papers specifically connecting assignment of reviewers or judges to
+ranking precision, preferably in peer-review or closely related settings.
+-->
+</section>
+<section id="comparison-of-review-allocation-strategies" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="comparison-of-review-allocation-strategies"><span class="header-section-number">6.6</span> Comparison of review-allocation strategies</h2>
+<!-- TODO:
+Investigate which alternative allocation principles are meaningful
+benchmarks for the CRS setting.
+
+Possible ideas to investigate:
+- allocation based on existing disagreement;
+- allocation focused on decision-relevant proposals;
+- allocation based on statistical information;
+- simple non-targeted baselines.
+
+Questions:
+- what uncertainty objective does each strategy implicitly target?
+- do different strategies identify similar or different proposals?
+- how should strategies be compared fairly under equal review budgets?
+
+LITERATURE TO INVESTIGATE:
+- active ranking;
+- optimal reviewer assignment;
+- Bayesian design;
+- literature on additional review around uncertain funding boundaries.
+
+Do not fix the final strategies until the uncertainty objective and
+mathematical framework have been justified.
+-->
+</section>
+<section id="implications-for-sparse-evaluation-designs" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="implications-for-sparse-evaluation-designs"><span class="header-section-number">6.7</span> Implications for sparse evaluation designs</h2>
+<!-- TODO:
+Investigate whether the ideas developed for CRS can be interpreted beyond
+the exact two-review-per-proposal design.
+
+Questions to investigate:
+- what parts of the framework depend specifically on two reviews?
+- how would the value of another review change when proposals already
+  have more reviews?
+- are there theoretical reasons to expect diminishing returns?
+- which conclusions are specific to this dataset and which might apply
+  more generally to sparse evaluation panels?
+
+LITERATURE TO INVESTIGATE:
+- Kaplan et al. (2008) for reviewer-number/precision relationships.
+- experimental-design literature on replication and marginal information.
+- reviewer-allocation literature for panels with different review loads.
+
+Treat any generalization beyond CRS cautiously unless supported by either
+theory, simulation or literature.
+-->
+</section>
+</section>
+<section id="discussion-and-recommendations" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Discussion and recommendations</h1>
+<section id="answers-to-the-research-questions" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="answers-to-the-research-questions"><span class="header-section-number">7.1</span> Answers to the research questions</h2>
+<!-- TODO:
+Answer each final research question explicitly using the completed analyses
+and only after the research questions have reached their final form.
+-->
+</section>
+<section id="implications-for-crs" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="implications-for-crs"><span class="header-section-number">7.2</span> Implications for CRS</h2>
+<!-- TODO:
+Investigate which practical recommendations are genuinely supported by
+the results.
+
+Possible themes:
+- Bayesian ranking as decision support;
+- communication of uncertainty;
+- interpretation of criterion scores;
+- whether additional reviews are useful;
+- how additional review effort might be targeted.
+
+LITERATURE TO INVESTIGATE:
+- Heyard et al. (2022) for decision-support framing.
+- grant-review literature on reviewer numbers and reliability.
+- any review-design literature identified during Chapter 6.
+
+Avoid recommendations that go beyond what can be supported by one
+evaluation round.
+-->
+</section>
+<section id="ranking-uncertainty-and-decision-uncertainty" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="ranking-uncertainty-and-decision-uncertainty"><span class="header-section-number">7.3</span> Ranking uncertainty and decision uncertainty</h2>
+<!-- TODO:
+Investigate whether reducing uncertainty about the full latent ranking and
+reducing uncertainty around a funding/qualification decision are genuinely
+different objectives in this dataset.
+
+Questions to investigate:
+- do they prioritize the same proposals?
+- can a design improve global statistical certainty without materially
+  affecting the relevant decision set?
+- which objective would be more meaningful for CRS?
+
+LITERATURE TO INVESTIGATE:
+- Bayesian decision theory if needed;
+- Heyard et al. (2022) for uncertainty around a funding line;
+- active ranking literature distinguishing full-ranking and top-set objectives.
+-->
+</section>
+<section id="limitations" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="limitations"><span class="header-section-number">7.4</span> Limitations</h2>
+<!-- TODO:
+Discuss limitations that materially affect interpretation.
+
+Themes to revisit:
+- one evaluation round;
+- small reviewer panel;
+- limited reviews per proposal;
+- unequal workloads;
+- expertise-based non-random assignment;
+- bounded and ordinal grade scale;
+- model and prior dependence;
+- lack of observed true proposal quality;
+- feasibility constraints on hypothetical additional reviews;
+- assumptions needed for any graph-based design analysis.
+
+Use literature where it helps distinguish limitations specific to CRS
+from limitations known more generally in grant peer review.
+-->
+</section>
+<section id="future-work" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="future-work"><span class="header-section-number">7.5</span> Future work</h2>
+<!-- TODO:
+Identify extensions that follow naturally from the completed project.
+
+Potential themes to investigate:
+- application to future CRS rounds;
+- evaluation designs with more reviews per proposal;
+- ordinal modelling;
+- reviewer expertise or conflicts;
+- prospective testing of review-allocation rules;
+- broader simulation studies;
+- application to other sparse evaluation systems.
+
+Only retain extensions that make sense in light of the final results.
+-->
+</section>
+</section>
+<section id="conclusion" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Conclusion</h1>
+<!-- TODO:
+Write this last.
+
+Summarize:
+- what was learned from the Bayesian ranking analysis;
+- what was learned from comparing and validating the models;
+- what the criterion analysis contributed;
+- what the review-design investigation showed;
+- the main practical conclusion.
+
+Do not introduce new literature, methods or results here.
+-->
+</section>
+
+<section id="references" class="level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-crs2026seedgrants" class="csl-entry" role="listitem">
+Center for Reproducible Science. 2026. <em>CRS Seed Grants: Four Projects Approved</em>. University of Zurich. <a href="https://www.crs.uzh.ch/en/news/2026-News/Four-CRS-Seed-Grants-Funded.html">https://www.crs.uzh.ch/en/news/2026-News/Four-CRS-Seed-Grants-Funded.html</a>.
+</div>
+<div id="ref-crs2026seedgrantcall" class="csl-entry" role="listitem">
+Center for Reproducible Science and Research Synthesis. 2026. <em>CRS Seed Grants: Seed Grants for Research Synthesis and Meta-Research</em>. University of Zurich. <a href="https://www.crs.uzh.ch/en/news/2026-News/CRS-Seed-Grants.html">https://www.crs.uzh.ch/en/news/2026-News/CRS-Seed-Grants.html</a>.
+</div>
+<div id="ref-eblen2016" class="csl-entry" role="listitem">
+Eblen, Matthew K., Robin M. Wagner, Deepshikha RoyChowdhury, Katherine C. Patel, and Katrina Pearson. 2016. <span>“How Criterion Scores Predict the Overall Impact Score and Funding Outcomes for National Institutes of Health Peer-Reviewed Applications.”</span> <em>PLOS ONE</em> 11 (6): e0155060. <a href="https://doi.org/10.1371/journal.pone.0155060">https://doi.org/10.1371/journal.pone.0155060</a>.
+</div>
+<div id="ref-erosheva2020" class="csl-entry" role="listitem">
+Erosheva, Elena A., Sheridan Grant, Mei-Ching Chen, Mark D. Lindner, Richard K. Nakamura, and Carole J. Lee. 2020. <span>“NIH Peer Review: Criterion Scores Completely Account for Racial Disparities in Overall Impact Scores.”</span> <em>Science Advances</em> 6 (23): eaaz4868. <a href="https://doi.org/10.1126/sciadv.aaz4868">https://doi.org/10.1126/sciadv.aaz4868</a>.
+</div>
+<div id="ref-graves2011" class="csl-entry" role="listitem">
+Graves, Nicholas, Adrian G. Barnett, and Philip Clarke. 2011. <span>“Funding Grant Proposals for Scientific Research: Retrospective Analysis of Scores by Members of Grant Review Panel.”</span> <em>BMJ</em> 343: d4797. <a href="https://doi.org/10.1136/bmj.d4797">https://doi.org/10.1136/bmj.d4797</a>.
+</div>
+<div id="ref-heyard2022" class="csl-entry" role="listitem">
+Heyard, Rachel, Manuela Ott, Georgia Salanti, and Matthias Egger. 2022. <span>“Rethinking the Funding Line at the Swiss National Science Foundation: Bayesian Ranking and Lottery.”</span> <em>Statistics and Public Policy</em> 9 (1): 110–21. <a href="https://doi.org/10.1080/2330443X.2022.2086190">https://doi.org/10.1080/2330443X.2022.2086190</a>.
+</div>
+<div id="ref-jayasinghe2003" class="csl-entry" role="listitem">
+Jayasinghe, Upali W., Herbert W. Marsh, and Nigel Bond. 2003. <span>“A Multilevel Cross-Classified Modelling Approach to Peer Review of Grant Proposals: The Effects of Assessor and Researcher Attributes on Assessor Ratings.”</span> <em>Journal of the Royal Statistical Society: Series A (Statistics in Society)</em> 166 (3): 279–300. <a href="https://doi.org/10.1111/1467-985X.00278">https://doi.org/10.1111/1467-985X.00278</a>.
+</div>
+<div id="ref-kaplan2008" class="csl-entry" role="listitem">
+Kaplan, David, Nicola Lacetera, and Celia Kaplan. 2008. <span>“Sample Size and Precision in NIH Peer Review.”</span> <em>PLOS ONE</em> 3 (7): e2761. <a href="https://doi.org/10.1371/journal.pone.0002761">https://doi.org/10.1371/journal.pone.0002761</a>.
+</div>
+</div>
+</section>
+
+<div id="quarto-appendix" class="default"><section id="additional-figures" class="level1 appendix" data-number="9"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">9</span> Additional figures</h2><div class="quarto-appendix-contents">
+
+<section id="v0-ranking-comparison" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="v0-ranking-comparison"><span class="header-section-number">9.1</span> V0 ranking comparison</h2>
+<p>For completeness, <a href="#fig-v0-ranking-comparison" class="quarto-xref">Figure&nbsp;3</a> shows the corresponding comparison for the V0 Heyard reference model. In the figure, <code>Fixed</code> denotes the ranking based directly on the observed two-review average, <code>Posterior Mean</code> denotes the ranking obtained from the posterior means of the latent proposal effects <span class="math inline">\(\theta_i\)</span>, and <code>ER</code> denotes the posterior expected rank obtained by averaging proposal ranks across posterior draws. The same general movement of expected ranks toward the middle of the rank scale is visible under V0, consistent with the large posterior rank uncertainty reported in Chapter 4.</p>
+<div id="fig-v0-ranking-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-v0-ranking-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/model_comparison/ranking_comparison_V0.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-v0-ranking-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Proposal rankings under the observed-score ranking, posterior-mean ranking and posterior expected rank for the V0 Heyard reference model.
+</figcaption>
+</figure>
+</div>
+</section>
+</div></section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
