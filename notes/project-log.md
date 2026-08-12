@@ -290,6 +290,47 @@ Produce posterior rank uncertainty summaries before extending the analysis.
 - begin graph-design literature/theory.
 
 
+## 2026-08-09 to 2026-08-11 — Technical report writing
+
+### Completed
+- Substantially expanded and revised the technical report.
+- Wrote up V0/V1 methodology, expected-rank theory, ranking results and model comparison.
+- Reduced repetition between methodology, results and validation sections.
+- Added the main V1 ranking and V0/V1 comparison figures.
+- Planned a focused V1 validation chapter.
+
+### Main findings
+- V1 gives almost the same substantive ranking as V0 despite being more parsimonious.
+- Exact rank changes can be misleading when posterior pairwise probabilities are close to 0.5.
+- The report now separates methodology, empirical results and model validation more clearly.
+
+### Next steps
+- Validate V1 before treating it as the main model.
+- Afterwards perform the criterion analysis and begin the graph-based review-design extension.
+
+
+## 2026-08-11 to 2026-08-12 — V1 model validation
+
+### Completed
+- Implemented convergence diagnostics, trace plots and posterior variance decomposition.
+- Implemented posterior predictive checks for mean, dispersion, within-proposal disagreement and the bounded 1–5 score range.
+- Re-fitted V1 with Half-Normal(0,1) scale priors as a prior-sensitivity analysis.
+- Compared rankings, variance components and rank uncertainty between the baseline and sensitivity models.
+
+### Main findings
+- V1 showed good computational convergence.
+- Most posterior variance is attributed to residual review-level variation; proposal and reviewer variance shares are smaller and uncertain.
+- Posterior predictive checks reproduce the observed mean, spread and reviewer disagreement well.
+- The Gaussian model predicts around 6% of replicated grades outside the possible 1–5 range, which is the main model limitation identified.
+- Prior sensitivity is extremely small: expected ranks and variance conclusions are essentially unchanged under Half-Normal priors.
+- The large rank uncertainty is therefore not driven by the original Uniform(0,2) prior choice.
+
+### Next steps
+- Write the validation results into the technical report and connect them to the relevant literature.
+- Discuss whether the bounded-score limitation requires an ordinal sensitivity check.
+- Perform the criterion-versus-overall-grade analysis.
+- Move to the graph-based review-design analysis.
+
 #Template
 ## YYYY-MM-DD — Short description
 
