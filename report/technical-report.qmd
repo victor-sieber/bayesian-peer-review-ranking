@@ -552,142 +552,436 @@ This comparison supports using V1 as the provisional main model, but it does not
 
 ## Motivation
 
-The close agreement between V0 and V1 shows that the simpler V1 specification preserves the main ranking conclusions, but this comparison alone does not establish that V1 is an adequate working model for the CRS data. The validation therefore focuses on a small number of checks that address different aspects of the model: computational behaviour, the estimated variance structure, posterior predictive adequacy, and sensitivity to the prior specification.
+The close agreement between V0 and V1 shows that the simpler V1 specification preserves the main ranking conclusions, but this comparison alone does not establish that V1 is an adequate working model for the CRS data. The validation therefore considers four aspects of the model: computational convergence, the estimated variance structure, posterior predictive behaviour, and sensitivity to the prior specification.
 
-The aim is not to establish V1 as the true data-generating mechanism. Rather, the objective is to determine whether its main inferential conclusions are sufficiently stable and whether it reproduces important features of the observed grades well enough to justify its use in the subsequent analyses. This is particularly relevant because the graph-based review-design extension later uses the covariance structure implied by V1.
+The aim is not to establish V1 as the true data-generating mechanism. Rather, the objective is to determine whether its main inferential conclusions are sufficiently stable and whether the fitted model reproduces important features of the observed grades well enough to justify its use in the analyses conducted in this project. This is particularly relevant because the later review-design analysis builds on the proposal--reviewer structure represented by V1.
+
 
 ## Computational diagnostics
 
-Computational convergence was already summarized alongside the V1 ranking results in Chapter 4. The final V1 fit had a maximum PSRF of 1.0017 and a minimum effective sample size of 1,627, with the smallest ESS occurring for $\tau_\theta$. These values do not indicate an important convergence problem.
+The numerical convergence diagnostics for V1 were already summarized in Chapter 4. Across all monitored parameters, the maximum potential scale reduction factor was 1.0017 and the minimum effective sample size was 1,627. The smallest effective sample size occurred for the proposal-level scale parameter $\tau_\theta$. These values do not indicate an important convergence problem.
 
-<!-- Depending on plot results: Rather than repeating the numerical diagnostics in detail, this section supplements them with trace plots for the three V1 scale parameters $\tau_\theta$, $\tau_b$, and $\sigma$. These plots provide a visual check that the four MCMC chains explore the same posterior region without persistent trends or obvious chain separation. -->
+The numerical diagnostics are supplemented by the trace plots in @fig-v1-trace. The four chains occupy the same posterior regions without persistent trends or visible chain separation. For readability, the figure shows the final 5,000 stored iterations from each chain and plots every fifth value; the numerical diagnostics above are based on the full posterior sample.
 
-<!-- TODO:
-Add one compact figure containing trace plots for:
-- tau_theta;
-- tau_b;
-- sigma.
+![Trace plots for the V1 scale parameters $\tau_\theta$, $\tau_b$, and $\sigma$. The four chains overlap throughout the displayed sampling period without persistent trends or chain separation.](figures/validation/v1_trace_plots.png){#fig-v1-trace width=90%}
 
-Keep the written discussion very short unless a plot reveals a problem.
-Do not repeat the full MCMC setup already described in Chapter 3 or the
-diagnostic results already reported in Chapter 4.
--->
+The computational diagnostics therefore support using the retained posterior draws for the subsequent validation. They should, however, be distinguished from model adequacy: successful convergence indicates that the posterior distribution was sampled reliably, but does not by itself imply that the statistical model describes the observed grades well.
+
 
 ## Variance decomposition and intraproposal correlation
 
-The variance decomposition defined in Section 3.4 is evaluated from the posterior draws of $\tau_\theta$, $\tau_b$, and $\sigma$. The objective is to determine how the model distributes variation between proposal effects, reviewer-associated scoring tendencies, and remaining review-level variation.
+The variance decomposition introduced in Section 3.4 was evaluated separately for every posterior draw. For posterior draw $s$, the total model variance is
 
-The proposal variance share is interpreted as the model-implied intraproposal correlation introduced in Section 3.4, following the cross-classified reliability interpretation of Jayasinghe et al. [@jayasinghe2003]. The reviewer variance share is reported separately as a reviewer-clustering quantity rather than as a proposal-reliability measure.
+$$
+V^{(s)}
+=
+\left(\tau_\theta^{(s)}\right)^2
++
+\left(\tau_b^{(s)}\right)^2
++
+\left(\sigma^{(s)}\right)^2.
+$$
 
-<!-- TODO:
-For every posterior draw calculate:
-- proposal variance share;
-- reviewer variance share;
-- residual variance share.
+The corresponding proposal, reviewer and residual variance shares are
 
-Report posterior summaries and uncertainty intervals.
+$$
+\rho_{\mathrm{proposal}}^{(s)}
+=
+\frac{
+\left(\tau_\theta^{(s)}\right)^2
+}{
+V^{(s)}
+},
+$$
 
-Prefer one compact interval plot showing the posterior distributions or
-posterior means/medians with credible intervals for the three variance shares.
+$$
+\rho_{\mathrm{reviewer}}^{(s)}
+=
+\frac{
+\left(\tau_b^{(s)}\right)^2
+}{
+V^{(s)}
+},
+$$
 
-Do not derive the ICC formulas again here; they are already defined in
-Section 3.4.
+and
 
-Interpret the variance decomposition as a description of V1's estimated
-information structure. It is not, by itself, a goodness-of-fit test.
--->
+$$
+\rho_{\mathrm{residual}}^{(s)}
+=
+\frac{
+\left(\sigma^{(s)}\right)^2
+}{
+V^{(s)}
+}.
+$$
+
+As discussed in Section 3.4, the proposal share is also the V1 model-implied correlation between two ratings of the same proposal by different reviewers. It therefore provides an intraproposal correlation in the sense of the cross-classified reliability interpretation of Jayasinghe et al. [@jayasinghe2003].
+
+The posterior medians of the proposal, reviewer and residual shares were 0.050, 0.026 and 0.896, respectively. The corresponding 95% credible intervals were approximately $[0.0002,0.289]$ for the proposal share, $[0.0001,0.240]$ for the reviewer share, and $[0.615,0.995]$ for the residual share. These posterior summaries are shown in @fig-v1-variance-shares.
+
+![Posterior variance shares under V1. Points show posterior medians and vertical intervals show 95% credible intervals.](figures/validation/v1_variance_shares.png){#fig-v1-variance-shares width=75%}
+
+The fitted model therefore attributes most variation in the observed grades to residual review-level variation. The proposal- and reviewer-level variance shares are considerably smaller and are estimated with substantial uncertainty. In particular, the posterior median intraproposal correlation of approximately 0.05 indicates weak model-implied correlation between two independent ratings of the same proposal. This is consistent with the broad posterior rank distributions reported in Chapter 4, although the variance decomposition alone does not establish that the sparse review design caused the rank uncertainty.
+
 
 ## Posterior predictive assessment
 
-Posterior predictive checks are used to assess whether data generated from the fitted V1 model resemble important features of the observed CRS grades. For posterior draw $s$, replicated grades are generated from the fitted sampling model using the corresponding posterior parameter values. The resulting replicated datasets are then compared with the observed data.
+Posterior predictive checks were used to assess whether datasets generated from V1 reproduce important features of the observed CRS grades. A sample of 5,000 posterior draws was used. For posterior draw $s$ and review $r$, a replicated grade was generated according to
 
-The checks focus on features that are directly relevant to the assumptions and use of V1: the overall location and dispersion of the grades, disagreement between the two reviews of the same proposal, and the extent to which the Gaussian model generates values outside the observed 1--5 scale.
+$$
+Y_r^{\mathrm{rep},(s)}
+\sim
+\mathcal{N}\!\left(
+\bar{Y}
++
+\theta_{p(r)}^{(s)}
++
+b_{a(r)}^{(s)},
+\left(\sigma^{(s)}\right)^2
+\right).
+$$
 
-<!-- TODO:
-Generate posterior predictive replicated datasets Y_rep.
+This produces a complete replicated dataset of 84 grades for each selected posterior draw. Four statistics were initially considered: the overall mean, the overall standard deviation, the mean absolute disagreement between the two reviews of the same proposal, and the proportion of replicated grades outside the admissible score range from 1 to 5.
 
-Use a small set of checks:
-1. observed versus replicated overall mean;
-2. observed versus replicated standard deviation;
-3. observed versus replicated within-proposal reviewer disagreement;
-4. posterior distribution of the proportion of replicated grades below 1
-   or above 5.
+The observed overall mean was 3.476. The posterior predictive mean was 3.474, with a 95% predictive interval of approximately $[3.241,3.704]$. The observed standard deviation was 0.950, compared with a posterior predictive mean of 0.975 and a 95% predictive interval of approximately $[0.781,1.201]$. V1 therefore reproduces the overall location and dispersion of the observed grades well.
 
-Present these primarily graphically rather than through large tables.
+The initial reviewer-disagreement statistic was defined as
 
-If useful, add one simple comparison of the observed score distribution
-with posterior predictive distributions.
+$$
+\bar{D}
+=
+\frac{1}{42}
+\sum_{i=1}^{42}
+\left|
+Y_{i1}-Y_{i2}
+\right|,
+$$
 
-Do not add many generic PPC statistics. Each check should correspond to
-an actual assumption or substantive feature of V1.
--->
+where $Y_{i1}$ and $Y_{i2}$ denote the two grades received by proposal $i$. The observed value was
 
-<!-- MODEL-FORM DECISION:
-Only if the posterior predictive checks reveal an important failure of the
-Gaussian approximation should an ordinal V1 specification be fitted as an
-additional sensitivity analysis. Otherwise, retain the Gaussian model and
-discuss the bounded/ordinal scale as a limitation.
--->
+$$
+\bar{D}_{\mathrm{obs}}
+=
+1.095,
+$$
+
+while the posterior predictive mean was 1.064. The 95% predictive interval was approximately $[0.790,1.386]$. The main posterior predictive results are shown in @fig-v1-ppc.
+
+![Posterior predictive checks for V1. Histograms show the distributions of statistics calculated from replicated datasets, while dashed vertical lines show the corresponding observed values.](figures/validation/v1_posterior_predictive_checks.png){#fig-v1-ppc width=95%}
+
+The final check in @fig-v1-ppc exposes an important limitation of the Gaussian specification. Although the observed grades are restricted to the five values from 1 to 5, the Gaussian sampling model has support on the full real line. On average, 0.066 of the replicated grades were below 1 or above 5, corresponding to approximately 6.6% of simulated scores. The posterior predictive median was 0.060.
+
+This behaviour is a direct consequence of the decision to model the score scale as continuous and Gaussian. It is therefore not interpreted as a computational failure, but it is an important modelling caveat. In particular, V1 does not enforce the admissible score range and should not be interpreted as a literal generative model for future integer-valued CRS grades without this limitation being made explicit. The continuous specification is retained because the main objective of V1 is inference on the latent proposal effects and their relative ranking, rather than prediction of valid future score categories.
+
+
+### Investigation of reviewer disagreement
+
+The close agreement between the observed mean disagreement of 1.095 and the posterior predictive mean of 1.064 was investigated further. In particular, it is useful to understand whether this agreement follows naturally from the structure of V1 or whether it could be an artefact of the posterior predictive simulation.
+
+Consider proposal $i$, reviewed by reviewers $j$ and $k$. Under V1,
+
+$$
+Y_{ij}
+=
+\bar{Y}
++
+\theta_i
++
+b_j
++
+\varepsilon_{ij}
+$$
+
+and
+
+$$
+Y_{ik}
+=
+\bar{Y}
++
+\theta_i
++
+b_k
++
+\varepsilon_{ik}.
+$$
+
+Subtracting the two grades gives
+
+$$
+Y_{ij}-Y_{ik}
+=
+b_j-b_k
++
+\varepsilon_{ij}-\varepsilon_{ik}.
+$$
+
+The proposal effect $\theta_i$ therefore cancels completely. Conditional on the reviewer effects and residual standard deviation,
+
+$$
+Y_{ij}-Y_{ik}
+\mid b_j,b_k,\sigma
+\sim
+\mathcal{N}\!\left(
+b_j-b_k,\,
+2\sigma^2
+\right).
+$$
+
+The expected absolute disagreement can also be obtained analytically. Conditional on the reviewer effects and residual standard deviation, the difference between two reviews of the same proposal is normally distributed. Taking its absolute value therefore gives a *folded normal distribution* [@leone1961]. More generally, if
+
+$$
+X\sim\mathcal{N}(\mu,s^2),
+$$
+
+then $|X|$ follows a folded normal distribution. Its expected value is
+
+$$
+\operatorname{E}|X|
+=
+s
+\sqrt{\frac{2}{\pi}}
+\exp\!\left(
+-\frac{\mu^2}{2s^2}
+\right)
++
+|\mu|
+\left[
+2\Phi\!\left(
+\frac{|\mu|}{s}
+\right)
+-1
+\right],
+$$
+
+where $\Phi(\cdot)$ denotes the cumulative distribution function of the standard normal distribution,
+
+$$
+\Phi(x)
+=
+\mathbb{P}(Z\leq x),
+\qquad
+Z\sim\mathcal{N}(0,1).
+$$
+
+This is the standard expression for the mean of a folded normal random variable [@leone1961]. In the present setting,
+
+$$
+Y_{ij}-Y_{ik}
+\mid b_j,b_k,\sigma
+\sim
+\mathcal{N}\!\left(
+b_j-b_k,\,
+2\sigma^2
+\right),
+$$
+
+so the parameters in the folded-normal expectation are
+
+$$
+\mu=b_j-b_k
+\qquad\text{and}\qquad
+s=\sqrt{2}\sigma.
+$$
+
+For each proposal, the expression was evaluated using the reviewer pair assigned to that proposal and the corresponding posterior draws of $b_j$, $b_k$, and $\sigma$. The resulting expected absolute disagreements were then averaged across the 42 proposals for each posterior draw.
+
+The resulting analytic posterior mean disagreement was 1.066, almost identical to the simulated posterior predictive mean of 1.064. The difference between the simulated and analytic means was approximately $-0.0015$. The small difference between the observed value and the replicated mean is therefore not explained by numerical precision or by substantial Monte Carlo error.
+
+The posterior predictive probability of obtaining a mean disagreement at least as large as the observed value was
+
+$$
+\mathbb{P}
+\left(
+\bar{D}^{\mathrm{rep}}
+\ge
+\bar{D}_{\mathrm{obs}}
+\mid Y
+\right)
+=
+0.401.
+$$
+
+Thus, approximately 40% of replicated datasets produced at least as much mean disagreement as the observed CRS data. The observed value is therefore not unusual under V1.
+
+The decomposition also helps explain where the disagreement comes from. If the two reviewer effects are set equal, then $\mu=0$ and the expected absolute disagreement simplifies to
+
+$$
+\operatorname{E}|Y_{ij}-Y_{ik}|
+=
+\frac{2\sigma}{\sqrt{\pi}}.
+$$
+
+Averaged over the posterior draws, this residual-only expectation was 1.043. Allowing the fitted reviewer effects to differ increased the expected mean disagreement by only about 0.023 on average. Most of the model-implied disagreement is therefore associated with residual review-level variation rather than persistent differences between reviewer effects. This is consistent with the residual-dominated variance decomposition above.
+
+A further check examined whether the mean disagreement could hide differences in the shape of the disagreement distribution. In the observed data, 10 proposals had disagreement 0, 19 had disagreement 1, 12 had disagreement 2, and one had disagreement 3. Thus, 13 of 42 proposals had a disagreement of at least two score points,
+
+$$
+T_{\mathrm{obs}}
+=
+\frac{13}{42}
+\approx
+0.310.
+$$
+
+When the continuous Gaussian replicated grades were used directly, the posterior predictive mean of the corresponding proportion was only 0.134. Moreover,
+
+$$
+\mathbb{P}
+\left(
+T_{\mathrm{cont}}^{\mathrm{rep}}
+\ge
+T_{\mathrm{obs}}
+\mid Y
+\right)
+=
+0.0088,
+$$
+
+where $T_{\mathrm{cont}}^{\mathrm{rep}}$ denotes the proportion of proposals in a continuous replicated dataset whose absolute disagreement is at least two. Thus, fewer than 1% of continuous replicated datasets produced at least as much moderate disagreement as was observed, suggesting an apparent model mismatch for this particular statistic.
+
+This comparison is sensitive to the fact that observed disagreements are integer-valued, whereas Gaussian replicated disagreements are continuous. For example, a replicated difference of 1.9 is counted as smaller than two, while on the observed score scale no disagreement between 1 and 2 can occur. To assess how much this scale mismatch affects the result, the replicated scores were mapped back to the observed 1--5 integer grid according to
+
+$$
+\widetilde{Y}_r^{\mathrm{rep}}
+=
+\min
+\left\{
+5,\,
+\max
+\left\{
+1,\,
+\operatorname{round}
+\left(
+Y_r^{\mathrm{rep}}
+\right)
+\right\}
+\right\}.
+$$
+
+For proposal $i$, define the resulting replicated disagreement as
+
+$$
+\widetilde{D}_i^{\mathrm{rep}}
+=
+\left|
+\widetilde{Y}_{i1}^{\mathrm{rep}}
+-
+\widetilde{Y}_{i2}^{\mathrm{rep}}
+\right|,
+$$
+
+and let
+
+$$
+T_{\mathrm{disc}}^{\mathrm{rep}}
+=
+\frac{1}{42}
+\sum_{i=1}^{42}
+\mathbb{1}_{\{
+\widetilde{D}_i^{\mathrm{rep}}
+\ge 2
+\}}
+$$
+
+denote the proportion of proposals with disagreement of at least two score points after this transformation. The rounding-and-clipping step is used only as a posterior predictive diagnostic; it does not define a new fitted model.
+
+After placing the replicated scores on the same integer-valued scale as the observations, the posterior predictive mean of this proportion increased from 0.134 to 0.255. The corresponding tail probability became
+
+$$
+\mathbb{P}
+\left(
+T_{\mathrm{disc}}^{\mathrm{rep}}
+\ge
+T_{\mathrm{obs}}
+\mid Y
+\right)
+=
+0.272.
+$$
+
+This change is important for interpretation. Under the continuous comparison, the observed proportion of proposals with disagreement of at least two score points was located in an extreme upper tail of the posterior predictive distribution. After discretisation, approximately 27% of replicated datasets produced a proportion at least as large as the observed value. Although the posterior predictive mean of 0.255 remains below the observed value of 0.310, the observed statistic is therefore no longer unusual under the model.
+
+The discretised checks also support the fit of the upper part of the disagreement distribution. The observed median disagreement was 1, matching the replicated median of 1. The observed 90th percentile was 2, compared with a replicated median of 2 and a 95% posterior predictive interval of approximately $[1.9,3]$. The observed maximum disagreement was 3, compared with a replicated median of 3 and a 95% posterior predictive interval of $[2,4]$. The observed proportion of disagreements of at least three score points was likewise within its posterior predictive distribution. Thus, the discretised model reproduces not only the frequency of moderate disagreement reasonably well, but also the observed upper-tail behaviour.
+
+The mean disagreement should be interpreted separately because it was already reproduced well by the original continuous posterior predictive check: the observed mean was 1.095, compared with a posterior predictive mean of 1.064, and
+
+$$
+\mathbb{P}
+\left(
+\bar{D}^{\mathrm{rep}}
+\ge
+\bar{D}_{\mathrm{obs}}
+\mid Y
+\right)
+=
+0.401.
+$$
+
+The purpose of the discretisation is therefore not to improve the mean-disagreement fit, but to make threshold- and tail-based comparisons consistent with the integer-valued 1--5 score scale.
+
+Taken together, these results indicate that V1 reproduces the average disagreement and the main features of its upper distribution reasonably well. The rounding-and-clipping diagnostic does not turn the Gaussian model into an ordinal model, but it shows that the initially extreme result for disagreements of at least two score points was largely caused by comparing integer-valued observed disagreements with continuously distributed replicated disagreements.
 
 ## Prior sensitivity
 
-The baseline V1 specification uses bounded uniform priors on the scale parameters. Because these parameters determine the amount of partial pooling and are estimated from a relatively small dataset, the stability of the main conclusions is assessed under one alternative regularizing prior specification.
+The baseline V1 specification uses
 
-The purpose of this analysis is not to search across many possible priors, but to determine whether the substantive ranking and variance conclusions depend strongly on the particular baseline scale priors.
+$$
+\sigma,\tau_\theta,\tau_b
+\sim
+\operatorname{Uniform}(0,2),
+$$
 
-<!-- TODO:
-Fit one alternative V1 prior specification.
+following the scale-prior specification used for the reference model [@heyard2022]. Because these parameters control both the amount of partial pooling and the variance decomposition, a separate sensitivity fit replaced all three scale priors by
 
-Current candidate:
-half-normal scale priors, for example
+$$
+\sigma,\tau_\theta,\tau_b
+\sim
+\operatorname{HalfNormal}(0,1).
+$$
 
-sigma, tau_theta, tau_b ~ half-Normal(0, 1).
+In the JAGS implementation, this corresponds to normal distributions with mean zero and variance one, truncated to positive values. The likelihood, crossed proposal and reviewer effects, data, initialization procedure, number of chains, adaptation period, burn-in and sampling length were otherwise kept unchanged. The comparison therefore isolates the effect of changing the scale-prior specification.
 
-Compare baseline and sensitivity fits using:
-- posterior summaries of tau_theta, tau_b and sigma;
-- proposal and reviewer variance shares;
-- expected ranks;
-- correlation of expected ranks;
-- rank-uncertainty widths;
-- selected pairwise probabilities if useful.
+The alternative model also showed satisfactory computational behaviour. Its maximum PSRF was 1.0011 and its minimum effective sample size was 1,306, again with the smallest ESS occurring for $\tau_\theta$.
 
-Use a baseline-versus-sensitivity expected-rank scatter plot as the main
-ranking comparison.
+The posterior scale parameters changed only slightly. The posterior median of $\tau_\theta$ decreased from 0.220 under the baseline prior to 0.209 under the half-normal prior. The median of $\tau_b$ changed from 0.157 to 0.154, while the median of $\sigma$ changed from 0.920 to 0.916. The corresponding variance decomposition was similarly stable. The posterior median proposal share changed from 0.050 to 0.046, the reviewer share from 0.026 to 0.025, and the residual share from 0.896 to 0.902.
 
-Do not construct a large prior grid.
--->
+The ranking conclusions were even less sensitive to the prior change. The Spearman correlation between the baseline and sensitivity posterior-mean rankings was 0.9990, while the Pearson correlation between expected ranks was
+
+$$
+0.99994.
+$$
+
+The mean absolute change in expected rank was only 0.093 positions, and the maximum absolute change across all 42 proposals was 0.283 positions. Six proposals changed their exact posterior-mean integer rank, but the mean absolute integer-rank change was only 0.19 positions and the maximum was two positions. The close agreement in expected ranks is visible in @fig-v1-prior-sensitivity.
+
+![Posterior expected ranks under the baseline V1 prior specification and the half-normal prior-sensitivity specification. The dashed identity line represents identical expected ranks under both models.](figures/validation/expected_rank_prior_sensitivity.png){#fig-v1-prior-sensitivity width=85% fig-pos="H"}
+
+The prior change also had essentially no effect on the broad posterior rank uncertainty. The mean width of the 90% posterior rank intervals was 36.74 positions under the baseline V1 specification and 36.83 under the half-normal specification. The median width was 37 positions under both models. The P023--P032 comparison was likewise unchanged:
+
+$$
+\mathbb{P}
+\left(
+\theta_{032}>
+\theta_{023}
+\mid Y
+\right)
+=
+0.500470
+$$
+
+under the baseline model and 0.500325 under the half-normal sensitivity model.
+
+The main V1 conclusions are therefore not materially dependent on the choice between the baseline $\operatorname{Uniform}(0,2)$ scale priors and the tested half-normal alternative.
+
 
 ## Validation conclusion
 
-<!-- TODO:
-Write after completing the checks.
+The validation supports V1 as a stable working model for the analyses in this project. The MCMC diagnostics indicate satisfactory convergence, and the half-normal prior-sensitivity fit produced virtually unchanged variance components, expected ranks and rank uncertainty. The fitted variance structure is dominated by residual review-level variation, while the proposal-level intraproposal correlation has a posterior median of approximately 0.05.
 
-Answer Research Question 3 directly.
+Posterior predictive checks reproduce the observed mean, standard deviation and reviewer-disagreement structure reasonably well. The observed mean disagreement is not unusual under V1, and after accounting for the integer-valued 1--5 score scale, the observed frequency of disagreements of at least two score points also lies comfortably within its posterior predictive distribution. The corresponding median, upper quantile and maximum disagreement are likewise compatible with the replicated data.
 
-The conclusion should distinguish:
-- computational convergence;
-- estimated variance structure;
-- posterior predictive adequacy;
-- prior sensitivity.
-
-If all checks are broadly satisfactory:
-state that V1 is an adequate and sufficiently robust working model for the
-subsequent analyses, while retaining the limitations of the sparse,
-non-random review design and the Gaussian treatment of the score scale.
-
-If a minor limitation appears but rankings remain robust:
-retain V1 and state the limitation explicitly.
-
-Only introduce a replacement model if the diagnostics reveal a material
-failure that affects the substantive conclusions.
--->
-
-<!-- OPTIONAL INFLUENCE CHECK:
-Do not perform leave-one-proposal-out or leave-one-reviewer-out analysis by
-default. If the main diagnostics suggest that the fit may be driven by one
-proposal or reviewer, add a small targeted exclusion analysis as a sensitivity
-check, preferably in an appendix.
--->
+The main limitation is therefore the continuous Gaussian treatment of the five-point score: approximately 6.6% of replicated grades fall outside the admissible range. V1 is consequently used as a model for latent proposal effects and ranking uncertainty rather than as a literal predictive model for valid future score categories. Subject to this caveat and the sparse, non-random review design, the validation provides no strong reason to reject V1 for the subsequent analyses.
 
 # Graph-based review design
 
