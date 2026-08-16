@@ -1,0 +1,13 @@
+"metric","value"
+"Spearman correlation of posterior-mean ranks",0.873267968560084
+"Pearson correlation of expected ranks",0.863253016718867
+"Number of proposals changing posterior-mean rank",40
+"Mean absolute posterior-mean rank change",4.66666666666667
+"Maximum absolute posterior-mean rank change",18
+"Mean absolute expected-rank change",2.97226976190476
+"Maximum absolute expected-rank change",7.891495
+"Mean 90% rank interval width overall-grade V1",36.7380952380952
+"Mean 90% rank interval width criterion-average V1",33.1904761904762
+"Median 90% rank interval width overall-grade V1",37
+"Median 90% rank interval width criterion-average V1",34
+"Number of original qualifiers in criterion-average posterior-mean top four",3

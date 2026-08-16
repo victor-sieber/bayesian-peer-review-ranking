@@ -1,0 +1,7 @@
+"model","parameter","posterior_mean","posterior_median","q025","q975"
+"V1 overall grade","tau_proposal",0.23660840432068,0.220453,0.012336745,0.56165235
+"V1 overall grade","tau_assessor",0.185647299579251,0.156952,0.0084143805,0.532988725
+"V1 overall grade","sigma",0.923313415615,0.919555,0.77122,1.09676025
+"V1 criterion average","tau_proposal",0.33462071987988,0.3470255,0.025597175,0.6059512
+"V1 criterion average","tau_assessor",0.1866529412539,0.169029,0.0101134975,0.48467505
+"V1 criterion average","sigma",0.68380257438,0.680155,0.543988975,0.844024625

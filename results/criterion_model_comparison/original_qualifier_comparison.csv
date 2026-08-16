@@ -1,0 +1,5 @@
+"id_proposal","mean_overall_grade","raw_rank_overall","rank_pm_overall","er_overall","pcer_overall","qualifies_original","mean_criterion_average","raw_rank_criterion","rank_pm_criterion","er_criterion","pcer_criterion","delta_rank_pm","abs_delta_rank_pm","delta_er","abs_delta_er","rank_pm_changed"
+"P022",5,1,1,13.079265,29.950630952381,TRUE,4.75,1,1,8.771965,19.6951547619048,0,0,-4.3073,4.3073,FALSE
+"P032",4.5,3,2,15.870785,36.5971071428571,TRUE,4.5,2.5,2,11.58992,26.4045714285714,0,0,-4.280865,4.280865,FALSE
+"P041",4.5,3,4,16.21879,37.4256904761905,TRUE,4.5,2.5,3,12.013385,27.4128214285714,-1,1,-4.205405,4.205405,TRUE
+"P023",4.5,3,3,15.87305,36.6025,TRUE,4,11.5,11,16.804245,38.819630952381,8,8,0.931195000000002,0.931195000000002,TRUE
