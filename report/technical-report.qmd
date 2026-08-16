@@ -226,7 +226,7 @@ interpretations are supported by the assignment design and literature.
 -->
 
 
-## Supporting criteria and holistic overall grade
+## Criteria and holistic overall grade
 
 <!-- TODO:
 Investigate how the four supporting criteria relate to the separately
@@ -253,7 +253,7 @@ equal-weight rule for the CRS data.
 -->
 
 
-## Proposal-level criterion average versus overall-grade average
+## Equal-weight criterion summary at proposal level
 
 <!-- TODO:
 Investigate the proposal-level relationship discussed with Rachel:
@@ -372,9 +372,7 @@ $$
 \sim \operatorname{Uniform}(0,2).
 $$
 
-V1 is treated as the provisional main model because it represents the recurring proposal and reviewer structure directly while avoiding a separate latent effect for every one-off proposal-reviewer assessment. Its adequacy is not assumed from parsimony alone; Chapter 5 therefore assesses its variance structure, posterior predictive behaviour and prior sensitivity before it is used as the basis for the review-design extension.
-
-<!-- TODO: After completing the V1 validation and prior-sensitivity analysis in Chapter 5, revisit all wording that refers to V1 as the "provisional main model". If validation supports V1, update the wording to reflect that it is the main model used for subsequent analyses. If important inadequacies or strong prior sensitivity are found, revise Chapters 3–6 accordingly and document any replacement or sensitivity model. -->
+V1 is treated as the main model because it represents the recurring proposal and reviewer structure directly while avoiding a separate latent effect for every one-off proposal-reviewer assessment. Its adequacy is not assumed from parsimony alone; Chapter 5 therefore assesses its variance structure, posterior predictive behaviour and prior sensitivity before it is used as the basis for the review-design extension in chapter 6.
 
 ## Partial pooling and variance components
 
@@ -547,6 +545,10 @@ under V1. Both probabilities are essentially one half. The rank swap therefore r
 Most importantly, V1 does not materially reduce rank uncertainty. The mean width of the 90% posterior rank interval is 36.50 positions under V0 and 36.74 under V1; the median width is 37 under both models. The large uncertainty therefore survives removal of V0's proposal-reviewer-specific assessment layer. V1 has somewhat more favourable computational diagnostics and a simpler interpretation, while preserving essentially the same ranking conclusions.
 
 This comparison supports using V1 as the provisional main model, but it does not by itself establish why rank uncertainty is so large. The sparse design--especially the fact that each proposal has only two reviews--is a plausible major source, consistent with the broader precision problem discussed by Kaplan et al. [@kaplan2008], but that explanation is investigated rather than assumed. The next step is therefore to validate V1 before using its posterior covariance structure in the review-design analysis.
+
+## Bayesian ranking using the equal-weight criterion average
+
+
 
 # Validation and sensitivity analysis of V1
 
