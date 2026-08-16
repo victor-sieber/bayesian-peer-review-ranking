@@ -1,0 +1,5 @@
+"criterion","criterion_label","mean_criterion_score","sd_criterion_score","pearson_correlation","spearman_correlation"
+"scientific_quality","Scientific quality",3.64285714285714,1.01367584874747,0.891603251110331,0.889511864658402
+"scientific_rigor","Scientific rigor",3.88095238095238,0.986716129693171,0.588003759065449,0.598873264129519
+"scaling_potential","Scaling potential",3.51190476190476,1.11392119315298,0.540910008039288,0.552599607396283
+"community_building","Community building",3.17857142857143,1.04317303588058,0.54518449044644,0.551134408113371

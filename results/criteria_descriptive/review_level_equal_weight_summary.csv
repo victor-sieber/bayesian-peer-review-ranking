@@ -1,0 +1,10 @@
+"metric","value"
+"Number of reviews",84
+"Mean holistic overall grade",3.47619047619048
+"Mean equal-weight criterion average",3.55357142857143
+"Pearson correlation",0.859491247377007
+"Spearman correlation",0.848513430620595
+"Mean criterion average minus overall grade",0.0773809523809524
+"Mean absolute difference",0.404761904761905
+"Proportion within 0.5 grade points",0.785714285714286
+"Proportion exactly equal",0.166666666666667
