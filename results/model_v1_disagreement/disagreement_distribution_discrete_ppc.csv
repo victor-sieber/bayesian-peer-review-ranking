@@ -1,0 +1,7 @@
+"statistic","observed","replicated_mean","replicated_median","replicated_q025","replicated_q975","probability_rep_ge_observed"
+"Mean absolute disagreement",1.0952380952381,1.02002380952381,1.02380952380952,0.738095238095238,1.33333333333333,0.3316
+"Median absolute disagreement",1,0.9985,1,1,1,0.9966
+"90th percentile of disagreement",2,2.06756,2,1.9,3,0.9604
+"Maximum disagreement",3,3.0724,3,2,4,0.8786
+"Proportion with disagreement >= 2",0.30952380952381,0.254738095238095,0.261904761904762,0.119047619047619,0.404761904761905,0.2724
+"Proportion with disagreement >= 3",0.0238095238095238,0.0537666666666667,0.0476190476190476,0,0.142857142857143,0.8786

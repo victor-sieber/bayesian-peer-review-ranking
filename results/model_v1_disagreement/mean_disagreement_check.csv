@@ -1,0 +1,2 @@
+"observed","replicated_mean","replicated_median","replicated_sd","replicated_q025","replicated_q975","probability_rep_ge_observed","probability_rep_le_observed","two_sided_ppc_probability","observed_percentile","standardized_difference"
+1.0952380952381,1.06432132896932,1.05592266272101,0.15355709272999,0.789891151890246,1.38572945810606,0.4014,0.5986,0.8028,0.5986,0.201337272796245
