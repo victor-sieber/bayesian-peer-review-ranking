@@ -174,23 +174,6 @@ scoring tendencies rather than direct evidence of reviewer bias.
 Differences attributed to reviewers may partly reflect differences
 in the types of proposals assigned to them.
 
-<!-- LITERATURE TO INVESTIGATE:
-- Jayasinghe, Marsh and Bond (2003):
-  multilevel cross-classified modelling of grant-review data and separation
-  of assessor and researcher/proposal-related variation.
-  The paper is cited by Heyard and Eblen; obtain/read the primary article
-  before relying on it directly.
-- Heyard et al. (2022):
-  discussion of different assessor scoring habits and cross-classified
-  grant-review work.
-- Erosheva et al. (2020):
-  multilevel structure created by applications and reviewers.
-
-Investigate literature on how non-random reviewer assignment affects the
-interpretation of reviewer effects and whether stronger claims concerning
-identifiability require additional references.
--->
-
 
 ## Reconstruction of the original procedure
 
@@ -199,83 +182,117 @@ According to the published CRS Seed Grant results [@crs2026seedgrants], funding 
 This procedure should be interpreted as a score-based qualification threshold rather than as a fixed top-four selection rule. Four proposals happened to satisfy the threshold in the 2026 evaluation round. Since the call indicated that approximately six projects could be funded, the available funding capacity was not binding and no additional prioritization among qualified proposals was required.
 
 
-## Reviewer scoring patterns and agreement
-
-<!-- TODO:
-Investigate which descriptive summaries are useful for understanding
-the reviewer panel and the amount of agreement in the observed data.
-
-Possible themes:
-- reviewer workloads;
-- distribution of overall grades;
-- differences in reviewer scoring patterns;
-- agreement or disagreement between paired reviews.
-
-LITERATURE TO INVESTIGATE:
-- Heyard et al. (2022):
-  inter-rater reliability and assessor scoring habits.
-- Kaplan et al. (2008):
-  reviewer variability, number of reviewers and precision.
-- Graves et al. (2011):
-  variation in peer-review scores and resulting instability.
-- Potential grant-review reliability literature referenced within these
-  papers if a more formal agreement discussion becomes necessary.
-
-Keep observed reviewer differences descriptive unless stronger
-interpretations are supported by the assignment design and literature.
--->
-
 
 ## Criteria and holistic overall grade
 
-<!-- TODO:
-Investigate how the four supporting criteria relate to the separately
-assigned holistic overall grade.
+Previous analyses of grant peer review have shown that criterion scores can be strongly related to holistic overall evaluations, while individual criteria need not have the same relationship with the overall judgment [@eblen2016; @erosheva2020]. This motivates examining how the four supporting CRS criteria correspond to the separately assigned holistic overall grade.
 
-Possible questions:
-- how strongly do individual criteria correspond to the overall grade?
-- do the criteria appear to contribute similarly or differently?
-- where do criterion-based summaries and holistic judgments diverge?
+Let $C_{rc}$ denote the score assigned in review $r$ to criterion $c$, and let $Y_r$ denote the holistic overall grade. For each criterion, the relationship with the overall grade was summarized using the Pearson and Spearman correlation coefficients across the $n=84$ completed reviews.
 
-LITERATURE TO INVESTIGATE:
-- Erosheva et al. (2020):
-  relationship between criterion scores and preliminary overall impact scores;
-  idea of combining separate criteria into a holistic judgment.
-- Eblen et al. (2016):
-  relationship between individual criterion scores, overall impact scores
-  and grant outcomes.
-- Other criterion-scoring literature cited in these papers, if needed.
+For criterion $c$, the sample Pearson correlation with the holistic overall grade is
 
-Important:
-These papers motivate studying the relationship between criteria and
-overall judgments. They do not automatically justify any particular
-equal-weight rule for the CRS data.
--->
+$$
+\operatorname{Cor}_{\mathrm P}(C_{\cdot c},Y)
+=
+\frac{
+\sum_{r=1}^{n}
+(C_{rc}-\bar{C}_c)(Y_r-\bar{Y})
+}{
+\sqrt{
+\sum_{r=1}^{n}(C_{rc}-\bar{C}_c)^2
+\sum_{r=1}^{n}(Y_r-\bar{Y})^2
+}
+},
+$$
 
+where $n=84$, $C_{\cdot c}=(C_{1c},\ldots,C_{nc})$, and
+$Y=(Y_1,\ldots,Y_n)$.
+
+The corresponding Spearman correlation is the Pearson correlation of the ranked observations,
+
+$$
+\operatorname{Cor}_{\mathrm S}(C_{\cdot c},Y)
+=
+\operatorname{Cor}_{\mathrm P}
+\left(
+R(C_{\cdot c}),
+R(Y)
+\right),
+$$
+
+where $R(\cdot)$ denotes the rank transformation and average ranks are used for ties. Spearman correlation therefore measures monotonic association without requiring the relationship to be linear. Both coefficients range from $-1$ to $1$, with larger positive values indicating stronger positive association.
+
+These correlations are treated descriptively because the 84 reviews are not independent with respect to proposals and reviewers.
+
+| Criterion | Mean criterion score | Pearson correlation | Spearman correlation |
+|---|---:|---:|---:|
+| Scientific quality | 3.643 | 0.892 | 0.890 |
+| Community building | 3.179 | 0.545 | 0.551 |
+| Scaling potential | 3.512 | 0.541 | 0.553 |
+| Scientific rigor | 3.881 | 0.588 | 0.599 |
+
+Scientific quality showed the strongest relationship with the holistic overall grade, with Pearson and Spearman correlations of 0.892 and 0.890, respectively. The remaining three criteria were positively related to the overall grade but substantially less strongly, with correlations around 0.54--0.60. This is consistent with previous findings that different criterion scores need not correspond equally closely to a holistic evaluation [@eblen2016; @erosheva2020]. In the CRS data, however, these correlations do not identify the weights reviewers placed on the individual criteria.
+
+For a simple equal-weight summary, define the criterion average for review $r$ as
+
+$$
+A_r
+=
+\frac{1}{4}
+\sum_{c=1}^{4} C_{rc}.
+$$
+
+Across the 84 reviews, the mean holistic overall grade was 3.476 and the mean equal-weight criterion average was 3.554. The Pearson correlation between $A_r$ and $Y_r$ was 0.859 and the Spearman correlation was 0.849. The mean difference was
+
+$$
+\frac{1}{84}
+\sum_{r=1}^{84}
+(A_r-Y_r)
+=
+0.077,
+$$
+
+while the mean absolute difference was 0.405 grade points. In addition, 78.6% of reviews had a criterion average within 0.5 grade points of the holistic overall grade.
+
+The equal-weight criterion average therefore corresponds closely to the holistic grade overall, but it is not an exact reconstruction of it. This is consistent with the holistic grade representing a separate judgment rather than a mechanically prescribed average of the four supporting criteria.
 
 ## Equal-weight criterion summary at proposal level
 
-<!-- TODO:
-Investigate the proposal-level relationship discussed with Rachel:
-the summary of supporting criterion grades from the reviewer pair
-versus the average holistic overall grade from that pair.
+The equal-weight summary is used here as a descriptive counterfactual rather than as an estimate of how reviewers actually combined the four criteria. Previous work indicates that individual criteria can have different relationships with holistic evaluations [@eblen2016; @erosheva2020], so equal weighting should not be interpreted as an empirically estimated scoring rule.
 
-Questions to investigate:
-- how closely do these summaries correspond?
-- are there proposals for which they differ noticeably?
-- does the relative proposal ordering look different when criteria are
-  summarized with equal weights?
+For proposal $i$, let
 
-LITERATURE TO INVESTIGATE:
-- Erosheva et al. (2020):
-  criterion scores versus holistic overall evaluation.
-- Eblen et al. (2016):
-  differential relationship of criteria with overall evaluation and outcomes.
+$$
+O_i
+=
+\frac{1}{2}
+\sum_{r:p(r)=i} Y_r
+$$
 
-Frame the equal-weight criterion summary as a descriptive/counterfactual
-exercise unless literature or the CRS evaluation procedure supports a
-stronger interpretation.
--->
+denote its mean holistic overall grade and let
+
+$$
+A_i
+=
+\frac{1}{2}
+\sum_{r:p(r)=i} A_r
+=
+\frac{1}{8}
+\sum_{r:p(r)=i}
+\sum_{c=1}^{4} C_{rc}
+$$
+
+denote the equal-weight average of all eight criterion scores received across its two reviews.
+
+The two proposal-level summaries remained strongly related. Their Pearson correlation was 0.848 and their Spearman correlation was 0.881. However, @fig-proposal-criterion-overall shows that the relationship is not identical to the $45^\circ$ identity line.
+
+![Proposal-level equal-weight criterion average versus mean holistic overall grade. The dashed identity line represents identical proposal-level summaries. Original qualifiers and proposals with the largest raw-rank changes are labelled.](figures/criteria_descriptive/proposal_level_criterion_average_vs_overall.png){#fig-proposal-criterion-overall width=90%}
+
+The holistic proposal average is relatively coarse because it is calculated from only two integer-valued grades, whereas $A_i$ averages eight criterion scores and therefore has a finer numerical resolution. Consequently, many apparent raw-rank changes reflect the breaking of ties in the holistic-grade ranking and should not be interpreted as substantive changes by themselves.
+
+The upper part of the ordering nevertheless shows a meaningful difference. P022 had the highest criterion average at 4.75, while P032 and P041 both had averages of 4.50. These are three of the four proposals that qualified under the original CRS rule. The fourth qualifier, P023, had a criterion average of 4.00. By comparison, P016, P029, P038 and P040 each had a criterion average of 4.375.
+
+Thus, the equal-weight criterion summary preserves substantial agreement with the holistic evaluation but does not reproduce its upper ordering exactly. Since equal weighting was not the CRS decision rule, the comparison is interpreted as a counterfactual rather than as an alternative reconstruction of the original qualification procedure.
 
 
 # Bayesian ranking framework
@@ -548,6 +565,111 @@ This comparison supports using V1 as the provisional main model, but it does not
 
 ## Bayesian ranking using the equal-weight criterion average
 
+The descriptive comparisons in the previous Sections 2.4 and 2.5 do not account for reviewer-associated scoring tendencies or uncertainty in the proposal ordering. To examine whether the choice between the holistic grade and the equal-weight criterion summary remains relevant within the same Bayesian framework, V1 was fitted a second time using the review-level criterion average $A_r$ as the response.
+
+The model is
+
+$$
+A_r
+\sim
+\mathcal{N}\!\left(
+\bar{A}
++
+\theta^{(A)}_{p(r)}
++
+b^{(A)}_{a(r)},
+\,\sigma_A^2
+\right),
+$$
+
+with
+
+$$
+\theta_i^{(A)}
+\sim
+\mathcal{N}(0,\tau_{\theta,A}^2),
+\qquad
+b_j^{(A)}
+\sim
+\mathcal{N}(0,\tau_{b,A}^2).
+$$
+
+The reviewer--proposal assignments, prior specification and MCMC settings were kept identical to the overall-grade V1 fit. Only the response variable and its observed mean were changed. This fit is therefore used as a counterfactual comparison of outcome definitions rather than as a replacement for the main overall-grade model. Its computational diagnostics did not indicate a convergence problem: the maximum PSRF was 1.0032 and the minimum effective sample size was 1,863.
+
+The resulting rankings remained positively associated but differed more than the V0--V1 comparison in Section 4.4. The Spearman correlation between posterior-mean ranks was 0.873, while the Pearson correlation between expected ranks was 0.863. The mean absolute expected-rank change was 2.97 positions and the maximum was 7.89 positions. By comparison, the Pearson correlation between the expected ranks obtained from V0 and V1 using the same holistic outcome was 0.9916. In these data, changing the response from the holistic grade to the equal-weight criterion average therefore affected the inferred ordering more than simplifying the Bayesian model from V0 to V1.
+
+The expected-rank comparison is shown in @fig-er-overall-criterion.
+
+![Posterior expected ranks from V1 fitted to the holistic overall grade and to the equal-weight criterion average. The dashed identity line represents identical expected ranks under both response definitions. Original qualifiers and proposals with the largest expected-rank changes are labelled.](figures/criterion_model_comparison/expected_rank_overall_vs_criterion_average.png){#fig-er-overall-criterion width=85%}
+
+The change is also visible among the originally qualified proposals. P022 and P032 remained at posterior-mean ranks 1 and 2 under the criterion-average model. P041 moved from rank 4 to rank 3, while P023 moved from rank 3 to rank 11. P040, which had posterior-mean rank 6 under the overall-grade model, moved to rank 4 under the criterion-average model. Consequently, three of the four original qualifiers remained within the first four posterior-mean positions.
+
+The exact rank movement of P023 should again be interpreted together with expected rank. Its expected rank changed only from 15.87 under the overall-grade model to 16.80 under the criterion-average model, despite its posterior-mean rank moving from 3 to 11. By contrast, P040 showed a larger expected-rank improvement, from 18.43 to 12.19. Expected-rank changes therefore provide a less tie-sensitive description of the difference between the two outcome definitions than exact integer ranks alone.
+
+The criterion-average fit also produced somewhat narrower posterior rank distributions. The mean width of the 90% posterior rank intervals decreased from 36.74 to 33.19 positions, while the median width decreased from 37 to 34. Rank uncertainty therefore remained substantial, but the criterion-average response produced somewhat greater separation between proposals.
+
+The variance decomposition changed in the same direction. The posterior median proposal variance share increased from 0.050 under the overall-grade model to 0.192 under the criterion-average model, while the residual share decreased from 0.896 to 0.733. The reviewer share changed from 0.026 to 0.046. The observed standard deviation of the criterion average was also lower than that of the holistic grade, 0.772 compared with 0.950. Part of the lower residual variation under the criterion-average model can arise mechanically from averaging. Let $\varepsilon_{r1},\ldots,\varepsilon_{r4}$ denote the review-level errors of the four criterion scores. The error in their equal-weight average is
+
+$$
+\bar{\varepsilon}_r
+=
+\frac{1}{4}
+\sum_{c=1}^{4}\varepsilon_{rc}.
+$$
+
+Therefore,
+
+$$
+\operatorname{Var}(\bar{\varepsilon}_r)
+=
+\frac{1}{16}
+\operatorname{Var}
+\left(
+\sum_{c=1}^{4}\varepsilon_{rc}
+\right).
+$$
+
+Using
+
+$$
+\operatorname{Var}(X_1+\cdots+X_4)
+=
+\sum_{c=1}^{4}\operatorname{Var}(X_c)
++
+2\sum_{c<d}\operatorname{Cov}(X_c,X_d),
+$$
+
+suppose for illustration that all four criterion errors have the same variance $\sigma_C^2$ and the same pairwise correlation $\rho_C$. Then each covariance equals
+
+$$
+\operatorname{Cov}(\varepsilon_{rc},\varepsilon_{rd})
+=
+\rho_C\sigma_C^2.
+$$
+
+There are four variance terms and six distinct covariance pairs, so
+
+$$
+\operatorname{Var}(\bar{\varepsilon}_r)
+=
+\frac{1}{16}
+\left(
+4\sigma_C^2
++
+12\rho_C\sigma_C^2
+\right)
+=
+\frac{\sigma_C^2}{4}
+\left(
+1+3\rho_C
+\right).
+$$
+
+Hence, whenever the four errors are not perfectly correlated, $\rho_C<1$, averaging reduces their variance. For example, if they were uncorrelated, $\rho_C=0$, the variance would be reduced to $\sigma_C^2/4$; if they were perfectly correlated, $\rho_C=1$, averaging would produce no reduction.
+
+Thus, part of the smaller fitted residual variation for the criterion-average model may arise simply because four scores are being averaged.
+
+Overall, the supporting criteria and holistic grade convey substantially overlapping but not identical information. Equal weighting preserves much of the broad proposal ordering while producing meaningful changes for some proposals and somewhat narrower posterior rank distributions. Since the holistic grade was deliberately assigned as a separate judgment and was the score actually used by CRS, it remains the response for the main Bayesian analysis.
 
 
 # Validation and sensitivity analysis of V1

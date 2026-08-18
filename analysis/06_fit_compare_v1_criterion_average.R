@@ -954,8 +954,8 @@ expected_rank_plot <- ggplot2::ggplot(
   ) +
   ggplot2::coord_equal() +
   ggplot2::labs(
-    title = "Expected ranks: overall grade versus criterion average",
-    subtitle = "Original qualifiers and proposals with the largest expected-rank changes are labelled",
+    title = "Expected ranks: overall grade vs criterion average",
+    subtitle = "Original qualifiers and largest expected-rank changes labelled",
     x = "V1 overall-grade expected rank",
     y = "V1 criterion-average expected rank"
   ) +
