@@ -42,7 +42,7 @@ Grant peer review converts a limited number of expert judgments into decisions t
 
 This uncertainty becomes particularly important when proposals are close in score or close to a decision boundary. In a retrospective analysis of Australian grant panels, Graves et al. found substantial instability in funding status after accounting for variability among panel members' scores [@graves2011]. Jayasinghe, Marsh and Bond reported low single-rater reliability in Australian Research Council grant assessments and used a multilevel cross-classified model to separate proposal- and assessor-related sources of variation [@jayasinghe2003]. Heyard et al. similarly motivate Bayesian ranking by low inter-rater reliability and by the difficulty of distinguishing proposals of similar quality near a funding line [@heyard2022]. These findings do not imply that peer review is uninformative; rather, they motivate distinguishing an observed numerical ordering from the strength of evidence supporting that ordering.
 
-The present project studies this distinction in a deliberately small evaluation setting. With only two reviews per proposal, a method that reports a single rank without its uncertainty can appear more decisive than the available information warrants. The aim is therefore to model proposal and reviewer variation explicitly, quantify posterior uncertainty in the resulting ranks, and later ask whether the structure of the review design itself can indicate where additional review effort would be most informative.
+The present project studies this distinction in a small evaluation setting. With only two reviews per proposal, a method that reports a single rank without its uncertainty can appear more decisive than the available information warrants. The aim is therefore to model proposal and reviewer variation explicitly, quantify posterior uncertainty in the resulting ranks, and later ask whether the structure of the review design itself can indicate where additional review effort would be most informative.
 
 ## CRS Seed Grant evaluation 2026
 
@@ -50,54 +50,53 @@ The Center for Reproducible Science and Research Synthesis (CRS) at the
 University of Zurich (UZH) works to advance scientific methods and practices
 that support trustworthy and reproducible research. Its activities include
 research on reproducibility, research synthesis, and meta-research
-[@crs2026seedgrantcall].
+[@crs2026call].
 
 In 2026, the CRS launched its first Seed Grant call to support early-stage
 projects and initiatives in research synthesis, meta-research, and related
-fields [@crs2026seedgrantcall]. The evaluation round included 42 proposals
+fields [@crs2026call]. The evaluation round included 42 proposals
 assessed by a panel of nine reviewers. Each proposal received exactly two
 independent reviews, resulting in 84 completed review records.
 
 Reviewers evaluated each proposal on four supporting criteria: scientific
-quality and relevance for the call, prospects for community-building,
-potential for scaling, and commitment to scientific rigor. After filling out
-these scores, each reviewer assigned a separate holistic overall grade, which
-was the score used in the qualification procedure. The call indicated that
-approximately six projects could be funded [@crs2026seedgrantcall]. In the
-observed evaluation round, four proposals met the qualification rule and were
-therefore selected for funding.
+quality; potential for scaling and obtaining substantial third-party funding;
+relevance to fostering a sustainable, innovative, and diverse Swiss “research
+on research” community; and commitment to good research practices, open
+science, and reproducibility. The original call described selection using the average score across these criteria and
+reviewers [@crs2026call]. During the development of the evaluation procedure,
+this was subsequently replaced by a separate holistic overall grade on a five-point scale, which
+became the score used for qualification. The reason for this change was not
+documented in the material available for this project.
 
-
-## Original qualification procedure
-
-Funding eligibility was determined from the two holistic overall
-grades assigned to each proposal using a predefined qualification
-rule. The procedure therefore operated as a score-based threshold
-rather than as a complete ranking of all proposals. The rule and its
-reconstruction from the evaluation data are described in Section 2.3.
-
+The call indicated that approximately six projects could be funded [@crs2026call]. In the final evaluation procedure, four proposals met the qualification rule and were selected for funding, as documented on the published results page [@crs2026results]. The rule is reconstructed explicitly in Section 2.3.
 
 ## Motivation for Bayesian ranking
 
-The original CRS procedure was transparent and easy to apply, but it did not quantify uncertainty around the observed overall grades. In particular, two proposals with similar score pairs can receive a definite relative ordering even when the evidence that one is better than the other is weak. With only two reviews per proposal, the observed scores also reflect both proposal-related variation and differences in reviewer scoring behaviour.
+The final CRS qualification procedure was transparent and easy to apply, but
+it did not quantify uncertainty around the observed overall grades. In particular, two proposals with similar score pairs can appear distinctly ordered by their observed mean grades even when the evidence that one is
+better than the other is weak. With only two reviews per proposal, the observed scores also reflect both proposal-related variation and differences in reviewer scoring behaviour.
 
-Bayesian hierarchical modelling provides a way to separate these sources of variation probabilistically. Heyard et al. model latent proposal effects together with assessor-related effects and rank proposals using the posterior distribution of the proposal effects rather than the raw score averages alone [@heyard2022]. Their expected-rank approach is designed to retain information about uncertainty instead of treating an estimated ordering as known with certainty.
+Bayesian hierarchical modelling provides a way to represent these sources of
+variation separately within a probabilistic model. Heyard et al. model latent proposal effects together with assessor-related effects and rank proposals using the posterior distribution of the proposal effects rather than the raw score averages alone [@heyard2022]. Their expected-rank approach is designed to retain information about uncertainty instead of treating an estimated ordering as known with certainty.
 
-For the CRS data, the Bayesian analysis is therefore used as a decision-support and uncertainty-quantification tool rather than as a replacement rule that mechanically determines funding. The main questions are whether the broad ordering produced by the original procedure persists after accounting for reviewer-associated scoring tendencies, how uncertain the resulting ranks are, and whether apparently different exact ranks correspond to meaningful posterior evidence.
+For the CRS data, the Bayesian analysis is therefore used to support decisions
+and quantify uncertainty rather than as a replacement rule that mechanically
+determines funding.
 
 ## Research questions
 
 ### Research Question 1
 
-What posterior ranking is obtained from a hierarchical Bayesian model of the overall grades that accounts for reviewer-specific scoring tendencies, and how uncertain are the resulting ranks?
+What ranking does the Bayesian model produce after accounting for reviewer differences, and how uncertain are the resulting ranks?
 
 ### Research Question 2
 
-How does the main Bayesian ranking model compare with the original ranking and qualification procedure based on the two overall grades per proposal?
+How does the main Bayesian ranking model compare with the final CRS qualification rule and the ranking based on the observed overall grades?
 
 ### Research Question 3
 
-Is the selected main Bayesian model sufficiently robust and adequate under model validation and sensitivity analysis?
+Is the main Bayesian model computationally stable, adequate under posterior
+predictive checks, and robust to the tested prior specification?
 
 ### Research Question 4
 
@@ -113,7 +112,7 @@ and the relevant notion of uncertainty have been studied more carefully.
 -->
 
 
-## Scope and intended contribution
+## Scope and structure of the report
 
 <!-- TODO:
 Clarify the final scope once the remaining analyses are complete.
@@ -138,20 +137,13 @@ method unless the literature review later justifies such a statement.
 -->
 
 
-## Structure of the report
-
-<!-- TODO:
-Write once the empirical analysis and graph-based extension are stable.
--->
-
-
 # Evaluation design and descriptive analysis
 
 ## Evaluation process and analytical data
 
-The anonymized analytical dataset contains 84 completed reviews
+The pseudonymized analytical dataset contains 84 completed reviews
 of 42 proposals by nine reviewers. Each proposal received exactly
-two independent reviews. Reviewer workloads were unequal because
+two independent reviews. Reviewer workloads ranged from 6 to 12 reviews because
 assignments were based on expertise and availability.
 
 Each review contains four supporting criterion scores and a separate
@@ -175,54 +167,23 @@ Differences attributed to reviewers may partly reflect differences
 in the types of proposals assigned to them.
 
 
-## Reconstruction of the original procedure
+## Reconstruction of the final qualification procedure
 
-According to the published CRS Seed Grant results [@crs2026seedgrants], funding was available for proposals that received the highest overall grade from at least one reviewer and no grade below the second-highest category. Since the overall grade was scored on a scale from 1 to 5, this means that a proposal qualified if it received at least one grade of 5 and its second grade was at least 4. With exactly two reviews per proposal, the qualifying score combinations were therefore (5,5), (5,4), and (4,5). Equivalently, a proposal qualified if its mean overall grade was at least 4.5.
+According to the published CRS Seed Grant results [@crs2026results], funding was available for proposals that received the highest overall grade from at least one reviewer and no grade below the second-highest category. Since the overall grade was scored on a scale from 1 to 5, this means that a proposal qualified if it received at least one grade of 5 and its second grade was at least 4. With exactly two reviews per proposal, the qualifying score combinations were therefore (5,5), (5,4), and (4,5). Equivalently, a proposal qualified if its mean overall grade was at least 4.5.
 
-This procedure should be interpreted as a score-based qualification threshold rather than as a fixed top-four selection rule. Four proposals happened to satisfy the threshold in the 2026 evaluation round. Since the call indicated that approximately six projects could be funded, the available funding capacity was not binding and no additional prioritization among qualified proposals was required.
+This procedure should be interpreted as a score-based qualification threshold rather than as a fixed top-four selection rule. Four proposals satisfied the threshold in the 2026 evaluation round. Since the call indicated that approximately six projects could be funded, the available funding capacity was not binding and no additional prioritization among qualified proposals was required.
 
 
 
 ## Criteria and holistic overall grade
 
-Previous analyses of grant peer review have shown that criterion scores can be strongly related to holistic overall evaluations, while individual criteria need not have the same relationship with the overall judgment [@eblen2016; @erosheva2020]. This motivates examining how the four supporting CRS criteria correspond to the separately assigned holistic overall grade.
+Previous NIH analyses have examined how criterion scores relate to holistic
+overall evaluations [@eblen2016; @erosheva2020]. Eblen et al. found substantial
+differences between criteria in their association with the Overall Impact score
+[@eblen2016]. This motivates examining whether the four supporting CRS criteria
+correspond equally closely to the separately assigned holistic overall grade.
 
-Let $C_{rc}$ denote the score assigned in review $r$ to criterion $c$, and let $Y_r$ denote the holistic overall grade. For each criterion, the relationship with the overall grade was summarized using the Pearson and Spearman correlation coefficients across the $n=84$ completed reviews.
-
-For criterion $c$, the sample Pearson correlation with the holistic overall grade is
-
-$$
-\operatorname{Cor}_{\mathrm P}(C_{\cdot c},Y)
-=
-\frac{
-\sum_{r=1}^{n}
-(C_{rc}-\bar{C}_c)(Y_r-\bar{Y})
-}{
-\sqrt{
-\sum_{r=1}^{n}(C_{rc}-\bar{C}_c)^2
-\sum_{r=1}^{n}(Y_r-\bar{Y})^2
-}
-},
-$$
-
-where $n=84$, $C_{\cdot c}=(C_{1c},\ldots,C_{nc})$, and
-$Y=(Y_1,\ldots,Y_n)$.
-
-The corresponding Spearman correlation is the Pearson correlation of the ranked observations,
-
-$$
-\operatorname{Cor}_{\mathrm S}(C_{\cdot c},Y)
-=
-\operatorname{Cor}_{\mathrm P}
-\left(
-R(C_{\cdot c}),
-R(Y)
-\right),
-$$
-
-where $R(\cdot)$ denotes the rank transformation and average ranks are used for ties. Spearman correlation therefore measures monotonic association without requiring the relationship to be linear. Both coefficients range from $-1$ to $1$, with larger positive values indicating stronger positive association.
-
-These correlations are treated descriptively because the 84 reviews are not independent with respect to proposals and reviewers.
+Let $C_{rc}$ denote the score assigned in review $r$ to criterion $c$, and let $Y_r$ denote the holistic overall grade. Their relationship was summarized descriptively using Pearson correlation for linear association and Spearman correlation for monotonic association based on ranks. The corresponding sample definitions are given in @sec-app-correlation. These correlations are treated descriptively because the 84 reviews are not independent with respect to proposals and reviewers.
 
 | Criterion | Mean criterion score | Pearson correlation | Spearman correlation |
 |---|---:|---:|---:|
@@ -231,105 +192,141 @@ These correlations are treated descriptively because the 84 reviews are not inde
 | Scaling potential | 3.512 | 0.541 | 0.553 |
 | Scientific rigor | 3.881 | 0.588 | 0.599 |
 
-Scientific quality showed the strongest relationship with the holistic overall grade, with Pearson and Spearman correlations of 0.892 and 0.890, respectively. The remaining three criteria were positively related to the overall grade but substantially less strongly, with correlations around 0.54--0.60. This is consistent with previous findings that different criterion scores need not correspond equally closely to a holistic evaluation [@eblen2016; @erosheva2020]. In the CRS data, however, these correlations do not identify the weights reviewers placed on the individual criteria.
+Scientific quality showed the strongest relationship with the holistic overall
+grade, with Pearson and Spearman correlations of 0.892 and 0.890. The remaining
+three criteria were positively related to the overall grade but less strongly,
+with correlations around 0.54--0.60. These correlations do not, however,
+identify the weights reviewers placed on the individual criteria.
 
 For a simple equal-weight summary, define the criterion average for review $r$ as
 
 $$
 A_r
 =
-\frac{1}{4}
-\sum_{c=1}^{4} C_{rc}.
+\frac{1}{4}\sum_{c=1}^{4}C_{rc}.
 $$
 
-Across the 84 reviews, the mean holistic overall grade was 3.476 and the mean equal-weight criterion average was 3.554. The Pearson correlation between $A_r$ and $Y_r$ was 0.859 and the Spearman correlation was 0.849. The mean difference was
-
-$$
-\frac{1}{84}
-\sum_{r=1}^{84}
-(A_r-Y_r)
-=
-0.077,
-$$
-
-while the mean absolute difference was 0.405 grade points. In addition, 78.6% of reviews had a criterion average within 0.5 grade points of the holistic overall grade.
-
-The equal-weight criterion average therefore corresponds closely to the holistic grade overall, but it is not an exact reconstruction of it. This is consistent with the holistic grade representing a separate judgment rather than a mechanically prescribed average of the four supporting criteria.
+Across the 84 reviews, the mean holistic overall grade was 3.476 and the mean
+equal-weight criterion average was 3.554. The Pearson correlation between
+$A_r$ and $Y_r$ was 0.859 and the Spearman correlation was 0.849. The mean
+difference $A_r-Y_r$ was 0.077 grade points, indicating little systematic
+difference in level between the two summaries, and 78.6% of reviews had a
+criterion average within 0.5 grade points of the holistic overall grade.
 
 ## Equal-weight criterion summary at proposal level
 
-The equal-weight summary is used here as a descriptive counterfactual rather than as an estimate of how reviewers actually combined the four criteria. Previous work indicates that individual criteria can have different relationships with holistic evaluations [@eblen2016; @erosheva2020], so equal weighting should not be interpreted as an empirically estimated scoring rule.
-
-For proposal $i$, let
+The equal-weight summary is used as a descriptive counterfactual rather than as an estimate of how reviewers actually combined the four criteria. For proposal $i$, let
 
 $$
 O_i
 =
-\frac{1}{2}
-\sum_{r:p(r)=i} Y_r
+\frac{1}{2}\sum_{r:p(r)=i}Y_r
 $$
 
-denote its mean holistic overall grade and let
+denote its mean holistic overall grade, and let
 
 $$
 A_i
 =
-\frac{1}{2}
-\sum_{r:p(r)=i} A_r
+\frac{1}{2}\sum_{r:p(r)=i}A_r
 =
-\frac{1}{8}
-\sum_{r:p(r)=i}
-\sum_{c=1}^{4} C_{rc}
+\frac{1}{8}\sum_{r:p(r)=i}\sum_{c=1}^{4}C_{rc}
 $$
 
 denote the equal-weight average of all eight criterion scores received across its two reviews.
 
-The two proposal-level summaries remained strongly related. Their Pearson correlation was 0.848 and their Spearman correlation was 0.881. However, @fig-proposal-criterion-overall shows that the relationship is not identical to the $45^\circ$ identity line.
+The two proposal-level summaries remained strongly related, with Pearson correlation 0.848 and Spearman correlation 0.881. Their relationship is shown in @fig-proposal-criterion-overall.
 
-![Proposal-level equal-weight criterion average versus mean holistic overall grade. The dashed identity line represents identical proposal-level summaries. Original qualifiers and proposals with the largest raw-rank changes are labelled.](figures/criteria_descriptive/proposal_level_criterion_average_vs_overall.png){#fig-proposal-criterion-overall width=90%}
+![Proposal-level equal-weight criterion average versus mean holistic overall grade. The dashed identity line represents identical proposal-level summaries. CRS qualifiers and proposals with the largest **raw-rank changes** are labelled.](figures/criteria_descriptive/proposal_level_criterion_average_vs_overall.png){#fig-proposal-criterion-overall width=85%}
 
-The holistic proposal average is relatively coarse because it is calculated from only two integer-valued grades, whereas $A_i$ averages eight criterion scores and therefore has a finer numerical resolution. Consequently, many apparent raw-rank changes reflect the breaking of ties in the holistic-grade ranking and should not be interpreted as substantive changes by themselves.
+The holistic proposal average is relatively coarse because it is calculated from only two integer-valued grades, whereas $A_i$ averages eight criterion scores and therefore has finer numerical resolution. Raw-rank changes are consequently sensitive to the breaking of ties and are not emphasized here.
 
-The upper part of the ordering nevertheless shows a meaningful difference. P022 had the highest criterion average at 4.75, while P032 and P041 both had averages of 4.50. These are three of the four proposals that qualified under the original CRS rule. The fourth qualifier, P023, had a criterion average of 4.00. By comparison, P016, P029, P038 and P040 each had a criterion average of 4.375.
-
-Thus, the equal-weight criterion summary preserves substantial agreement with the holistic evaluation but does not reproduce its upper ordering exactly. Since equal weighting was not the CRS decision rule, the comparison is interpreted as a counterfactual rather than as an alternative reconstruction of the original qualification procedure.
-
+At the top of the distribution, P022 had criterion average 4.75 and P032 and P041 had 4.50. These are three of the four proposals that qualified under the final CRS rule. The fourth qualifier, P023, had criterion average 4.00, while several non-qualified proposals had criterion averages of 4.375. Thus, equal weighting preserves substantial agreement with the holistic evaluation but does not reproduce its upper ordering exactly. Since equal weighting was not the CRS decision rule, this comparison is interpreted as a counterfactual rather than as an alternative reconstruction of the final qualification procedure.
 
 # Bayesian ranking framework
 
 ## Related work
 
-This project is primarily based on the Bayesian grant-ranking framework of Heyard et al. [@heyard2022]. Their model represents observed proposal scores through latent proposal effects and assessor-related effects, and derives posterior rank distributions and expected ranks from the proposal effects. The method was developed to support decisions when proposals near a funding line are difficult to distinguish.
+The Bayesian ranking framework used in this project follows directly from
+Heyard et al. [-@heyard2022], who developed a Bayesian hierarchical model for
+the evaluation of research proposals at the Swiss National Science Foundation.
+Their model represents observed evaluation scores through latent proposal and
+assessor-related effects. Rather than ranking proposals only by observed scores
+or posterior mean proposal effects, they use the posterior distribution of the
+proposal effects to calculate expected ranks. This expected-rank formulation,
+which accounts for uncertainty in the relative ordering of proposals, is also
+the principal Bayesian ranking quantity used in this report.
 
-A complementary literature emphasizes the limited precision of grant review when only a small number of assessments are available. Kaplan et al. relate the number of reviewers to the precision of an estimated proposal score and show that increasingly fine distinctions require rapidly increasing numbers of reviewers [@kaplan2008]. Graves et al. study the downstream consequence for funding decisions and find substantial rank and funding instability under reviewer-score variability [@graves2011]. Together, these papers motivate treating rank uncertainty as a substantive feature of the evaluation rather than only a computational detail.
+Heyard et al. place this approach within an earlier literature on Bayesian
+ranking. In particular, they draw on Laird and Louis [-@laird1989], who
+developed Bayes and empirical-Bayes methods for estimating the ranks of random
+effects in variance-component models. Heyard et al. use their expected-rank
+formulation,
 
-The cross-classified structure of grant-review data is addressed directly by Jayasinghe, Marsh and Bond [@jayasinghe2003]. In their Australian Research Council data, some assessors evaluated more than one proposal while each proposal was evaluated by several assessors, so assessors and proposals could not be represented as a simple nested hierarchy. They therefore fitted random-intercept cross-classified models with separate assessor and proposal variance components. Their methodological argument is directly relevant to the CRS setting: ratings from the same reviewer across different proposals and ratings from different reviewers of the same proposal are not generally independent. The CRS model is simpler than theirs because no field-of-study level or assessor/researcher covariates are available, and it is Bayesian rather than fitted by iterative generalized least squares, but the basic proposal--reviewer crossing is the same.
+$$
+\operatorname{E}[\operatorname{rank}(\theta_i)],
+$$
 
-Erosheva et al. likewise emphasize the multilevel structure of grant review and model dependencies induced by applications and reviewers [@erosheva2020]. Together with Jayasinghe et al. and Heyard et al., this provides the methodological basis for including both proposal and reviewer effects in the CRS-specific model.
+as the basis for ranking the latent proposal effects.
 
-Finally, the four supporting criteria are treated separately from the Bayesian ranking model. Previous NIH analyses show that criterion scores can be strongly related to holistic overall-impact scores, while different criteria need not contribute equally [@eblen2016; @erosheva2020]. This motivated the descriptive comparison of the CRS criteria with the holistic overall grade presented in Sections 2.5 and 2.6.
+Bayesian hierarchical modelling has also previously been applied directly to
+grant-review ratings. Johnson [-@johnson2008] analysed NIH peer-review ratings
+using a Bayesian hierarchical model that allows for differences in reviewer
+scoring patterns and quantifies posterior uncertainty in proposal ratings.
+For ordinal grant scores, Heyard et al. additionally draw on Johnson
+[-@johnson2008] and Cao, Stokes and Zhang [-@cao2010] to formulate an
+alternative model based on an underlying continuous proposal-quality trait
+that is translated into observed ordinal categories. Cao et al. develop such
+a Bayesian hierarchical multirater model explicitly for ranking, allowing
+both a latent item trait and rater-specific characteristics, and demonstrate
+the approach using grant-review data.
+
+The proposal--reviewer structure is also related to the cross-classified
+grant-review model of Jayasinghe, Marsh and Bond [-@jayasinghe2003]. When
+reviewers assess multiple proposals and proposals receive evaluations from
+multiple reviewers, proposal and reviewer effects are crossed rather than
+nested. This provides the structural motivation for retaining persistent
+proposal and reviewer effects in the simpler V1 specification used here.
+
+More recently, Heyard et al. [-@heyard2025] applied Bayesian ranking to
+individual evaluations of 1,006 Marie Skłodowska-Curie Actions proposals and
+compared the resulting model-based rankings with scores, rankings and funding
+decisions established after consensus meetings. Their analysis again used
+expected ranks of latent proposal effects while adapting the hierarchical
+model to the information available on individual experts.
+
+The present analysis therefore does not introduce a new Bayesian ranking
+method. It takes the framework of Heyard et al. as its methodological starting
+point, reproduces their continuous reference specification as V0, and examines
+whether a simpler crossed proposal--reviewer specification preserves the
+substantive ranking conclusions in the CRS setting.
 
 ## V0: Heyard reference model
 
-The first fitted model, denoted V0, reproduces the continuous homogeneous-variance specification of Heyard et al. as the methodological reference model [@heyard2022]. Let $r=1,\ldots,84$ index completed reviews, let $p(r)$ denote the proposal reviewed in record $r$, and let $a(r)$ denote the reviewer. The observed holistic overall grade is $Y_r$, and $\bar{Y}$ denotes the observed mean overall grade across all reviews.
+The reference model V0 reproduces the continuous homogeneous-variance
+specification of Heyard et al. [-@heyard2022]. Let
+$r=1,\ldots,84$ index completed reviews, let $p(r)$ denote the proposal
+reviewed in record $r$, and let $a(r)$ denote the reviewer. The observed
+holistic overall grade is $Y_r$, and $\bar Y$ denotes its observed mean.
 
-The model used in the analysis is
+The model is
 
 $$
 Y_r \mid \theta,\lambda
 \sim
 \mathcal{N}\!\left(
-\bar{Y}+\theta_{p(r)}+\lambda_{p(r),a(r)},\,\sigma^2
+\bar Y+\theta_{p(r)}+\lambda_{p(r),a(r)},
+\sigma^2
 \right),
 $$
 
 with proposal effects
 
 $$
-\theta_i \sim \mathcal{N}(0,\tau_\theta^2),
+\theta_i\sim\mathcal{N}(0,\tau_\theta^2),
 $$
 
-and proposal-reviewer assessment effects
+and proposal--reviewer assessment effects
 
 $$
 \lambda_{ij}\sim\mathcal{N}(\nu_j,\tau_\lambda^2),
@@ -337,26 +334,29 @@ $$
 \nu_j\sim\mathcal{N}(0,0.5^2).
 $$
 
-Here $\theta_i$ is the latent proposal effect used for ranking. The parameter $\nu_j$ represents the persistent scoring tendency of reviewer $j$, whereas $\lambda_{ij}-\nu_j$ permits an additional assessment-specific deviation for reviewer $j$ on proposal $i$. The residual term, with standard deviation $\sigma$, captures variation not explained by these latent components. This is the same basic interpretation given by Heyard et al., where assessor-specific means allow for systematically stricter or more generous scoring habits [@heyard2022].
+The latent proposal effect $\theta_i$ is the quantity used for ranking.
+The reviewer-specific mean $\nu_j$ represents a persistent scoring
+tendency, while $\lambda_{ij}-\nu_j$ permits an additional deviation for
+a particular proposal--reviewer assessment.
 
-The JAGS implementation assigns
-
-$$
-\sigma,\tau_\theta,\tau_\lambda
-\sim \operatorname{Uniform}(0,2),
-$$
-
-with the lower endpoint implemented numerically as $10^{-6}$. V0 is retained as a reference rather than assumed to be the best representation of the CRS data. In this dataset, every observed proposal-reviewer combination occurs only once, so the additional assessment-specific latent term is weakly informed at the individual edge level. This motivates comparison with the more parsimonious V1 specification below.
+V0 is retained as the methodological reference model rather than as the
+preferred CRS specification. Each observed proposal--reviewer combination
+occurs only once in the CRS data, so the additional assessment-specific
+effect is weakly informed at the individual level. This motivates the
+simpler V1 formulation.
 
 ## V1: CRS cross-classified model
 
-The CRS-specific model V1 removes the proposal-reviewer-specific latent assessment term and retains one persistent proposal effect and one persistent reviewer effect. For review $r$,
+The CRS-specific model V1 removes the proposal--reviewer-specific
+assessment term from V0 and retains one persistent proposal effect and
+one persistent reviewer effect. For review $r$,
 
 $$
 Y_r
 \sim
 \mathcal{N}\!\left(
-\bar{Y}+\theta_{p(r)}+b_{a(r)},\,\sigma^2
+\bar Y+\theta_{p(r)}+b_{a(r)},
+\sigma^2
 \right),
 $$
 
@@ -371,85 +371,73 @@ $$
 Equivalently,
 
 $$
-Y_r=\bar{Y}+\theta_{p(r)}+b_{a(r)}+\varepsilon_r,
+Y_r
+=
+\bar Y+\theta_{p(r)}+b_{a(r)}+\varepsilon_r,
 \qquad
 \varepsilon_r\sim\mathcal{N}(0,\sigma^2).
 $$
 
-The proposal effect $\theta_i$ remains the latent quantity used for ranking. The reviewer effect $b_j$ is shared across every proposal assessed by reviewer $j$ and represents a reviewer-associated scoring tendency. It should not be interpreted as a causal measure of reviewer bias: reviewer assignments were based on expertise and availability rather than random allocation, so estimated reviewer differences can also reflect differences in the proposals assigned to each reviewer.
+The proposal effect $\theta_i$ is again the latent quantity used for
+ranking. The reviewer effect $b_j$ is shared across all proposals assessed
+by reviewer $j$ and represents a reviewer-associated scoring tendency.
+Because reviewer assignments were based on expertise and availability
+rather than random allocation, these effects are interpreted descriptively
+rather than as causal measures of reviewer bias.
 
-V1 is cross-classified because each review is associated with both a proposal and a reviewer. Reviewers assess multiple proposals, while each proposal is assessed by multiple reviewers, so neither grouping is nested within the other. Jayasinghe et al. describe exactly this structural issue for grant peer review: when some assessors review multiple proposals and proposals receive ratings from multiple assessors, assessor and proposal effects are crossed rather than nested, and ignoring those dependencies can lead to model misspecification [@jayasinghe2003]. Their random-intercept formulation contains separate assessor and proposal components, closely paralleling the two crossed random effects in V1. The CRS model omits their additional field-of-study level and observed assessor/researcher covariates because these are not available in the anonymized CRS dataset.
+The model is cross-classified because each observation belongs
+simultaneously to a proposal and a reviewer, with neither grouping nested
+within the other. The hierarchical specification also induces partial
+pooling: proposal effects are shrunk toward the overall proposal mean
+according to the estimated between-proposal variation $\tau_\theta^2$,
+and reviewer effects are pooled analogously through $\tau_b^2$. This
+regularization is particularly relevant in the CRS setting because each
+proposal contributes only two observed grades.
 
-The crossing is highly incomplete in the CRS data. There are $42\times9=378$ possible proposal-reviewer combinations, but only 84 observed reviews. Unequal reviewer workloads are not in themselves incompatible with a cross-classified multilevel model; Jayasinghe et al. explicitly note that such models can accommodate unbalanced review counts [@jayasinghe2003]. The more important limitation for interpretation is that the CRS assignments were not randomized.
+V1 is used as the main CRS model because it represents the recurring
+proposal and reviewer structure directly while avoiding a separate latent
+effect for every one-off proposal--reviewer assessment.
 
-As in V0, the scale parameters use
+## Assumptions and prior specification
+
+Both V0 and V1 treat the observed grades as conditionally Gaussian with a
+common residual variance and assume exchangeable proposal effects around
+zero. V1 additionally treats the reviewer effects as exchangeable around
+zero. The overall mean $\bar Y$ is fixed at the observed mean grade rather
+than estimated as a separate intercept.
+
+For V0, the scale parameters use
+
+$$
+\sigma,\tau_\theta,\tau_\lambda
+\sim
+\operatorname{Uniform}(0,2),
+$$
+
+while V1 uses
 
 $$
 \sigma,\tau_\theta,\tau_b
-\sim \operatorname{Uniform}(0,2).
+\sim
+\operatorname{Uniform}(0,2).
 $$
 
-V1 is treated as the main model because it represents the recurring proposal and reviewer structure directly while avoiding a separate latent effect for every one-off proposal-reviewer assessment. Its adequacy is not assumed from parsimony alone; Chapter 5 therefore assesses its variance structure, posterior predictive behaviour and prior sensitivity before it is used as the basis for the review-design extension in chapter 6.
+The lower endpoint is implemented numerically as $10^{-6}$. The sensitivity
+of the main V1 conclusions to this scale-prior specification is examined in
+Chapter 5.
 
-## Partial pooling and variance components
-
-Both V0 and V1 are hierarchical models and therefore use partial pooling. In V1, a proposal's latent effect is not estimated from its two observed reviews alone. Instead, the estimate also reflects the amount of variation between proposals observed across the full dataset. The prior $\theta_i\sim\mathcal{N}(0,\tau_\theta^2)$ therefore pulls proposal effects toward the overall proposal mean, with the strength of this shrinkage depending on the estimated between-proposal variance $\tau_\theta^2$. The same principle applies to reviewer effects through $b_j\sim\mathcal{N}(0,\tau_b^2)$, so estimates of reviewer-specific scoring tendencies are informed both by the reviews assigned to that reviewer and by the overall amount of variation between reviewers.
-
-For V1, the marginal variance of an observed overall grade under the model is
-
-$$
-\operatorname{Var}(Y_r)
-=
-\tau_\theta^2+\tau_b^2+\sigma^2.
-$$
-
-The three components correspond respectively to between-proposal variation, between-reviewer variation in scoring tendency, and remaining review-level variation.
-
-Jayasinghe et al. define the intraproposal correlation in a cross-classified grant-review model as the correlation between two ratings of the same proposal by different assessors [@jayasinghe2003]. In V1 there is no additional field-of-study effect, so the corresponding proposal-level intraclass correlation is
-
-$$
-\rho_{\mathrm{proposal}}
-=
-\frac{\tau_\theta^2}
-{\tau_\theta^2+\tau_b^2+\sigma^2}.
-$$
-
-This quantity is also the model-implied correlation between two V1 ratings of the same proposal made by different reviewers. By the same covariance argument, two ratings made by the same reviewer for different proposals have model-implied correlation
-
-$$
-\rho_{\mathrm{reviewer}}
-=
-\frac{\tau_b^2}
-{\tau_\theta^2+\tau_b^2+\sigma^2}.
-$$
-
-The second quantity is useful as a reviewer-clustering summary, but it is not the same object as the intraproposal reliability measure emphasized by Jayasinghe et al. Chapter 5 therefore reports the posterior distributions of both variance shares while keeping their interpretations distinct. This is particularly relevant in the CRS setting because each proposal has only two reviews whereas every reviewer contributes repeated ratings.
-
-## Priors, assumptions and interpretation
-
-The two fitted models share several assumptions. First, conditional on their latent effects, overall grades are modelled with a common Gaussian residual variance. Second, proposal effects are exchangeable around zero. V1 additionally treats reviewer effects as exchangeable around zero. Third, $\bar{Y}$ is fixed at the observed overall mean rather than estimated as an additional intercept in the JAGS models.
-
-The scale priors are bounded uniform distributions on $(0,2)$, matching the reference implementation used for V0 and retained in V1 to make the model comparison interpretable. V0 additionally uses $\nu_j\sim\mathcal{N}(0,0.5^2)$ for reviewer-specific mean tendencies. Because the dataset is small and the variance components govern the degree of partial pooling, the dependence of the V1 results on these scale priors is examined explicitly in the sensitivity analysis in Chapter 5.
-
-The non-random assignment mechanism described in Sections 2.2 and 3.3 limits the interpretation of the reviewer effects. Cross-classified multilevel modelling can accommodate repeated reviewers and unequal review counts [@jayasinghe2003], but it does not remove the confounding between reviewer-associated scoring tendencies and differences in the proposals assigned to them. The reviewer effects are therefore interpreted as descriptive reviewer-associated tendencies rather than causal measures of reviewer bias.
-
-The consequences of the incomplete proposal--reviewer assignment structure for estimability and statistical information are considered more formally in the graph-based analysis in Chapter 6.
-
-<!-- TODO: After completing Chapter 6, revisit the final sentence and make the connection to the graph-based analysis more specific. -->
-
-## Treatment of the 1–5 score scale
-
-The holistic CRS overall grade is an ordered integer score from 1 to 5, but V0 and V1 treat it as approximately continuous and Gaussian. This implies that adjacent score categories are treated as equally spaced and that the latent Gaussian sampling distribution is not itself bounded to the interval $[1,5]$.
-
-This choice follows the continuous reference formulation of Heyard et al., who considered both continuous and ordinal Bayesian ranking models for bounded grant scores [@heyard2022]. In their simulation study, the simple normal-outcome model with homogeneous residual variance performed competitively despite its simpler specification, although the suitability of that approximation is context dependent.
-
-For the CRS data, the Gaussian formulation is retained initially because it gives a transparent model for proposal and reviewer effects and supports the later linear-algebraic review-design analysis. The approximation is nevertheless testable. The posterior predictive assessment in Chapter 5 will examine the replicated score distribution, including the frequency with which the Gaussian model generates values below 1 or above 5. A full ordinal model is therefore not introduced solely because the observed scale is ordinal; it remains a possible extension if the validation results indicate that the continuous approximation is inadequate.
-
-<!-- TODO: After completing Chaoter 5 and 6 the last paragraph may need to be adjusted to what we have really done not just planned... -->
+Although the holistic overall grade is recorded on an integer scale from
+1 to 5, both models use the continuous Gaussian formulation of Heyard et al.
+[-@heyard2022]. This treats adjacent categories as equally spaced. Since the
+main target is the relative ranking of latent proposal effects rather than
+prediction of valid score categories, this approximation is retained here;
+its limitations are assessed through posterior predictive checks in Chapter 5.
 
 ## Posterior ranking quantities
 
-The ranking is based on the posterior distribution of the proposal effects $\theta_1,\ldots,\theta_{42}$ rather than directly on the observed score averages. For posterior draw $s$, the rank of proposal $i$ is
+The ranking is based on the posterior distribution of the proposal effects
+$\theta_1,\ldots,\theta_{42}$ rather than directly on the observed score
+averages. For posterior draw $s$, the rank of proposal $i$ is
 
 $$
 R_i^{(s)}
@@ -458,15 +446,18 @@ R_i^{(s)}
 \mathbb{1}_{\{\theta_k^{(s)}>\theta_i^{(s)}\}},
 $$
 
-where $\mathbb{1}_{\{\cdot\}}$ denotes the indicator function, equal to 1 when the condition in the subscript is satisfied and 0 otherwise. The sum therefore counts how many other proposals have a larger latent proposal effect than proposal $i$ in posterior draw $s$. Consequently, rank 1 corresponds to the proposal with the largest proposal effect. The posterior mean of this rank distribution is the expected rank,
+where rank 1 corresponds to the proposal with the largest latent proposal
+effect and $\mathbb{1}_{\{\cdot\}}$ denotes the indicator function.
+
+The posterior mean of this rank distribution is the expected rank,
 
 $$
 ER_i
 =
-\operatorname{E}\!\left[R_i\mid Y\right].
+\operatorname{E}[R_i\mid Y].
 $$
 
-Using the definition of $R_i$, this can equivalently be written as
+Using the definition of $R_i$,
 
 $$
 ER_i
@@ -475,77 +466,88 @@ ER_i
 \mathbb{P}(\theta_k>\theta_i\mid Y).
 $$
 
-Thus, the expected rank of proposal $i$ can be interpreted as 1 plus the sum of the posterior probabilities that each competing proposal has a larger latent proposal effect. In practice, $ER_i$ is estimated from the MCMC output by computing $R_i^{(s)}$ for each posterior draw $s$ and averaging these sampled ranks,
+Expected rank can therefore be interpreted as 1 plus the sum of the
+posterior probabilities that each competing proposal has a larger latent
+effect than proposal $i$. In practice, it is estimated from the posterior
+draws by
 
 $$
 ER_i
 \approx
-\frac{1}{S}\sum_{s=1}^{S}R_i^{(s)},
+\frac{1}{S}\sum_{s=1}^{S}R_i^{(s)}.
 $$
 
-where $S$ denotes the number of posterior draws used for the calculation.
+Expected rank is the principal Bayesian ranking quantity used in this
+report and follows Heyard et al. [-@heyard2022]. With 42 proposals, the midpoint of the rank scale is
 
-Expected rank is the central ranking quantity in Heyard et al. because it incorporates both the estimated differences between proposal effects and the uncertainty in their relative ordering [@heyard2022]. With 42 proposals, the midpoint of the rank scale is $(42+1)/2=21.5$. When the posterior ordering of a proposal is highly uncertain, its expected rank can therefore move substantially away from its point rank and toward the middle of the rank scale.
+$$
+\frac{42+1}{2}=21.5.
+$$
 
-The analysis reports three related but distinct ranking summaries. The raw-score rank orders proposals using their average overall grade across the two reviews. The posterior-mean rank orders proposals according to the posterior means of their latent effects $\theta_i$. The expected rank, by contrast, averages each proposal's rank over the full posterior distribution and therefore accounts directly for uncertainty in the relative ordering. Posterior quantiles of $R_i$ are additionally used to construct rank-uncertainty intervals.
+When many of the pairwise ordering probabilities for proposal $i$ are close
+to 0.5 ($\mathbb{P}(\theta_k>\theta_i\mid Y) \approx 0.5$), its expected rank is consequently pulled toward the centre of the
+rank scale.
 
-Pairwise posterior probabilities such as
+Three ranking summaries are distinguished throughout the analysis. The
+**raw-score rank** orders proposals by their mean observed overall grade,
+the **posterior-mean rank** orders the posterior means of $\theta_i$, and
+the **expected rank** averages the proposal's rank across the full posterior
+distribution. Rank uncertainty is summarized by the 90% posterior rank
+interval, defined by the 5th and 95th percentiles of $R_i$.
+
+For comparisons between particular proposals, pairwise posterior
+probabilities such as
 
 $$
 \mathbb{P}(\theta_i>\theta_k\mid Y)
 $$
 
-provide a more direct comparison between two particular proposals. They are especially useful when different models produce different exact ranks even though the posterior evidence separating the two proposals is weak. This becomes particularly relevant in the V0--V1 comparison.
+give a more direct measure of the evidence for one proposal being ranked
+above another. These are particularly useful when small changes in a model
+produce different integer ranks for proposals that are nearly tied.
 
 ## Posterior computation and diagnostics
 
-Both models were fitted in JAGS from R. The V0 workflow uses the `ERforResearch` implementation with the explicit V0 JAGS model, while V1 uses a custom JAGS specification with one reviewer effect per reviewer. Each final fit used four chains, 10,000 adaptation iterations, 10,000 burn-in iterations and 50,000 sampling iterations per chain. The random seed was fixed at 20260727 for reproducibility.
+All Bayesian models were fitted in JAGS from R. V0 uses the explicit
+Heyard reference specification implemented through `ERforResearch`, while
+V1 uses a custom JAGS model with one persistent reviewer effect per
+reviewer.
 
-The fitting scripts first validate the anonymized data structure and reconstruct the original CRS qualification indicator. They then save the fitted MCMC object and a parameter-summary CSV. Expected ranks and posterior-mean ranks are computed from the fitted posterior and saved separately. The comparison script does not refit either model: it reads the saved V0 and V1 fits and ranking tables, extracts posterior rank draws, computes rank-uncertainty summaries and pairwise probabilities, and writes the model-comparison tables.
+Unless stated otherwise, each final fit used four Markov chains, 10,000
+adaptation iterations, 10,000 burn-in iterations and 50,000 retained
+sampling iterations per chain, giving 200,000 posterior draws in total.
+The random seed was fixed at 20260727 for reproducibility.
 
-Computational convergence is assessed using the potential scale reduction factor (PSRF) and effective sample size (ESS) reported by the saved fits. These diagnostics establish whether the MCMC computation appears stable; they do not by themselves establish that the statistical model is adequate for the data. Posterior predictive checks and prior sensitivity are therefore treated separately in Chapter 5.
+Posterior-mean ranks, expected ranks, rank intervals and pairwise posterior
+probabilities were calculated from the retained posterior draws. Numerical
+convergence was assessed using the potential scale reduction factor (PSRF)
+and effective sample size (ESS). These diagnostics assess whether the
+posterior computation is stable; statistical model adequacy is evaluated
+separately through posterior predictive checks and sensitivity analysis in
+Chapter 5.
 
 # Bayesian ranking results
 
-## V0 results
+## Main V1 ranking and comparison with the final CRS procedure
 
-The V0 reference model produced a clear point ordering at the top of the posterior-mean ranking. Proposal P022, whose two overall grades average to 5.0, had posterior-mean rank 1 and expected rank 11.85. The three proposals with an average overall grade of 4.5 occupied the next three posterior-mean positions: P023 had rank 2 and expected rank 15.45, P032 rank 3 and expected rank 15.49, and P041 rank 4 and expected rank 16.50. These are exactly the four proposals that satisfied the original CRS qualification rule.
+The CRS-specific V1 model preserves the broad upper ordering based on the
+observed overall grades while showing that the exact latent ranks are highly
+uncertain. P022 had posterior-mean rank 1 and expected rank 13.08. P032, P023 and P041 occupied posterior-mean ranks 2, 3 and 4, with expected ranks 15.87, 15.87 and 16.22, respectively. These are exactly the four proposals that satisfied the final CRS qualification threshold.
 
-The difference between posterior-mean rank and expected rank is already informative. Although P022 is first when proposals are ordered by posterior mean $\theta_i$, its expected rank is 11.85 rather than close to 1. The corresponding 90% posterior rank interval extends from rank 1 to rank 35. The three other originally qualified proposals have 90% intervals of 1--37 for P023, 1--37 for P032, and 2--38 for P041. Thus, the fitted model preserves a clear point ordering while simultaneously indicating that the data provide little precision about the exact ranks.
+The posterior-mean ordering is therefore much sharper than the posterior
+evidence supporting the exact relative positions. The 90% posterior rank interval for P022 was 1--36; for P023 and P032 it was 1--37; and for P041 it was 1--38. The relationship between the observed-score rank, posterior-mean rank and posterior expected rank is shown in @fig-v1-ranking-comparison.
 
-The MCMC diagnostics did not indicate a computational convergence problem. Across the monitored V0 parameters, the maximum PSRF was 1.0077 and the minimum effective sample size was 501. The weakest ESS occurred for $\tau_\lambda$ (stored as `tau_assessor`). These diagnostics support using the posterior draws for comparison, while the breadth of the rank distributions remains a substantive feature of the inference rather than an obvious MCMC failure.
+![Proposal rankings under the observed-score ranking, posterior-mean ranking and posterior expected rank for the V1 cross-classified model. The movement of expected ranks toward the centre of the rank scale reflects substantial posterior uncertainty in the exact proposal ordering.](figures/model_comparison/ranking_comparison_V1.png){#fig-v1-ranking-comparison width=95%}
 
-## V1 results
+This distinction is the main additional information provided by the Bayesian ranking relative to the final qualification rule. The CRS procedure identifies proposals that satisfy a transparent score threshold; it does not quantify how strongly the available reviews separate their latent proposal effects. In the present data, the same four proposals appear strongest under both approaches, but their exact positions are weakly identified. The Bayesian analysis is therefore interpreted as uncertainty-aware decision support rather than as a retrospective replacement for the CRS rule.
 
-The more parsimonious V1 model produced a very similar upper ordering. P022 remained at posterior-mean rank 1, with expected rank 13.08. P032 moved to posterior-mean rank 2 with expected rank 15.87, P023 moved to rank 3 with expected rank 15.87, and P041 remained rank 4 with expected rank 16.22. Again, the four proposals occupying the first four posterior-mean positions are exactly those that satisfied the original CRS qualification threshold.
+## Robustness to the Heyard reference specification
 
-Rank uncertainty remained large. The 90% posterior rank interval for P022 was 1--36; for P023 and P032 it was 1--37; and for P041 it was 1--38. The posterior-mean ordering should therefore not be read as evidence that these proposals are separated with comparable certainty to their integer rank labels. This distinction is central for interpreting V1 as an uncertainty-aware model rather than simply another deterministic ranking rule.
+The V0 Heyard reference model gives almost the same substantive result. The four CRS qualifiers again occupy the first four posterior-mean positions. Across all 42 proposals, the Spearman correlation between V0 and V1 posterior-mean ranks was 0.9951 and the Pearson correlation between expected ranks was 0.9916. The close agreement is visible in @fig-expected-rank-v0-v1.
 
-The relationship between the three ranking summaries is illustrated in @fig-v1-ranking-comparison. In the figure, `Fixed` denotes the ranking obtained directly from the observed two-review average for each proposal, `Posterior Mean` denotes the ranking obtained by ordering proposals according to the posterior means of their latent effects $\theta_i$, and `ER` denotes the posterior expected rank obtained by averaging each proposal's rank across posterior draws. In all three cases, smaller rank values indicate better positions, with rank 1 corresponding to the highest-ranked proposal.
+![Posterior expected ranks under the V0 Heyard reference model and the V1 cross-classified model. The dashed identity line represents identical expected ranks under both models.](figures/model_comparison/expected_rank_v0_vs_v1.png){#fig-expected-rank-v0-v1 width=85%}
 
-![Proposal rankings under the observed-score ranking, posterior-mean ranking and posterior expected rank for the V1 cross-classified model. The movement of expected ranks toward the centre of the rank scale reflects substantial posterior uncertainty in the exact proposal ordering.](figures/model_comparison/ranking_comparison_V1.png){#fig-v1-ranking-comparison width=100%}
-
-V1 also showed favourable MCMC diagnostics. Its maximum PSRF was 1.0017 and its minimum effective sample size was 1,627, both associated with $\tau_\theta$ (stored as `tau_proposal`). All nine reviewer-effect 95% posterior intervals include zero in the saved V1 summary. This does not imply that reviewer variation is absent; it means that the dataset does not provide strong proposal-adjusted evidence for any single reviewer having a non-zero persistent effect. Reviewer effects are therefore described as reviewer-associated scoring tendencies and are examined further through the variance decomposition in Chapter 5.
-
-## Comparison with the original CRS procedure
-
-The original CRS rule and the Bayesian models answer related but different questions. The CRS procedure applies the score-based qualification threshold described in Section 2.3 and does not require a complete ordering of all 42 proposals. By contrast, V0 and V1 estimate latent proposal effects for every proposal and quantify uncertainty in their relative ranks.
-
-At the top of the point ranking, the methods agree strongly. P022, P023, P032 and P041 are the four proposals that qualified under the original rule, and the same four occupy the first four posterior-mean ranks under both V0 and V1. The Bayesian analysis therefore does not reveal a wholesale reversal of the original outcome. Instead, its main added information is about how uncertain the apparent ordering is.
-
-That distinction matters because deterministic score summaries can conceal instability when proposals are difficult to separate. Graves et al. show that reviewer-score variability can translate into substantial rank and funding instability [@graves2011], while Heyard et al. use posterior rank uncertainty specifically to identify proposals whose quality is difficult to distinguish [@heyard2022]. In the CRS data, the broad posterior rank intervals show that agreement about which proposals look strongest from the observed scores should not be confused with precise knowledge of their latent ranks.
-
-The Bayesian analysis is therefore interpreted as complementary to the CRS qualification rule. It provides a probabilistic description of relative proposal quality and reviewer-associated variation; it does not retrospectively redefine the original threshold as a fixed top-four funding line.
-
-## Comparison of V0 and V1
-
-The direct comparison shows that simplifying V0 to the cross-classified V1 model changes little about the substantive ranking. The Spearman correlation between the two posterior-mean rankings is 0.9951, and the Pearson correlation between expected ranks is 0.9916. Twenty-six of the 42 proposals change their exact posterior-mean rank, but the changes are small: the mean absolute change is 0.86 positions and the maximum is 3 positions. Thus, counting the number of proposals whose integer rank changes would substantially overstate the practical difference between the models.
-
-The close agreement in expected ranks is also visible in @fig-expected-rank-v0-v1, where most proposals lie close to the identity line.
-
-![Posterior expected ranks under the V0 Heyard reference model and the V1 cross-classified model. The dashed identity line represents identical expected ranks under both models. The close concentration around this line shows that simplifying V0 to V1 has little effect on the overall expected-rank ordering.](figures/model_comparison/expected_rank_v0_vs_v1.png){#fig-expected-rank-v0-v1 width=90%}
-
-Although the two models therefore produce very similar rankings overall, small changes in exact integer ranks can still occur when two proposals are nearly indistinguishable. The P023--P032 comparison provides a clear example. Under V0, P023 has posterior-mean rank 2 and P032 rank 3; under V1, this ordering reverses. Yet the posterior pairwise probability is
+Small changes in integer ranks can nevertheless occur when proposals are almost indistinguishable. Twenty-six of the 42 proposals changed posterior-mean integer rank, but these changes were small: the mean absolute change was 0.86 positions and the maximum was three positions. P023 and P032 provide a clear example: V0 places P023 above P032, while V1 reverses them. Yet
 
 $$
 \mathbb{P}(\theta_{032}>\theta_{023}\mid Y)=0.498955
@@ -557,17 +559,13 @@ $$
 \mathbb{P}(\theta_{032}>\theta_{023}\mid Y)=0.500470
 $$
 
-under V1. Both probabilities are essentially one half. The rank swap therefore reflects an almost exact posterior tie rather than meaningful evidence that one model identifies a different second-best proposal. This is a concrete example of why an exact integer rank can appear more decisive than the posterior comparison that produced it.
+under V1. The apparent reversal is therefore an almost exact posterior tie rather than evidence that the two models disagree meaningfully about these proposals.
 
-Most importantly, V1 does not materially reduce rank uncertainty. The mean width of the 90% posterior rank interval is 36.50 positions under V0 and 36.74 under V1; the median width is 37 under both models. The large uncertainty therefore survives removal of V0's proposal-reviewer-specific assessment layer. V1 has somewhat more favourable computational diagnostics and a simpler interpretation, while preserving essentially the same ranking conclusions.
-
-This comparison supports using V1 as the provisional main model, but it does not by itself establish why rank uncertainty is so large. The sparse design--especially the fact that each proposal has only two reviews--is a plausible major source, consistent with the broader precision problem discussed by Kaplan et al. [@kaplan2008], but that explanation is investigated rather than assumed. The next step is therefore to validate V1 before using its posterior covariance structure in the review-design analysis.
+Rank uncertainty is equally stable across the two specifications. The mean width of the 90% posterior rank intervals was 36.50 positions under V0 and 36.74 under V1, with median width 37 under both models. Thus, simplifying V0 to the cross-classified V1 model changes little about either the broad ordering or the central finding that exact ranks are poorly identified. Detailed V0 ranking output and computational diagnostics are retained in @sec-app-v0.
 
 ## Bayesian ranking using the equal-weight criterion average
 
-The descriptive comparisons in the previous Sections 2.4 and 2.5 do not account for reviewer-associated scoring tendencies or uncertainty in the proposal ordering. To examine whether the choice between the holistic grade and the equal-weight criterion summary remains relevant within the same Bayesian framework, V1 was fitted a second time using the review-level criterion average $A_r$ as the response.
-
-The model is
+The descriptive criterion analysis in Sections 2.4 and 2.5 suggests that the holistic grade and an equal-weight criterion average contain overlapping but not identical information. To examine whether this difference persists after accounting for reviewer-associated scoring tendencies and ranking uncertainty, V1 was fitted a second time using the review-level criterion average $A_r$ as the response:
 
 $$
 A_r
@@ -578,123 +576,64 @@ A_r
 \theta^{(A)}_{p(r)}
 +
 b^{(A)}_{a(r)},
-\,\sigma_A^2
+\sigma_A^2
 \right),
 $$
 
 with
 
 $$
-\theta_i^{(A)}
-\sim
-\mathcal{N}(0,\tau_{\theta,A}^2),
+\theta_i^{(A)}\sim\mathcal{N}(0,\tau_{\theta,A}^2),
 \qquad
-b_j^{(A)}
-\sim
-\mathcal{N}(0,\tau_{b,A}^2).
+b_j^{(A)}\sim\mathcal{N}(0,\tau_{b,A}^2).
 $$
 
-The reviewer--proposal assignments, prior specification and MCMC settings were kept identical to the overall-grade V1 fit. Only the response variable and its observed mean were changed. This fit is therefore used as a counterfactual comparison of outcome definitions rather than as a replacement for the main overall-grade model. Its computational diagnostics did not indicate a convergence problem: the maximum PSRF was 1.0032 and the minimum effective sample size was 1,863.
+The reviewer--proposal assignments, priors and MCMC settings were kept identical to the overall-grade V1 fit; only the response and its observed mean changed. The resulting fit had satisfactory computational diagnostics (maximum PSRF 1.0032; minimum ESS 1,863).
 
-The resulting rankings remained positively associated but differed more than the V0--V1 comparison in Section 4.4. The Spearman correlation between posterior-mean ranks was 0.873, while the Pearson correlation between expected ranks was 0.863. The mean absolute expected-rank change was 2.97 positions and the maximum was 7.89 positions. By comparison, the Pearson correlation between the expected ranks obtained from V0 and V1 using the same holistic outcome was 0.9916. In these data, changing the response from the holistic grade to the equal-weight criterion average therefore affected the inferred ordering more than simplifying the Bayesian model from V0 to V1.
+Changing the response had a noticeably larger effect than changing from V0 to V1. The Spearman correlation between posterior-mean ranks from the two V1 fits was 0.873, and the Pearson correlation between expected ranks was 0.863. The mean absolute expected-rank change was 2.97 positions and the maximum was 7.89. By comparison, the Pearson correlation between V0 and V1 expected ranks using the same holistic outcome was 0.9916.
 
 The expected-rank comparison is shown in @fig-er-overall-criterion.
 
-![Posterior expected ranks from V1 fitted to the holistic overall grade and to the equal-weight criterion average. The dashed identity line represents identical expected ranks under both response definitions. Original qualifiers and proposals with the largest expected-rank changes are labelled.](figures/criterion_model_comparison/expected_rank_overall_vs_criterion_average.png){#fig-er-overall-criterion width=85%}
+![Posterior expected ranks from V1 fitted to the holistic overall grade and to the equal-weight criterion average. The dashed identity line represents identical expected ranks under both response definitions. CRS qualifiers and proposals with the largest expected-rank changes are labelled.](figures/criterion_model_comparison/expected_rank_overall_vs_criterion_average.png){#fig-er-overall-criterion width=82% fig-pos="H"}
 
-The change is also visible among the originally qualified proposals. P022 and P032 remained at posterior-mean ranks 1 and 2 under the criterion-average model. P041 moved from rank 4 to rank 3, while P023 moved from rank 3 to rank 11. P040, which had posterior-mean rank 6 under the overall-grade model, moved to rank 4 under the criterion-average model. Consequently, three of the four original qualifiers remained within the first four posterior-mean positions.
+The upper ordering illustrates the difference. P022 and P032 remained at posterior-mean ranks 1 and 2 under the criterion-average model, P041 moved from rank 4 to rank 3, and P040 moved from rank 6 to rank 4. P023 moved from posterior-mean rank 3 to rank 11. That last change is less dramatic when uncertainty is considered: its expected rank changed only from 15.87 to 16.80, whereas P040 improved from 18.43 to 12.19. Expected-rank changes therefore provide a more informative comparison than exact integer ranks alone.
 
-The exact rank movement of P023 should again be interpreted together with expected rank. Its expected rank changed only from 15.87 under the overall-grade model to 16.80 under the criterion-average model, despite its posterior-mean rank moving from 3 to 11. By contrast, P040 showed a larger expected-rank improvement, from 18.43 to 12.19. Expected-rank changes therefore provide a less tie-sensitive description of the difference between the two outcome definitions than exact integer ranks alone.
+The criterion-average fit also produced somewhat narrower posterior rank
+distributions. The mean width of the 90% posterior rank intervals decreased
+from 36.74 to 33.19 positions, while the median width decreased from 37 to 34.
+The observed criterion average also had lower dispersion than the holistic grade, with standard deviations of 0.772 and 0.950, respectively. Since the criterion average combines four scores, part
+of this reduction in variation can arise mechanically from averaging.
+The corresponding change in the fitted variance decomposition is examined
+in @sec-variance-diagnostics.
 
-The criterion-average fit also produced somewhat narrower posterior rank distributions. The mean width of the 90% posterior rank intervals decreased from 36.74 to 33.19 positions, while the median width decreased from 37 to 34. Rank uncertainty therefore remained substantial, but the criterion-average response produced somewhat greater separation between proposals.
-
-The variance decomposition changed in the same direction. The posterior median proposal variance share increased from 0.050 under the overall-grade model to 0.192 under the criterion-average model, while the residual share decreased from 0.896 to 0.733. The reviewer share changed from 0.026 to 0.046. The observed standard deviation of the criterion average was also lower than that of the holistic grade, 0.772 compared with 0.950. Part of the lower residual variation under the criterion-average model can arise mechanically from averaging. Let $\varepsilon_{r1},\ldots,\varepsilon_{r4}$ denote the review-level errors of the four criterion scores. The error in their equal-weight average is
-
-$$
-\bar{\varepsilon}_r
-=
-\frac{1}{4}
-\sum_{c=1}^{4}\varepsilon_{rc}.
-$$
-
-Therefore,
-
-$$
-\operatorname{Var}(\bar{\varepsilon}_r)
-=
-\frac{1}{16}
-\operatorname{Var}
-\left(
-\sum_{c=1}^{4}\varepsilon_{rc}
-\right).
-$$
-
-Using
-
-$$
-\operatorname{Var}(X_1+\cdots+X_4)
-=
-\sum_{c=1}^{4}\operatorname{Var}(X_c)
-+
-2\sum_{c<d}\operatorname{Cov}(X_c,X_d),
-$$
-
-suppose for illustration that all four criterion errors have the same variance $\sigma_C^2$ and the same pairwise correlation $\rho_C$. Then each covariance equals
-
-$$
-\operatorname{Cov}(\varepsilon_{rc},\varepsilon_{rd})
-=
-\rho_C\sigma_C^2.
-$$
-
-There are four variance terms and six distinct covariance pairs, so
-
-$$
-\operatorname{Var}(\bar{\varepsilon}_r)
-=
-\frac{1}{16}
-\left(
-4\sigma_C^2
-+
-12\rho_C\sigma_C^2
-\right)
-=
-\frac{\sigma_C^2}{4}
-\left(
-1+3\rho_C
-\right).
-$$
-
-Hence, whenever the four errors are not perfectly correlated, $\rho_C<1$, averaging reduces their variance. For example, if they were uncorrelated, $\rho_C=0$, the variance would be reduced to $\sigma_C^2/4$; if they were perfectly correlated, $\rho_C=1$, averaging would produce no reduction.
-
-Thus, part of the smaller fitted residual variation for the criterion-average model may arise simply because four scores are being averaged.
-
-Overall, the supporting criteria and holistic grade convey substantially overlapping but not identical information. Equal weighting preserves much of the broad proposal ordering while producing meaningful changes for some proposals and somewhat narrower posterior rank distributions. Since the holistic grade was deliberately assigned as a separate judgment and was the score actually used by CRS, it remains the response for the main Bayesian analysis.
-
+The comparison does not establish that one score summary is preferable to the
+other. It shows that the definition of the evaluation outcome matters
+materially for the posterior ordering: changing from the holistic overall
+grade to the equal-weight criterion average has a larger effect than changing
+from V0 to V1 while holding the holistic outcome fixed.
 
 # Validation and sensitivity analysis of V1
 
-## Motivation
+## Validation strategy
 
-The close agreement between V0 and V1 shows that the simpler V1 specification preserves the main ranking conclusions, but this comparison alone does not establish that V1 is an adequate working model for the CRS data. The validation therefore considers four aspects of the model: computational convergence, the estimated variance structure, posterior predictive behaviour, and sensitivity to the prior specification.
+The close agreement between V0 and V1 shows that the main ranking conclusion is not sensitive to the additional assessment-specific layer in V0, but it does not establish that V1 is an adequate working model. Validation therefore focuses on three questions: whether the posterior computation is stable, whether V1 reproduces important features of the observed grades, and whether the main conclusions depend materially on the baseline scale priors.
 
-The aim is not to establish V1 as the true data-generating mechanism. Rather, the objective is to determine whether its main inferential conclusions are sufficiently stable and whether the fitted model reproduces important features of the observed grades well enough to justify its use in the analyses conducted in this project. This is particularly relevant because the later review-design analysis builds on the proposal--reviewer structure represented by V1.
+## Computational and variance diagnostics {#sec-variance-diagnostics}
 
+The V1 posterior was sampled reliably. Across all monitored parameters, the
+maximum PSRF was 1.0017 and the minimum effective sample size was 1,627.
+The corresponding trace plots are provided in @sec-app-trace.
 
-## Computational diagnostics
+To examine how V1 distributes variation across proposals, reviewers and
+individual reviews, note that its marginal variance is
 
-The numerical convergence diagnostics for V1 were already summarized in Chapter 4. Across all monitored parameters, the maximum potential scale reduction factor was 1.0017 and the minimum effective sample size was 1,627. The smallest effective sample size occurred for the proposal-level scale parameter $\tau_\theta$. These values do not indicate an important convergence problem.
+$$
+\operatorname{Var}(Y_r)
+=
+\tau_\theta^2+\tau_b^2+\sigma^2.
+$$
 
-The numerical diagnostics are supplemented by the trace plots in @fig-v1-trace. The four chains occupy the same posterior regions without persistent trends or visible chain separation. For readability, the figure shows the final 5,000 stored iterations from each chain and plots every fifth value; the numerical diagnostics above are based on the full posterior sample.
-
-![Trace plots for the V1 scale parameters $\tau_\theta$, $\tau_b$, and $\sigma$. The four chains overlap throughout the displayed sampling period without persistent trends or chain separation.](figures/validation/v1_trace_plots.png){#fig-v1-trace width=90%}
-
-The computational diagnostics therefore support using the retained posterior draws for the subsequent validation. They should, however, be distinguished from model adequacy: successful convergence indicates that the posterior distribution was sampled reliably, but does not by itself imply that the statistical model describes the observed grades well.
-
-
-## Variance decomposition and intraproposal correlation
-
-The variance decomposition introduced in Section 3.4 was evaluated separately for every posterior draw. For posterior draw $s$, the total model variance is
+For posterior draw $s$, define
 
 $$
 V^{(s)}
@@ -706,52 +645,84 @@ V^{(s)}
 \left(\sigma^{(s)}\right)^2.
 $$
 
-The corresponding proposal, reviewer and residual variance shares are
+The corresponding variance shares are
 
 $$
 \rho_{\mathrm{proposal}}^{(s)}
 =
-\frac{
-\left(\tau_\theta^{(s)}\right)^2
-}{
-V^{(s)}
-},
-$$
-
-$$
+\frac{\left(\tau_\theta^{(s)}\right)^2}{V^{(s)}},
+\qquad
 \rho_{\mathrm{reviewer}}^{(s)}
 =
-\frac{
-\left(\tau_b^{(s)}\right)^2
-}{
-V^{(s)}
-},
-$$
-
-and
-
-$$
+\frac{\left(\tau_b^{(s)}\right)^2}{V^{(s)}},
+\qquad
 \rho_{\mathrm{residual}}^{(s)}
 =
-\frac{
-\left(\sigma^{(s)}\right)^2
-}{
-V^{(s)}
-}.
+\frac{\left(\sigma^{(s)}\right)^2}{V^{(s)}}.
 $$
 
-As discussed in Section 3.4, the proposal share is also the V1 model-implied correlation between two ratings of the same proposal by different reviewers. It therefore provides an intraproposal correlation in the sense of the cross-classified reliability interpretation of Jayasinghe et al. [@jayasinghe2003].
+For the overall-grade V1 model, the posterior medians of these shares were
+0.050, 0.026 and 0.896, respectively. The corresponding 95% credible
+intervals were approximately $[0.0002,0.289]$, $[0.0001,0.240]$ and
+$[0.615,0.995]$.
 
-The posterior medians of the proposal, reviewer and residual shares were 0.050, 0.026 and 0.896, respectively. The corresponding 95% credible intervals were approximately $[0.0002,0.289]$ for the proposal share, $[0.0001,0.240]$ for the reviewer share, and $[0.615,0.995]$ for the residual share. These posterior summaries are shown in @fig-v1-variance-shares.
+![Posterior variance shares under V1. Points show posterior medians and vertical intervals show 95% credible intervals.](figures/validation/v1_variance_shares.png){#fig-v1-variance-shares width=72%}
 
-![Posterior variance shares under V1. Points show posterior medians and vertical intervals show 95% credible intervals.](figures/validation/v1_variance_shares.png){#fig-v1-variance-shares width=75%}
+The proposal share also has a reliability interpretation. For two ratings
+of the same proposal $i$ made by different reviewers $j$ and $k$,
 
-The fitted model therefore attributes most variation in the observed grades to residual review-level variation. The proposal- and reviewer-level variance shares are considerably smaller and are estimated with substantial uncertainty. In particular, the posterior median intraproposal correlation of approximately 0.05 indicates weak model-implied correlation between two independent ratings of the same proposal. This is consistent with the broad posterior rank distributions reported in Chapter 4, although the variance decomposition alone does not establish that the sparse review design caused the rank uncertainty.
+$$
+\operatorname{Cov}(Y_{ij},Y_{ik})
+=
+\operatorname{Var}(\theta_i)
+=
+\tau_\theta^2,
+$$
 
+because the two observations share the same proposal effect but have
+different reviewer and residual terms. Hence,
+
+$$
+\operatorname{Cor}(Y_{ij},Y_{ik})
+=
+\frac{\tau_\theta^2}
+{\tau_\theta^2+\tau_b^2+\sigma^2}
+=
+\rho_{\mathrm{proposal}}.
+$$
+
+The proposal variance share is therefore also the model-implied
+intraproposal correlation under V1, following the cross-classified
+reliability interpretation of Jayasinghe et al. [-@jayasinghe2003].
+Its posterior median of approximately 0.05 indicates weak model-implied
+correlation between two ratings of the same proposal. The dominant residual
+share is consistent with the broad posterior rank distributions in Chapter 4,
+although this decomposition alone does not identify the sparse assignment
+design as their cause.
+
+For comparison, the same variance decomposition was calculated for the V1
+fit using the equal-weight criterion average $A_r$ as the response.
+
+| Response | Proposal share | Reviewer share | Residual share |
+|---|---:|---:|---:|
+| Holistic overall grade | 0.050 | 0.026 | 0.896 |
+| Equal-weight criterion average | 0.192 | 0.046 | 0.733 |
+
+For every posterior draw, the three variance shares sum to one. The values
+reported in the table are the medians of the three posterior distributions
+calculated separately, so their reported medians need not sum exactly to one.
+
+The criterion-average model attributes a larger share of its fitted variation
+to differences between proposals and a smaller share to residual review-level
+variation than the holistic-grade model. However, the two decompositions
+concern different response variables: $A_r$ averages four criterion scores and
+has lower observed dispersion than the holistic grade. The larger proposal
+share should therefore not be interpreted as evidence that the equal-weight
+criterion average is intrinsically a better evaluation measure.
 
 ## Posterior predictive assessment
 
-Posterior predictive checks were used to assess whether datasets generated from V1 reproduce important features of the observed CRS grades. A sample of 5,000 posterior draws was used. For posterior draw $s$ and review $r$, a replicated grade was generated according to
+Posterior predictive checks assessed whether V1 reproduces the observed location, dispersion and reviewer disagreement. For posterior draw $s$ and review $r$,
 
 $$
 Y_r^{\mathrm{rep},(s)}
@@ -766,346 +737,35 @@ b_{a(r)}^{(s)},
 \right).
 $$
 
-This produces a complete replicated dataset of 84 grades for each selected posterior draw. Four statistics were initially considered: the overall mean, the overall standard deviation, the mean absolute disagreement between the two reviews of the same proposal, and the proportion of replicated grades outside the admissible score range from 1 to 5.
+Across 5,000 replicated datasets, the observed mean grade of 3.476 was close to the posterior predictive mean of 3.474, and the observed standard deviation of 0.950 was close to the replicated mean of 0.975. The observed mean absolute disagreement between the two reviews of a proposal was 1.095, compared with a posterior predictive mean of 1.064; approximately 40% of replicated datasets produced at least as much mean disagreement as observed.
 
-The observed overall mean was 3.476. The posterior predictive mean was 3.474, with a 95% predictive interval of approximately $[3.241,3.704]$. The observed standard deviation was 0.950, compared with a posterior predictive mean of 0.975 and a 95% predictive interval of approximately $[0.781,1.201]$. V1 therefore reproduces the overall location and dispersion of the observed grades well.
+![Posterior predictive checks for V1. Histograms show the distributions of statistics calculated from replicated datasets, while dashed vertical lines show the corresponding observed values.](figures/validation/v1_posterior_predictive_checks.png){#fig-v1-ppc width=90%}
 
-The initial reviewer-disagreement statistic was defined as
+A more detailed disagreement check showed that the low posterior predictive probability for disagreements of at least two score points is largely explained by comparing continuous replicated scores with integer-valued observed grades. After mapping the replicated grades to the integer scale from 1 to 5, the
+apparent mismatch became much smaller: the posterior predictive probability
+increased from 0.0088 to 0.272. The derivation and additional disagreement
+checks are given in @sec-app-disagreement.
 
-$$
-\bar{D}
-=
-\frac{1}{42}
-\sum_{i=1}^{42}
-\left|
-Y_{i1}-Y_{i2}
-\right|,
-$$
+The main model-form limitation is visible in the lower-left panel of @fig-v1-ppc. Because the Gaussian likelihood is unbounded, an average of 6.6% of replicated grades fall below 1 or above 5. V1 is therefore retained as a continuous approximation for latent proposal effects and ranking uncertainty, not as a literal generative model for valid future score categories.
 
-where $Y_{i1}$ and $Y_{i2}$ denote the two grades received by proposal $i$. The observed value was
-
-$$
-\bar{D}_{\mathrm{obs}}
-=
-1.095,
-$$
-
-while the posterior predictive mean was 1.064. The 95% predictive interval was approximately $[0.790,1.386]$. The main posterior predictive results are shown in @fig-v1-ppc.
-
-![Posterior predictive checks for V1. Histograms show the distributions of statistics calculated from replicated datasets, while dashed vertical lines show the corresponding observed values.](figures/validation/v1_posterior_predictive_checks.png){#fig-v1-ppc width=95%}
-
-The final check in @fig-v1-ppc exposes an important limitation of the Gaussian specification. Although the observed grades are restricted to the five values from 1 to 5, the Gaussian sampling model has support on the full real line. On average, 0.066 of the replicated grades were below 1 or above 5, corresponding to approximately 6.6% of simulated scores. The posterior predictive median was 0.060.
-
-This behaviour is a direct consequence of the decision to model the score scale as continuous and Gaussian. It is therefore not interpreted as a computational failure, but it is an important modelling caveat. In particular, V1 does not enforce the admissible score range and should not be interpreted as a literal generative model for future integer-valued CRS grades without this limitation being made explicit. The continuous specification is retained because the main objective of V1 is inference on the latent proposal effects and their relative ranking, rather than prediction of valid future score categories.
-
-
-### Investigation of reviewer disagreement
-
-The close agreement between the observed mean disagreement of 1.095 and the posterior predictive mean of 1.064 was investigated further. In particular, it is useful to understand whether this agreement follows naturally from the structure of V1 or whether it could be an artefact of the posterior predictive simulation.
-
-Consider proposal $i$, reviewed by reviewers $j$ and $k$. Under V1,
-
-$$
-Y_{ij}
-=
-\bar{Y}
-+
-\theta_i
-+
-b_j
-+
-\varepsilon_{ij}
-$$
-
-and
-
-$$
-Y_{ik}
-=
-\bar{Y}
-+
-\theta_i
-+
-b_k
-+
-\varepsilon_{ik}.
-$$
-
-Subtracting the two grades gives
-
-$$
-Y_{ij}-Y_{ik}
-=
-b_j-b_k
-+
-\varepsilon_{ij}-\varepsilon_{ik}.
-$$
-
-The proposal effect $\theta_i$ therefore cancels completely. Conditional on the reviewer effects and residual standard deviation,
-
-$$
-Y_{ij}-Y_{ik}
-\mid b_j,b_k,\sigma
-\sim
-\mathcal{N}\!\left(
-b_j-b_k,\,
-2\sigma^2
-\right).
-$$
-
-The expected absolute disagreement can also be obtained analytically. Conditional on the reviewer effects and residual standard deviation, the difference between two reviews of the same proposal is normally distributed. Taking its absolute value therefore gives a *folded normal distribution* [@leone1961]. More generally, if
-
-$$
-X\sim\mathcal{N}(\mu,s^2),
-$$
-
-then $|X|$ follows a folded normal distribution. Its expected value is
-
-$$
-\operatorname{E}|X|
-=
-s
-\sqrt{\frac{2}{\pi}}
-\exp\!\left(
--\frac{\mu^2}{2s^2}
-\right)
-+
-|\mu|
-\left[
-2\Phi\!\left(
-\frac{|\mu|}{s}
-\right)
--1
-\right],
-$$
-
-where $\Phi(\cdot)$ denotes the cumulative distribution function of the standard normal distribution,
-
-$$
-\Phi(x)
-=
-\mathbb{P}(Z\leq x),
-\qquad
-Z\sim\mathcal{N}(0,1).
-$$
-
-This is the standard expression for the mean of a folded normal random variable [@leone1961]. In the present setting,
-
-$$
-Y_{ij}-Y_{ik}
-\mid b_j,b_k,\sigma
-\sim
-\mathcal{N}\!\left(
-b_j-b_k,\,
-2\sigma^2
-\right),
-$$
-
-so the parameters in the folded-normal expectation are
-
-$$
-\mu=b_j-b_k
-\qquad\text{and}\qquad
-s=\sqrt{2}\sigma.
-$$
-
-For each proposal, the expression was evaluated using the reviewer pair assigned to that proposal and the corresponding posterior draws of $b_j$, $b_k$, and $\sigma$. The resulting expected absolute disagreements were then averaged across the 42 proposals for each posterior draw.
-
-The resulting analytic posterior mean disagreement was 1.066, almost identical to the simulated posterior predictive mean of 1.064. The difference between the simulated and analytic means was approximately $-0.0015$. The small difference between the observed value and the replicated mean is therefore not explained by numerical precision or by substantial Monte Carlo error.
-
-The posterior predictive probability of obtaining a mean disagreement at least as large as the observed value was
-
-$$
-\mathbb{P}
-\left(
-\bar{D}^{\mathrm{rep}}
-\ge
-\bar{D}_{\mathrm{obs}}
-\mid Y
-\right)
-=
-0.401.
-$$
-
-Thus, approximately 40% of replicated datasets produced at least as much mean disagreement as the observed CRS data. The observed value is therefore not unusual under V1.
-
-The decomposition also helps explain where the disagreement comes from. If the two reviewer effects are set equal, then $\mu=0$ and the expected absolute disagreement simplifies to
-
-$$
-\operatorname{E}|Y_{ij}-Y_{ik}|
-=
-\frac{2\sigma}{\sqrt{\pi}}.
-$$
-
-Averaged over the posterior draws, this residual-only expectation was 1.043. Allowing the fitted reviewer effects to differ increased the expected mean disagreement by only about 0.023 on average. Most of the model-implied disagreement is therefore associated with residual review-level variation rather than persistent differences between reviewer effects. This is consistent with the residual-dominated variance decomposition above.
-
-A further check examined whether the mean disagreement could hide differences in the shape of the disagreement distribution. In the observed data, 10 proposals had disagreement 0, 19 had disagreement 1, 12 had disagreement 2, and one had disagreement 3. Thus, 13 of 42 proposals had a disagreement of at least two score points,
-
-$$
-T_{\mathrm{obs}}
-=
-\frac{13}{42}
-\approx
-0.310.
-$$
-
-When the continuous Gaussian replicated grades were used directly, the posterior predictive mean of the corresponding proportion was only 0.134. Moreover,
-
-$$
-\mathbb{P}
-\left(
-T_{\mathrm{cont}}^{\mathrm{rep}}
-\ge
-T_{\mathrm{obs}}
-\mid Y
-\right)
-=
-0.0088,
-$$
-
-where $T_{\mathrm{cont}}^{\mathrm{rep}}$ denotes the proportion of proposals in a continuous replicated dataset whose absolute disagreement is at least two. Thus, fewer than 1% of continuous replicated datasets produced at least as much moderate disagreement as was observed, suggesting an apparent model mismatch for this particular statistic.
-
-This comparison is sensitive to the fact that observed disagreements are integer-valued, whereas Gaussian replicated disagreements are continuous. For example, a replicated difference of 1.9 is counted as smaller than two, while on the observed score scale no disagreement between 1 and 2 can occur. To assess how much this scale mismatch affects the result, the replicated scores were mapped back to the observed 1--5 integer grid according to
-
-$$
-\widetilde{Y}_r^{\mathrm{rep}}
-=
-\min
-\left\{
-5,\,
-\max
-\left\{
-1,\,
-\operatorname{round}
-\left(
-Y_r^{\mathrm{rep}}
-\right)
-\right\}
-\right\}.
-$$
-
-For proposal $i$, define the resulting replicated disagreement as
-
-$$
-\widetilde{D}_i^{\mathrm{rep}}
-=
-\left|
-\widetilde{Y}_{i1}^{\mathrm{rep}}
--
-\widetilde{Y}_{i2}^{\mathrm{rep}}
-\right|,
-$$
-
-and let
-
-$$
-T_{\mathrm{disc}}^{\mathrm{rep}}
-=
-\frac{1}{42}
-\sum_{i=1}^{42}
-\mathbb{1}_{\{
-\widetilde{D}_i^{\mathrm{rep}}
-\ge 2
-\}}
-$$
-
-denote the proportion of proposals with disagreement of at least two score points after this transformation. The rounding-and-clipping step is used only as a posterior predictive diagnostic; it does not define a new fitted model.
-
-After placing the replicated scores on the same integer-valued scale as the observations, the posterior predictive mean of this proportion increased from 0.134 to 0.255. The corresponding tail probability became
-
-$$
-\mathbb{P}
-\left(
-T_{\mathrm{disc}}^{\mathrm{rep}}
-\ge
-T_{\mathrm{obs}}
-\mid Y
-\right)
-=
-0.272.
-$$
-
-This change is important for interpretation. Under the continuous comparison, the observed proportion of proposals with disagreement of at least two score points was located in an extreme upper tail of the posterior predictive distribution. After discretisation, approximately 27% of replicated datasets produced a proportion at least as large as the observed value. Although the posterior predictive mean of 0.255 remains below the observed value of 0.310, the observed statistic is therefore no longer unusual under the model.
-
-The discretised checks also support the fit of the upper part of the disagreement distribution. The observed median disagreement was 1, matching the replicated median of 1. The observed 90th percentile was 2, compared with a replicated median of 2 and a 95% posterior predictive interval of approximately $[1.9,3]$. The observed maximum disagreement was 3, compared with a replicated median of 3 and a 95% posterior predictive interval of $[2,4]$. The observed proportion of disagreements of at least three score points was likewise within its posterior predictive distribution. Thus, the discretised model reproduces not only the frequency of moderate disagreement reasonably well, but also the observed upper-tail behaviour.
-
-The mean disagreement should be interpreted separately because it was already reproduced well by the original continuous posterior predictive check: the observed mean was 1.095, compared with a posterior predictive mean of 1.064, and
-
-$$
-\mathbb{P}
-\left(
-\bar{D}^{\mathrm{rep}}
-\ge
-\bar{D}_{\mathrm{obs}}
-\mid Y
-\right)
-=
-0.401.
-$$
-
-The purpose of the discretisation is therefore not to improve the mean-disagreement fit, but to make threshold- and tail-based comparisons consistent with the integer-valued 1--5 score scale.
-
-Taken together, these results indicate that V1 reproduces the average disagreement and the main features of its upper distribution reasonably well. The rounding-and-clipping diagnostic does not turn the Gaussian model into an ordinal model, but it shows that the initially extreme result for disagreements of at least two score points was largely caused by comparing integer-valued observed disagreements with continuously distributed replicated disagreements.
+The corresponding posterior predictive intervals are reported in
+@sec-app-ppc.
 
 ## Prior sensitivity
 
-The baseline V1 specification uses
+The baseline scale priors
 
 $$
-\sigma,\tau_\theta,\tau_b
-\sim
-\operatorname{Uniform}(0,2),
+\sigma,\tau_\theta,\tau_b\sim\operatorname{Uniform}(0,2)
 $$
 
-following the scale-prior specification used for the reference model [@heyard2022]. Because these parameters control both the amount of partial pooling and the variance decomposition, a separate sensitivity fit replaced all three scale priors by
-
-$$
-\sigma,\tau_\theta,\tau_b
-\sim
-\operatorname{HalfNormal}(0,1).
-$$
-
-In the JAGS implementation, this corresponds to normal distributions with mean zero and variance one, truncated to positive values. The likelihood, crossed proposal and reviewer effects, data, initialization procedure, number of chains, adaptation period, burn-in and sampling length were otherwise kept unchanged. The comparison therefore isolates the effect of changing the scale-prior specification.
-
-The alternative model also showed satisfactory computational behaviour. Its maximum PSRF was 1.0011 and its minimum effective sample size was 1,306, again with the smallest ESS occurring for $\tau_\theta$.
-
-The posterior scale parameters changed only slightly. The posterior median of $\tau_\theta$ decreased from 0.220 under the baseline prior to 0.209 under the half-normal prior. The median of $\tau_b$ changed from 0.157 to 0.154, while the median of $\sigma$ changed from 0.920 to 0.916. The corresponding variance decomposition was similarly stable. The posterior median proposal share changed from 0.050 to 0.046, the reviewer share from 0.026 to 0.025, and the residual share from 0.896 to 0.902.
-
-The ranking conclusions were even less sensitive to the prior change. The Spearman correlation between the baseline and sensitivity posterior-mean rankings was 0.9990, while the Pearson correlation between expected ranks was
-
-$$
-0.99994.
-$$
-
-The mean absolute change in expected rank was only 0.093 positions, and the maximum absolute change across all 42 proposals was 0.283 positions. Six proposals changed their exact posterior-mean integer rank, but the mean absolute integer-rank change was only 0.19 positions and the maximum was two positions. The close agreement in expected ranks is visible in @fig-v1-prior-sensitivity.
-
-![Posterior expected ranks under the baseline V1 prior specification and the half-normal prior-sensitivity specification. The dashed identity line represents identical expected ranks under both models.](figures/validation/expected_rank_prior_sensitivity.png){#fig-v1-prior-sensitivity width=85% fig-pos="H"}
-
-The prior change also had essentially no effect on the broad posterior rank uncertainty. The mean width of the 90% posterior rank intervals was 36.74 positions under the baseline V1 specification and 36.83 under the half-normal specification. The median width was 37 positions under both models. The P023--P032 comparison was likewise unchanged:
-
-$$
-\mathbb{P}
-\left(
-\theta_{032}>
-\theta_{023}
-\mid Y
-\right)
-=
-0.500470
-$$
-
-under the baseline model and 0.500325 under the half-normal sensitivity model.
-
-The main V1 conclusions are therefore not materially dependent on the choice between the baseline $\operatorname{Uniform}(0,2)$ scale priors and the tested half-normal alternative.
-
+were replaced by independent $\operatorname{HalfNormal}(0,1)$ priors while keeping the likelihood, data and MCMC settings unchanged. The ranking conclusions were essentially unchanged: the Pearson correlation between expected ranks from the two prior specifications was 0.99994, the mean absolute expected-rank change was 0.093 positions and the maximum was 0.283. The median width of the 90% posterior rank intervals was 37 under both specifications. Posterior median variance shares were also nearly identical: the proposal share changed from 0.050 to 0.046, the reviewer share from 0.026 to 0.025 and the residual share from 0.896 to 0.902. The corresponding expected-rank figure and additional numerical details are provided in @sec-app-prior.
 
 ## Validation conclusion
 
-The validation supports V1 as a stable working model for the analyses in this project. The MCMC diagnostics indicate satisfactory convergence, and the half-normal prior-sensitivity fit produced virtually unchanged variance components, expected ranks and rank uncertainty. The fitted variance structure is dominated by residual review-level variation, while the proposal-level intraproposal correlation has a posterior median of approximately 0.05.
+The validation provides no strong indication that the main V1 ranking conclusions are driven by computational instability, the tested scale priors or a failure to reproduce the observed mean, dispersion and reviewer-disagreement structure. The fitted model attributes most variation to residual review-level variation, and the exact proposal ranks remain weakly identified.
 
-Posterior predictive checks reproduce the observed mean, standard deviation and reviewer-disagreement structure reasonably well. The observed mean disagreement is not unusual under V1, and after accounting for the integer-valued 1--5 score scale, the observed frequency of disagreements of at least two score points also lies comfortably within its posterior predictive distribution. The corresponding median, upper quantile and maximum disagreement are likewise compatible with the replicated data.
-
-The main limitation is therefore the continuous Gaussian treatment of the five-point score: approximately 6.6% of replicated grades fall outside the admissible range. V1 is consequently used as a model for latent proposal effects and ranking uncertainty rather than as a literal predictive model for valid future score categories. Subject to this caveat and the sparse, non-random review design, the validation provides no strong reason to reject V1 for the subsequent analyses.
+The principal model-form caveat is the continuous Gaussian treatment of the five-point score, which permits replicated values outside the admissible range. Subject to this approximation and the non-random sparse assignment design, V1 is retained as the working model for the review-design analysis in Chapter 6.
 
 # Graph-based review design
 
@@ -1405,13 +1065,154 @@ Do not introduce new literature, methods or results here.
 -->
 
 
-# Additional figures {.appendix}
+# Supplementary analyses {.appendix}
 
-## V0 ranking comparison
+## Correlation definitions {#sec-app-correlation}
 
-For completeness, @fig-v0-ranking-comparison shows the corresponding comparison for the V0 Heyard reference model. In the figure, `Fixed` denotes the ranking based directly on the observed two-review average, `Posterior Mean` denotes the ranking obtained from the posterior means of the latent proposal effects $\theta_i$, and `ER` denotes the posterior expected rank obtained by averaging proposal ranks across posterior draws. The same general movement of expected ranks toward the middle of the rank scale is visible under V0, consistent with the large posterior rank uncertainty reported in Chapter 4.
+For criterion $c$, the sample Pearson correlation with the holistic overall grade is
 
-![Proposal rankings under the observed-score ranking, posterior-mean ranking and posterior expected rank for the V0 Heyard reference model.](figures/model_comparison/ranking_comparison_V0.png){#fig-v0-ranking-comparison width=100%}
+$$
+\operatorname{Cor}_{\mathrm P}(C_{\cdot c},Y)
+=
+\frac{
+\sum_{r=1}^{n}(C_{rc}-\bar C_c)(Y_r-\bar Y)
+}{
+\sqrt{
+\sum_{r=1}^{n}(C_{rc}-\bar C_c)^2
+\sum_{r=1}^{n}(Y_r-\bar Y)^2
+}
+},
+$$
+
+where $n=84$, $C_{\cdot c}=(C_{1c},\ldots,C_{nc})$ and $Y=(Y_1,\ldots,Y_n)$. The corresponding sample Spearman correlation is
+
+$$
+\operatorname{Cor}_{\mathrm S}(C_{\cdot c},Y)
+=
+\operatorname{Cor}_{\mathrm P}\!\left(R(C_{\cdot c}),R(Y)\right),
+$$
+
+where $R(\cdot)$ denotes the rank transformation and average ranks are used for ties.
+
+## V0 reference-model details {#sec-app-v0}
+
+Under V0, P022 had posterior-mean rank 1 and expected rank 11.85. P023, P032 and P041 occupied posterior-mean ranks 2, 3 and 4, with expected ranks 15.45, 15.49 and 16.50. Their 90% posterior rank intervals were 1--35, 1--37, 1--37 and 2--38, respectively. The maximum PSRF across monitored V0 parameters was 1.0077 and the minimum effective sample size was 501.
+
+For completeness, @fig-v0-ranking-comparison shows the comparison between the observed-score rank, posterior-mean rank and expected rank under V0.
+
+![Proposal rankings under the observed-score ranking, posterior-mean ranking and posterior expected rank for the V0 Heyard reference model.](figures/model_comparison/ranking_comparison_V0.png){#fig-v0-ranking-comparison width=95%}
+
+## V1 MCMC trace plots {#sec-app-trace}
+
+@fig-v1-trace shows the final 5,000 stored iterations from each V1 chain, plotting every fifth value for readability. Numerical diagnostics in the main text are based on the full posterior sample.
+
+![Trace plots for the V1 scale parameters $\tau_\theta$, $\tau_b$, and $\sigma$.](figures/validation/v1_trace_plots.png){#fig-v1-trace width=88%}
+
+## Detailed reviewer-disagreement diagnostic {#sec-app-disagreement}
+
+Consider proposal $i$, reviewed by reviewers $j$ and $k$. Under V1,
+
+$$
+Y_{ij}-Y_{ik}
+=
+b_j-b_k+\varepsilon_{ij}-\varepsilon_{ik},
+$$
+
+so the proposal effect cancels and
+
+$$
+Y_{ij}-Y_{ik}\mid b_j,b_k,\sigma
+\sim
+\mathcal{N}(b_j-b_k,2\sigma^2).
+$$
+
+Taking the absolute value gives a folded normal distribution [@tsagris2014]. If $X\sim\mathcal{N}(\mu,s^2)$, then
+
+$$
+\operatorname{E}|X|
+=
+s\sqrt{\frac{2}{\pi}}
+\exp\!\left(-\frac{\mu^2}{2s^2}\right)
++
+|\mu|
+\left[
+2\Phi\!\left(\frac{|\mu|}{s}\right)-1
+\right],
+$$
+
+where $\Phi$ is the standard normal cumulative distribution function. In the present setting, $\mu=b_j-b_k$ and $s=\sqrt{2}\sigma$. Evaluating this expression for the observed reviewer pairs and posterior draws gave analytic posterior mean disagreement 1.066, almost identical to the simulated posterior predictive mean 1.064. The posterior predictive probability of mean disagreement at least as large as the observed value 1.095 was 0.401.
+
+Most of the model-implied disagreement is associated with residual review-level variation. If the two reviewer effects are equal, the expected absolute disagreement simplifies to
+
+$$
+\operatorname{E}|Y_{ij}-Y_{ik}|
+=
+\frac{2\sigma}{\sqrt{\pi}},
+$$
+
+which averaged 1.043 over the posterior. Allowing the fitted reviewer effects to differ increased the expected mean disagreement by only about 0.023 on average.
+
+A threshold-based check initially suggested underprediction of moderate disagreement. Observed absolute disagreement was 0 for 10 proposals, 1 for 19 proposals, 2 for 12 proposals and 3 for one proposal. Thus 13 of 42 proposals had disagreement of at least two score points, giving
+
+$$
+T_{\mathrm{obs}}=\frac{13}{42}\approx0.310.
+$$
+
+With continuous Gaussian replicated grades, the posterior predictive mean of the corresponding proportion was 0.134 and
+
+$$
+\mathbb{P}(T_{\mathrm{cont}}^{\mathrm{rep}}\ge T_{\mathrm{obs}}\mid Y)=0.0088.
+$$
+
+Because observed scores are integer-valued, a diagnostic version of each replicated score was mapped to the 1--5 grid,
+
+$$
+\widetilde Y_r^{\mathrm{rep}}
+=
+\min\left\{5,\max\left\{1,\operatorname{round}(Y_r^{\mathrm{rep}})\right\}\right\}.
+$$
+
+After this transformation, the posterior predictive mean proportion with disagreement of at least two increased to 0.255 and
+
+$$
+\mathbb{P}(T_{\mathrm{disc}}^{\mathrm{rep}}\ge T_{\mathrm{obs}}\mid Y)=0.272.
+$$
+
+The broader disagreement pattern is summarized in @fig-v1-disagreement-ppc.
+The observed mean, median, 90th percentile, maximum and proportion of
+disagreements of at least three score points are all compatible with their
+posterior predictive distributions. The clearest departure is the frequency
+of disagreements of at least two score points, which is higher in the observed
+data than in most continuous replicated datasets. As shown above, this
+discrepancy is substantially reduced once replicated grades are placed on the
+same integer-valued 1--5 scale as the observations.
+
+![Posterior predictive checks for several summaries of reviewer disagreement under V1. Histograms show statistics from replicated datasets and dashed vertical lines show the corresponding observed values.](figures/validation/v1_disagreement_ppc.png){#fig-v1-disagreement-ppc width=95%}
+
+## Additional posterior predictive summaries {#sec-app-ppc}
+
+| Statistic | Observed | Replicated mean | 2.5% | 97.5% |
+|---|---:|---:|---:|---:|
+| Mean overall grade | 3.476 | 3.474 | 3.241 | 3.704 |
+| Standard deviation | 0.950 | 0.975 | 0.781 | 1.201 |
+| Mean absolute disagreement | 1.095 | 1.064 | 0.790 | 1.386 |
+| Proportion outside 1--5 | 0.000 | 0.066 | 0.012 | 0.143 |
+
+The intervals are the 2.5th and 97.5th percentiles of the corresponding
+statistics across the 5,000 posterior predictive datasets.
+
+## Prior-sensitivity details {#sec-app-prior}
+
+Under the $\operatorname{HalfNormal}(0,1)$ scale priors, the posterior medians of $\tau_\theta$, $\tau_b$ and $\sigma$ were 0.209, 0.154 and 0.916, compared with 0.220, 0.157 and 0.920 under the baseline specification. The maximum PSRF was 1.0011 and the minimum effective sample size was 1,306.
+
+The Spearman correlation between posterior-mean ranks under the two prior
+specifications was 0.9990. Six proposals changed integer posterior-mean rank,
+but the changes were small: the mean absolute change was 0.19 positions and
+the maximum was two positions. The mean widths of the 90% posterior rank
+intervals were 36.74 and 36.83 under the baseline and half-normal
+specifications, respectively.
+
+![Posterior expected ranks under the baseline V1 prior specification and the half-normal prior-sensitivity specification. The dashed identity line represents identical expected ranks under both models.](figures/validation/expected_rank_prior_sensitivity.png){#fig-v1-prior-sensitivity width=82%}
 
 # References {.unnumbered}
 
