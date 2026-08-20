@@ -1,7 +1,14 @@
 ---
 title: "Bayesian Ranking and Graph-Based Review Design under Sparse Evaluation Data"
 subtitle: "A Case Study of the CRS Seed Grants 2026"
-author: "Victor Sieber"
+
+author:
+  - name: Victor Sieber
+    affiliations:
+      - name: University of Zurich
+        department: Department of Mathematics
+    note: "BSc Mathematics student"
+
 date: last-modified
 
 bibliography: references.bib
@@ -15,6 +22,8 @@ format:
   pdf:
     toc: true
     number-sections: true
+    template-partials:
+      - title.tex
 ---
 
 # Abstract {.unnumbered}
@@ -237,7 +246,7 @@ denote the equal-weight average of all eight criterion scores received across it
 
 The two proposal-level summaries remained strongly related, with Pearson correlation 0.848 and Spearman correlation 0.881. Their relationship is shown in @fig-proposal-criterion-overall.
 
-![Proposal-level equal-weight criterion average versus mean holistic overall grade. The dashed identity line represents identical proposal-level summaries. CRS qualifiers and proposals with the largest **raw-rank changes** are labelled.](figures/criteria_descriptive/proposal_level_criterion_average_vs_overall.png){#fig-proposal-criterion-overall width=85%}
+![Proposal-level equal-weight criterion average versus mean holistic overall grade. The dashed identity line represents identical proposal-level summaries. CRS qualifiers and proposals with the largest **raw-rank changes** are labelled.](figures/criteria_descriptive/proposal_level_criterion_average_vs_overall.png){#fig-proposal-criterion-overall width=85% fig-pos="H"}
 
 The holistic proposal average is relatively coarse because it is calculated from only two integer-valued grades, whereas $A_i$ averages eight criterion scores and therefore has finer numerical resolution. Raw-rank changes are consequently sensitive to the breaking of ties and are not emphasized here.
 
@@ -516,7 +525,7 @@ reviewer.
 Unless stated otherwise, each final fit used four Markov chains, 10,000
 adaptation iterations, 10,000 burn-in iterations and 50,000 retained
 sampling iterations per chain, giving 200,000 posterior draws in total.
-The random seed was fixed at 20260727 for reproducibility.
+All MCMC fits used a fixed random seed of 20260727 to ensure reproducibility.
 
 Posterior-mean ranks, expected ranks, rank intervals and pairwise posterior
 probabilities were calculated from the retained posterior draws. Numerical
@@ -537,15 +546,15 @@ uncertain. P022 had posterior-mean rank 1 and expected rank 13.08. P032, P023 an
 The posterior-mean ordering is therefore much sharper than the posterior
 evidence supporting the exact relative positions. The 90% posterior rank interval for P022 was 1--36; for P023 and P032 it was 1--37; and for P041 it was 1--38. The relationship between the observed-score rank, posterior-mean rank and posterior expected rank is shown in @fig-v1-ranking-comparison.
 
-![Proposal rankings under the observed-score ranking, posterior-mean ranking and posterior expected rank for the V1 cross-classified model. The movement of expected ranks toward the centre of the rank scale reflects substantial posterior uncertainty in the exact proposal ordering.](figures/model_comparison/ranking_comparison_V1.png){#fig-v1-ranking-comparison width=95%}
-
 This distinction is the main additional information provided by the Bayesian ranking relative to the final qualification rule. The CRS procedure identifies proposals that satisfy a transparent score threshold; it does not quantify how strongly the available reviews separate their latent proposal effects. In the present data, the same four proposals appear strongest under both approaches, but their exact positions are weakly identified. The Bayesian analysis is therefore interpreted as uncertainty-aware decision support rather than as a retrospective replacement for the CRS rule.
+
+![Proposal rankings under the observed-score ranking, posterior-mean ranking and posterior expected rank for the V1 cross-classified model. The movement of expected ranks toward the centre of the rank scale reflects substantial posterior uncertainty in the exact proposal ordering.](figures/model_comparison/ranking_comparison_V1.png){#fig-v1-ranking-comparison width=95% fig-pos="H"}
 
 ## Robustness to the Heyard reference specification
 
 The V0 Heyard reference model gives almost the same substantive result. The four CRS qualifiers again occupy the first four posterior-mean positions. Across all 42 proposals, the Spearman correlation between V0 and V1 posterior-mean ranks was 0.9951 and the Pearson correlation between expected ranks was 0.9916. The close agreement is visible in @fig-expected-rank-v0-v1.
 
-![Posterior expected ranks under the V0 Heyard reference model and the V1 cross-classified model. The dashed identity line represents identical expected ranks under both models.](figures/model_comparison/expected_rank_v0_vs_v1.png){#fig-expected-rank-v0-v1 width=85%}
+![Posterior expected ranks under the V0 Heyard reference model and the V1 cross-classified model. The dashed identity line represents identical expected ranks under both models.](figures/model_comparison/expected_rank_v0_vs_v1.png){#fig-expected-rank-v0-v1 width=85% fig-pos="H"}
 
 Small changes in integer ranks can nevertheless occur when proposals are almost indistinguishable. Twenty-six of the 42 proposals changed posterior-mean integer rank, but these changes were small: the mean absolute change was 0.86 positions and the maximum was three positions. P023 and P032 provide a clear example: V0 places P023 above P032, while V1 reverses them. Yet
 
@@ -666,7 +675,7 @@ For the overall-grade V1 model, the posterior medians of these shares were
 intervals were approximately $[0.0002,0.289]$, $[0.0001,0.240]$ and
 $[0.615,0.995]$.
 
-![Posterior variance shares under V1. Points show posterior medians and vertical intervals show 95% credible intervals.](figures/validation/v1_variance_shares.png){#fig-v1-variance-shares width=72%}
+![Posterior variance shares under V1. Points show posterior medians and vertical intervals show 95% credible intervals.](figures/validation/v1_variance_shares.png){#fig-v1-variance-shares width=72% fig-pos="H"}
 
 The proposal share also has a reliability interpretation. For two ratings
 of the same proposal $i$ made by different reviewers $j$ and $k$,
@@ -739,7 +748,7 @@ $$
 
 Across 5,000 replicated datasets, the observed mean grade of 3.476 was close to the posterior predictive mean of 3.474, and the observed standard deviation of 0.950 was close to the replicated mean of 0.975. The observed mean absolute disagreement between the two reviews of a proposal was 1.095, compared with a posterior predictive mean of 1.064; approximately 40% of replicated datasets produced at least as much mean disagreement as observed.
 
-![Posterior predictive checks for V1. Histograms show the distributions of statistics calculated from replicated datasets, while dashed vertical lines show the corresponding observed values.](figures/validation/v1_posterior_predictive_checks.png){#fig-v1-ppc width=90%}
+![Posterior predictive checks for V1. Histograms show the distributions of statistics calculated from replicated datasets, while dashed vertical lines show the corresponding observed values.](figures/validation/v1_posterior_predictive_checks.png){#fig-v1-ppc width=90% fig-pos="H"}
 
 A more detailed disagreement check showed that the low posterior predictive probability for disagreements of at least two score points is largely explained by comparing continuous replicated scores with integer-valued observed grades. After mapping the replicated grades to the integer scale from 1 to 5, the
 apparent mismatch became much smaller: the posterior predictive probability
@@ -750,6 +759,7 @@ The main model-form limitation is visible in the lower-left panel of @fig-v1-ppc
 
 The corresponding posterior predictive intervals are reported in
 @sec-app-ppc.
+
 
 ## Prior sensitivity
 
@@ -769,190 +779,59 @@ The principal model-form caveat is the continuous Gaussian treatment of the five
 
 # Graph-based review design
 
-## Motivation
+## Motivation and scope
 
 <!-- TODO:
-Investigate whether the remaining ranking uncertainty can be reframed as
-a review-design problem.
-
-Questions to investigate:
-- how much of the uncertainty appears related to limited review information?
-- what is known about the value of additional reviewers?
-- when is adding review effort practically worthwhile?
-- should attention focus on single additional reviews or groups/budgets
-  of reviews?
-
-LITERATURE TO INVESTIGATE:
-- Kaplan et al. (2008):
-  number of reviewers, precision and instability of ranks with few reviews.
-- Graves et al. (2011):
-  consequences of reviewer variability for funding decisions.
-- Heyard et al. (2022):
-  fundamental limitations caused by finite reviewer resources and difficulty
-  distinguishing proposals of similar quality.
-
-These papers motivate the problem but do not by themselves establish
-the graph-theoretic approach.
+Investigate how the findings from the Bayesian analysis motivate studying the review design itself.
+Clarify the scope and purpose of this extension.
 -->
 
 
-## Reviewer–proposal assignment as a bipartite graph
+## Reviewer--proposal assignment structure
 
 <!-- TODO:
-Investigate whether representing the sparse assignment as a bipartite graph
-provides a useful mathematical description of the evaluation design.
-
-Questions to investigate:
-- what graph concepts are actually needed?
-- how should reviewer and proposal nodes be interpreted?
-- what aspects of sparse/unbalanced assignment are represented by the graph?
-- what notion of connectivity is statistically relevant?
-
-LITERATURE GAP:
-Find primary literature on:
-- bipartite representations of two-way / reviewer-item data;
-- incomplete block designs;
-- graph representations of experimental designs;
-- connectivity and estimability in incomplete designs.
-
-Do not introduce graph terminology merely for presentation; establish why
-it contributes to the statistical analysis.
+Investigate how the CRS reviewer--proposal assignments can be represented mathematically.
+Identify the graph or design concepts that are actually useful.
 -->
 
 
-## Connection between graph structure and statistical uncertainty
+## Statistical relevance of the assignment structure
 
 <!-- TODO:
-Investigate whether and how graph structure can be linked formally to
-uncertainty in V1.
-
-Questions to investigate:
-- how does the assignment structure enter the model's information?
-- under what assumptions can graph connectivity be related to precision?
-- what quantities from graph theory have an interpretation in terms of
-  posterior uncertainty?
-- which results are established in the literature and which are derived
-  specifically for the CRS model?
-
-LITERATURE GAP:
-Find primary literature on:
-- graph Laplacians and information matrices;
-- incomplete block / optimal experimental design;
-- effective resistance and uncertainty of contrasts;
-- statistical estimation on graphs;
-- reviewer-assignment or comparison-design problems.
-
-This connection must be mathematically justified before graph geometry
-is compared empirically with statistical uncertainty.
+Investigate how the assignment structure relates to estimation and uncertainty in the Bayesian model.
+Establish the relevant theoretical connection from the literature.
 -->
 
 
-## Measuring uncertainty
+## Quantifying uncertainty for review design
 
 <!-- TODO:
-Investigate what notion of uncertainty is appropriate for the review-design
-problem.
-
-Possible perspectives to investigate:
-- uncertainty in latent proposal differences;
-- uncertainty in proposal ranks;
-- uncertainty in pairwise ordering;
-- uncertainty in separating proposals into meaningful groups;
-- uncertainty specifically relevant to a qualification/funding decision.
-
-Also investigate whether global statistical uncertainty and
-decision-relevant uncertainty lead to different objectives.
-
-LITERATURE TO INVESTIGATE:
-- Heyard et al. (2022):
-  expected ranks and funding-line uncertainty.
-- active-ranking / ranking-under-uncertainty literature.
-- Bayesian experimental-design literature.
-- decision-theoretic approaches if funding-set uncertainty becomes central.
-
-LITERATURE GAP:
-Identify established uncertainty/loss measures before defining a new
-project-specific one.
+Investigate which notion of uncertainty is most meaningful for evaluating the review design.
+Consider how it relates to proposal comparisons and ranking.
 -->
 
 
-## Allocation of additional reviews
+## Additional review scenarios
 
 <!-- TODO:
-Investigate the value of collecting additional reviews under limited
-reviewer resources.
-
-Questions to investigate:
-- how should the value of an additional review be quantified?
-- is one additional review informative enough to be practically meaningful?
-- should the problem instead be formulated for a group or budget of
-  additional reviews?
-- how does the existing number of reviews affect the marginal value of
-  another review?
-- what operational constraints would matter in practice?
-
-LITERATURE TO INVESTIGATE:
-- optimal experimental design;
-- sequential / adaptive experimental design;
-- active ranking;
-- optimal allocation of comparisons;
-- reviewer-assignment optimization.
-
-LITERATURE GAP:
-Find papers specifically connecting assignment of reviewers or judges to
-ranking precision, preferably in peer-review or closely related settings.
+Investigate how hypothetical additional reviews could change the available information.
+Consider both individual reviews and limited sets of additional reviews.
 -->
 
 
-## Comparison of review-allocation strategies
+## Comparison of review-design approaches
 
 <!-- TODO:
-Investigate which alternative allocation principles are meaningful
-benchmarks for the CRS setting.
-
-Possible ideas to investigate:
-- allocation based on existing disagreement;
-- allocation focused on decision-relevant proposals;
-- allocation based on statistical information;
-- simple non-targeted baselines.
-
-Questions:
-- what uncertainty objective does each strategy implicitly target?
-- do different strategies identify similar or different proposals?
-- how should strategies be compared fairly under equal review budgets?
-
-LITERATURE TO INVESTIGATE:
-- active ranking;
-- optimal reviewer assignment;
-- Bayesian design;
-- literature on additional review around uncertain funding boundaries.
-
-Do not fix the final strategies until the uncertainty objective and
-mathematical framework have been justified.
+Investigate reasonable ways of allocating additional review effort.
+Determine how alternative approaches can be compared fairly.
 -->
 
 
-## Implications for sparse evaluation designs
+## Generalization beyond the CRS design
 
 <!-- TODO:
-Investigate whether the ideas developed for CRS can be interpreted beyond
-the exact two-review-per-proposal design.
-
-Questions to investigate:
-- what parts of the framework depend specifically on two reviews?
-- how would the value of another review change when proposals already
-  have more reviews?
-- are there theoretical reasons to expect diminishing returns?
-- which conclusions are specific to this dataset and which might apply
-  more generally to sparse evaluation panels?
-
-LITERATURE TO INVESTIGATE:
-- Kaplan et al. (2008) for reviewer-number/precision relationships.
-- experimental-design literature on replication and marginal information.
-- reviewer-allocation literature for panels with different review loads.
-
-Treat any generalization beyond CRS cautiously unless supported by either
-theory, simulation or literature.
+Investigate which parts of the framework depend on the specific CRS design and which extend more generally.
+Consider evaluation settings with different numbers and patterns of reviews.
 -->
 
 
@@ -961,107 +840,55 @@ theory, simulation or literature.
 ## Answers to the research questions
 
 <!-- TODO:
-Answer each final research question explicitly using the completed analyses
-and only after the research questions have reached their final form.
+Answer the final research questions using the completed analyses.
+Keep the conclusions tied closely to the evidence obtained in the project.
+-->
+
+
+## Interpretation of the main findings
+
+<!-- TODO:
+Bring together the Bayesian ranking, criterion analysis, validation and review-design results.
+Identify the main scientific story emerging across the analyses.
 -->
 
 
 ## Implications for CRS
 
 <!-- TODO:
-Investigate which practical recommendations are genuinely supported by
-the results.
-
-Possible themes:
-- Bayesian ranking as decision support;
-- communication of uncertainty;
-- interpretation of criterion scores;
-- whether additional reviews are useful;
-- how additional review effort might be targeted.
-
-LITERATURE TO INVESTIGATE:
-- Heyard et al. (2022) for decision-support framing.
-- grant-review literature on reviewer numbers and reliability.
-- any review-design literature identified during Chapter 6.
-
-Avoid recommendations that go beyond what can be supported by one
-evaluation round.
+Investigate which practical conclusions or recommendations are supported for future CRS evaluations.
+Distinguish suggestions supported by the results from more speculative possibilities.
 -->
 
 
-## Ranking uncertainty and decision uncertainty
+## Ranking uncertainty and decision making
 
 <!-- TODO:
-Investigate whether reducing uncertainty about the full latent ranking and
-reducing uncertainty around a funding/qualification decision are genuinely
-different objectives in this dataset.
-
-Questions to investigate:
-- do they prioritize the same proposals?
-- can a design improve global statistical certainty without materially
-  affecting the relevant decision set?
-- which objective would be more meaningful for CRS?
-
-LITERATURE TO INVESTIGATE:
-- Bayesian decision theory if needed;
-- Heyard et al. (2022) for uncertainty around a funding line;
-- active ranking literature distinguishing full-ranking and top-set objectives.
+Investigate how uncertainty in the latent ranking relates to uncertainty in practical evaluation decisions.
+Clarify what the Bayesian results do and do not imply about the original CRS outcome.
 -->
 
 
 ## Limitations
 
 <!-- TODO:
-Discuss limitations that materially affect interpretation.
-
-Themes to revisit:
-- one evaluation round;
-- small reviewer panel;
-- limited reviews per proposal;
-- unequal workloads;
-- expertise-based non-random assignment;
-- bounded and ordinal grade scale;
-- model and prior dependence;
-- lack of observed true proposal quality;
-- feasibility constraints on hypothetical additional reviews;
-- assumptions needed for any graph-based design analysis.
-
-Use literature where it helps distinguish limitations specific to CRS
-from limitations known more generally in grant peer review.
+Identify the main data, modelling, design and interpretation limitations of the project.
+Distinguish limitations specific to the CRS case from more general limitations of sparse peer review.
 -->
 
 
 ## Future work
 
 <!-- TODO:
-Identify extensions that follow naturally from the completed project.
-
-Potential themes to investigate:
-- application to future CRS rounds;
-- evaluation designs with more reviews per proposal;
-- ordinal modelling;
-- reviewer expertise or conflicts;
-- prospective testing of review-allocation rules;
-- broader simulation studies;
-- application to other sparse evaluation systems.
-
-Only retain extensions that make sense in light of the final results.
+Identify natural extensions suggested by the results and remaining limitations.
+Consider methodological, empirical and prospective validation directions.
 -->
-
 
 # Conclusion
 
 <!-- TODO:
-Write this last.
-
-Summarize:
-- what was learned from the Bayesian ranking analysis;
-- what was learned from comparing and validating the models;
-- what the criterion analysis contributed;
-- what the review-design investigation showed;
-- the main practical conclusion.
-
-Do not introduce new literature, methods or results here.
+Summarize the overall contribution and main findings of the project.
+State the central practical takeaway without introducing new analyses, methods or literature.
 -->
 
 
@@ -1100,13 +927,13 @@ Under V0, P022 had posterior-mean rank 1 and expected rank 11.85. P023, P032 and
 
 For completeness, @fig-v0-ranking-comparison shows the comparison between the observed-score rank, posterior-mean rank and expected rank under V0.
 
-![Proposal rankings under the observed-score ranking, posterior-mean ranking and posterior expected rank for the V0 Heyard reference model.](figures/model_comparison/ranking_comparison_V0.png){#fig-v0-ranking-comparison width=95%}
+![Proposal rankings under the observed-score ranking, posterior-mean ranking and posterior expected rank for the V0 Heyard reference model.](figures/model_comparison/ranking_comparison_V0.png){#fig-v0-ranking-comparison width=95% fig-pos="H"}
 
 ## V1 MCMC trace plots {#sec-app-trace}
 
 @fig-v1-trace shows the final 5,000 stored iterations from each V1 chain, plotting every fifth value for readability. Numerical diagnostics in the main text are based on the full posterior sample.
 
-![Trace plots for the V1 scale parameters $\tau_\theta$, $\tau_b$, and $\sigma$.](figures/validation/v1_trace_plots.png){#fig-v1-trace width=88%}
+![Trace plots for the V1 scale parameters $\tau_\theta$, $\tau_b$, and $\sigma$.](figures/validation/v1_trace_plots.png){#fig-v1-trace width=88% fig-pos="H"}
 
 ## Detailed reviewer-disagreement diagnostic {#sec-app-disagreement}
 
@@ -1187,7 +1014,7 @@ data than in most continuous replicated datasets. As shown above, this
 discrepancy is substantially reduced once replicated grades are placed on the
 same integer-valued 1--5 scale as the observations.
 
-![Posterior predictive checks for several summaries of reviewer disagreement under V1. Histograms show statistics from replicated datasets and dashed vertical lines show the corresponding observed values.](figures/validation/v1_disagreement_ppc.png){#fig-v1-disagreement-ppc width=95%}
+![Posterior predictive checks for several summaries of reviewer disagreement under V1. Histograms show statistics from replicated datasets and dashed vertical lines show the corresponding observed values.](figures/validation/v1_disagreement_ppc.png){#fig-v1-disagreement-ppc width=95% fig-pos="H"}
 
 ## Additional posterior predictive summaries {#sec-app-ppc}
 
@@ -1212,7 +1039,7 @@ the maximum was two positions. The mean widths of the 90% posterior rank
 intervals were 36.74 and 36.83 under the baseline and half-normal
 specifications, respectively.
 
-![Posterior expected ranks under the baseline V1 prior specification and the half-normal prior-sensitivity specification. The dashed identity line represents identical expected ranks under both models.](figures/validation/expected_rank_prior_sensitivity.png){#fig-v1-prior-sensitivity width=82%}
+![Posterior expected ranks under the baseline V1 prior specification and the half-normal prior-sensitivity specification. The dashed identity line represents identical expected ranks under both models.](figures/validation/expected_rank_prior_sensitivity.png){#fig-v1-prior-sensitivity width=82% fig-pos="H"}
 
 # References {.unnumbered}
 
