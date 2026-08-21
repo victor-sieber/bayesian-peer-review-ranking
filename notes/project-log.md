@@ -331,6 +331,136 @@ Produce posterior rank uncertainty summaries before extending the analysis.
 - Perform the criterion-versus-overall-grade analysis.
 - Move to the graph-based review-design analysis.
 
+## 2026-08-16 to 2026-08-17 — Validation write-up and report refit
+
+### Completed
+- Wrote the V1 validation results into the technical report.
+- Added computational diagnostics, posterior variance shares, posterior predictive checks and prior-sensitivity results.
+- Reorganized the validation chapter to separate convergence, model adequacy and prior robustness.
+- Added interpretation of the proposal variance share as the model-implied intraproposal correlation.
+- Revised wording around the Gaussian 1--5 score limitation.
+- Moved technical Bayesian updating and partial-pooling derivations into the appendix.
+
+### Main findings
+- V1 is computationally stable and robust to the tested prior specification.
+- The proposal variance share is small and can be interpreted as weak model-implied agreement between two ratings of the same proposal.
+- Most fitted variation is residual review-level variation.
+- The main remaining model-form limitation is the unbounded Gaussian score model.
+
+### Next steps
+- Complete the detailed reviewer-disagreement diagnostic.
+- Perform and write up the criterion analysis.
+- Continue restructuring the report before the graph-based extension.
+
+
+## 2026-08-18 — Criterion analysis and criterion-average V1 refit
+
+### Completed
+- Compared each of the four supporting criteria with the holistic overall grade using Pearson and Spearman correlations.
+- Constructed an equal-weight criterion average at review and proposal level.
+- Added proposal-level descriptive comparison figures.
+- Re-fitted V1 using the equal-weight criterion average as the response.
+- Compared posterior-mean ranks, expected ranks and rank uncertainty between the holistic-grade and criterion-average fits.
+- Added the criterion-analysis results to the technical report.
+
+### Main findings
+- Scientific quality is much more strongly associated with the holistic overall grade than the other three criteria.
+- The equal-weight criterion average is strongly related to the holistic grade but does not reproduce the same proposal ordering.
+- Changing the response definition has a substantially larger effect on ranking than changing from V0 to V1.
+- The criterion-average model produces somewhat narrower rank intervals, but this cannot be interpreted as showing that the criterion average is a better evaluation measure.
+
+### Next steps
+- Finish the detailed disagreement analysis.
+- Refine the report structure and reduce repetition.
+- Prepare the graph-based review-design chapter.
+
+
+## 2026-08-19 — Reviewer-disagreement analysis and appendix expansion
+
+### Completed
+- Investigated why the posterior predictive mean within-proposal reviewer disagreement is close to the observed value.
+- Derived the distribution of the difference between two reviews of the same proposal under V1.
+- Showed analytically that the shared proposal effect cancels from the reviewer difference.
+- Derived the folded-normal expectation for absolute reviewer disagreement.
+- Compared analytic and simulated disagreement values.
+- Decomposed the model-implied disagreement into residual and persistent reviewer components.
+- Added detailed disagreement derivations to the appendix.
+- Added threshold-based disagreement checks and additional posterior predictive summaries.
+
+### Main findings
+- The close posterior predictive mean disagreement is not mechanically caused by the shared proposal effect.
+- The analytic expected disagreement closely matches the posterior predictive simulation.
+- Most disagreement is explained by residual review-level variation rather than persistent reviewer effects.
+- The continuous Gaussian model underpredicts the frequency of disagreements of at least two score points.
+
+### Next steps
+- Investigate whether mapping replicated scores to the observed integer 1--5 scale changes the disagreement diagnostic.
+- Continue polishing the validation chapter and appendix.
+- Begin literature review for the graph-based design extension.
+
+
+## 2026-08-20 — Discrete-score PPC refinement and graph-design literature
+
+### Completed
+- Mapped posterior predictive replicated grades to the observed integer-valued 1--5 grid.
+- Recomputed reviewer-disagreement summaries after discretization.
+- Added the discretized disagreement results to the report and appendix.
+- Reviewed literature on incomplete block designs, graph Laplacians, reviewer allocation and targeted data collection.
+- Identified Bailey and Cameron, Cook et al., Osting et al., PeerReview4All and Simpson & Roberts as the main references for Chapter 6.
+- Reworked the conceptual framing of the graph-based extension to avoid unsupported novelty claims.
+- Defined the reviewer--proposal assignment structure as a bipartite graph / Levi-graph analogue.
+
+### Main findings
+- Mapping replicated scores to the 1--5 grid does not improve the mean disagreement match but substantially reduces the discrepancy in the threshold-based disagreement statistic.
+- The graph-design extension can be grounded in established block-design, ranking and assignment literature.
+- Bailey and Cameron provide the block-design and Laplacian foundation, while Osting et al. provide the closest precedent for targeted augmentation of an existing ranking graph.
+- The CRS extension should be presented as an application and combination of established ideas, not as a new graph-theoretic method.
+
+### Next steps
+- Write Sections 6.1--6.4.
+- Derive the connection between the graph Laplacian and V1 posterior precision.
+- Define appropriate A-, D- and E-optimality criteria for proposal contrasts.
+- Discuss the planned Chapter 6 methodology with Rachel.
+
+
+## 2026-08-21 — Meeting with Rachel and substantial Chapter 6 implementation
+
+### Completed
+- Discussed the current report and validation results with Rachel.
+- Rachel considered the computational validation and prior-sensitivity analysis sufficient.
+- Discussed the Gaussian 1--5 support mismatch and agreed that it should be stated explicitly as a modelling caveat.
+- Discussed the reviewer-disagreement PPC and clarified the need to understand why the simulated disagreement is close to the observed value.
+- Confirmed the graph-based review-design direction and the need to ground the design criterion in existing literature.
+- Finalized Sections 6.1--6.5 of the graph-based review-design chapter.
+- Added the bipartite reviewer--proposal graph representation and an illustrative subset figure.
+- Derived the incidence-matrix and graph-Laplacian representation of V1.
+- Derived the conditional posterior precision
+  $Q=P_0+\sigma^{-2}L_G$ and moved the full derivation to the appendix.
+- Defined proposal-contrast uncertainty and A-, D- and E-optimality criteria.
+- Restricted the design problem to one additional currently unobserved reviewer--proposal edge.
+- Implemented the single-review design analysis for all 294 candidate edges.
+- Used posterior averaging over V1 scale-parameter draws rather than a single plug-in estimate.
+- Implemented the Sherman--Morrison rank-one covariance update.
+- Ran the review-design analysis using 1,000 and 5,000 posterior draws.
+- Added Monte Carlo stability wording to Section 6.5.
+- Added new analysis and visualization scripts and review-design result folders.
+
+### Main findings
+- The Chapter 6 problem can be expressed directly through the existing V1 covariance structure and the reviewer--proposal graph.
+- A- and D-optimality give strongly similar candidate-edge rankings.
+- E-optimality behaves substantially differently because it targets the worst posterior contrast direction rather than average or global uncertainty.
+- The 1,000- and 5,000-draw analyses give materially the same scientific conclusions, so 5,000 draws are sufficient for the final analysis.
+- Several top candidate edges are nearly tied, so exact first-place assignment should not be overinterpreted.
+- The review-design output is a statistical information ranking only; reviewer expertise, conflicts and operational eligibility are not included.
+
+### Next steps
+- Add a posterior-median plug-in sensitivity check for the review-design analysis.
+- Write the numerical results into Sections 6.5 and 6.6.
+- Create the candidate-edge heatmap and criterion-comparison visualizations.
+- Write Section 6.7 on generalization and practical constraints.
+- Finish the discussion, recommendations, abstract and conclusion.
+- Complete one full self-review before Rachel's detailed report read.
+
 #Template
 ## YYYY-MM-DD — Short description
 
