@@ -51,7 +51,10 @@ Grant peer review converts a limited number of expert judgments into decisions t
 
 This uncertainty becomes particularly important when proposals are close in score or close to a decision boundary. In a retrospective analysis of Australian grant panels, Graves et al. found substantial instability in funding status after accounting for variability among panel members' scores [@graves2011]. Jayasinghe, Marsh and Bond reported low single-rater reliability in Australian Research Council grant assessments and used a multilevel cross-classified model to separate proposal- and assessor-related sources of variation [@jayasinghe2003]. Heyard et al. similarly motivate Bayesian ranking by low inter-rater reliability and by the difficulty of distinguishing proposals of similar quality near a funding line [@heyard2022]. These findings do not imply that peer review is uninformative; rather, they motivate distinguishing an observed numerical ordering from the strength of evidence supporting that ordering.
 
-The present project studies this distinction in a small evaluation setting. With only two reviews per proposal, a method that reports a single rank without its uncertainty can appear more decisive than the available information warrants. The aim is therefore to model proposal and reviewer variation explicitly, quantify posterior uncertainty in the resulting ranks, and later ask whether the structure of the review design itself can indicate where additional review effort would be most informative.
+The present project examines this
+distinction in a small grant-evaluation setting and subsequently considers whether
+the structure of the review design itself can be used to improve the allocation of
+limited review effort.
 
 ## CRS Seed Grant evaluation 2026
 
@@ -81,16 +84,21 @@ The call indicated that approximately six projects could be funded [@crs2026call
 
 ## Motivation for Bayesian ranking
 
-The final CRS qualification procedure was transparent and easy to apply, but
-it did not quantify uncertainty around the observed overall grades. In particular, two proposals with similar score pairs can appear distinctly ordered by their observed mean grades even when the evidence that one is
-better than the other is weak. With only two reviews per proposal, the observed scores also reflect both proposal-related variation and differences in reviewer scoring behaviour.
+The final CRS qualification procedure was transparent and easy to apply, but it
+did not quantify how strongly the available reviews separated the underlying
+qualities of different proposals. Observed grades may also reflect both proposal
+quality and systematic differences in reviewer scoring behaviour.
 
 Bayesian hierarchical modelling provides a way to represent these sources of
-variation separately within a probabilistic model. Heyard et al. model latent proposal effects together with assessor-related effects and rank proposals using the posterior distribution of the proposal effects rather than the raw score averages alone [@heyard2022]. Their expected-rank approach is designed to retain information about uncertainty instead of treating an estimated ordering as known with certainty.
+variation separately. Heyard et al. model latent proposal effects together with
+assessor-related effects and rank proposals using the posterior distribution of
+the proposal effects rather than the raw score averages alone [@heyard2022].
+Their expected-rank approach retains uncertainty about the relative ordering
+instead of treating an estimated ranking as known with certainty.
 
-For the CRS data, the Bayesian analysis is therefore used to support decisions
-and quantify uncertainty rather than as a replacement rule that mechanically
-determines funding.
+For the CRS data, Bayesian ranking is therefore used to quantify uncertainty
+and support interpretation of the evaluation rather than as a replacement rule
+that mechanically determines funding.
 
 ## Research questions
 
@@ -113,7 +121,7 @@ How closely do the four supporting criterion scores correspond to the holistic o
 
 ### Research Question 5
 
-Can the sparse reviewer–proposal design be used to identify where additional review effort may be most informative?
+Which single additional reviewer–proposal assignment would most reduce uncertainty under the fitted Bayesian model, and how does this depend on the chosen notion of uncertainty?
 
 <!-- TODO:
 Research Question 5 remains provisional until the review-design objective
@@ -150,10 +158,7 @@ method unless the literature review later justifies such a statement.
 
 ## Evaluation process and analytical data
 
-The pseudonymized analytical dataset contains 84 completed reviews
-of 42 proposals by nine reviewers. Each proposal received exactly
-two independent reviews. Reviewer workloads ranged from 6 to 12 reviews because
-assignments were based on expertise and availability.
+The pseudonymized analytical dataset contains 84 completed reviews of 42 proposals by nine reviewers. Each proposal received exactly two independent reviews. Reviewers completed between 6 and 12 reviews, with assignments based on expertise and availability.
 
 Each review contains four supporting criterion scores and a separate
 holistic overall grade. All scores use an integer scale from 1 to 5,
@@ -161,20 +166,6 @@ where higher values indicate a more favourable evaluation. The
 Bayesian models use the holistic overall grade as their outcome.
 The four criterion scores are retained for a separate descriptive
 analysis of their relationship with the overall grade.
-
-
-## Reviewer–proposal assignment
-
-The reviewer–proposal design is sparse and unbalanced. Each
-proposal was reviewed twice, whereas reviewers assessed different
-numbers of proposals. Assignments were not random but depended
-on expertise and availability.
-
-Consequently, estimated reviewer effects should be interpreted as
-scoring tendencies rather than direct evidence of reviewer bias.
-Differences attributed to reviewers may partly reflect differences
-in the types of proposals assigned to them.
-
 
 ## Reconstruction of the final qualification procedure
 
@@ -250,7 +241,7 @@ The two proposal-level summaries remained strongly related, with Pearson correla
 
 The holistic proposal average is relatively coarse because it is calculated from only two integer-valued grades, whereas $A_i$ averages eight criterion scores and therefore has finer numerical resolution. Raw-rank changes are consequently sensitive to the breaking of ties and are not emphasized here.
 
-At the top of the distribution, P022 had criterion average 4.75 and P032 and P041 had 4.50. These are three of the four proposals that qualified under the final CRS rule. The fourth qualifier, P023, had criterion average 4.00, while several non-qualified proposals had criterion averages of 4.375. Thus, equal weighting preserves substantial agreement with the holistic evaluation but does not reproduce its upper ordering exactly. Since equal weighting was not the CRS decision rule, this comparison is interpreted as a counterfactual rather than as an alternative reconstruction of the final qualification procedure.
+At the top of the distribution, P022 had criterion average 4.75 and P032 and P041 had 4.50. These are three of the four proposals that qualified under the final CRS rule. The fourth qualifier, P023, had criterion average 4.00, while several non-qualified proposals had criterion averages of 4.375. Thus, equal weighting preserves substantial agreement with the holistic evaluation but does not reproduce its upper ordering exactly.
 
 # Bayesian ranking framework
 
@@ -356,9 +347,30 @@ simpler V1 formulation.
 
 ## V1: CRS cross-classified model
 
-The CRS-specific model V1 removes the proposal--reviewer-specific
-assessment term from V0 and retains one persistent proposal effect and
-one persistent reviewer effect. For review $r$,
+The CRS-specific model V1 simplifies V0 by removing the
+proposal--reviewer-specific assessment effect and serves as the main model for
+the CRS analysis. Each observed grade is
+decomposed into three sources of variation: a proposal effect, a reviewer effect
+and residual review-level variation.
+
+Let $p(r)$ denote the proposal evaluated in review $r$, and let $a(r)$ denote
+the reviewer who produced that review. V1 assumes
+
+$$
+Y_r
+=
+\bar Y
++
+\theta_{p(r)}
++
+b_{a(r)}
++
+\varepsilon_r,
+\qquad
+\varepsilon_r\sim\mathcal{N}(0,\sigma^2),
+$$
+
+or equivalently,
 
 $$
 Y_r
@@ -366,10 +378,16 @@ Y_r
 \mathcal{N}\!\left(
 \bar Y+\theta_{p(r)}+b_{a(r)},
 \sigma^2
-\right),
+\right).
 $$
 
-where
+Here, $\bar Y$ is the observed mean overall grade. The proposal effect
+$\theta_i$ represents how proposal $i$ tends to score relative to this overall
+mean, while the reviewer effect $b_j$ represents how reviewer $j$ tends to score
+relative to other reviewers. The remaining term $\varepsilon_r$ captures
+review-level variation that is not explained by either effect.
+
+The proposal and reviewer effects are assigned hierarchical distributions,
 
 $$
 \theta_i\sim\mathcal{N}(0,\tau_\theta^2),
@@ -377,35 +395,30 @@ $$
 b_j\sim\mathcal{N}(0,\tau_b^2).
 $$
 
-Equivalently,
+The latent proposal effects $\theta_i$ are the quantities used for ranking.
+Because reviewer assignments were based on expertise and availability rather
+than random allocation, the estimated reviewer effects are interpreted
+descriptively as reviewer-associated scoring tendencies rather than as causal
+measures of reviewer bias.
 
-$$
-Y_r
-=
-\bar Y+\theta_{p(r)}+b_{a(r)}+\varepsilon_r,
-\qquad
-\varepsilon_r\sim\mathcal{N}(0,\sigma^2).
-$$
+The model is cross-classified because every observed grade belongs simultaneously
+to a proposal and a reviewer, while neither grouping is nested within the other,
+meaning that reviewers are not restricted to a single proposal and proposals are
+not restricted to a single reviewer.
 
-The proposal effect $\theta_i$ is again the latent quantity used for
-ranking. The reviewer effect $b_j$ is shared across all proposals assessed
-by reviewer $j$ and represents a reviewer-associated scoring tendency.
-Because reviewer assignments were based on expertise and availability
-rather than random allocation, these effects are interpreted descriptively
-rather than as causal measures of reviewer bias.
+The hierarchical specification also induces partial pooling. Proposal effects
+with limited information are pulled toward zero, corresponding to the overall
+mean grade $\bar Y$ on the observed scale, with the amount of pooling governed
+by the estimated between-proposal variation $\tau_\theta^2$. Reviewer effects
+are pooled analogously through $\tau_b^2$. This regularization is particularly
+relevant in the CRS setting because each proposal contributes only two observed
+grades.
 
-The model is cross-classified because each observation belongs
-simultaneously to a proposal and a reviewer, with neither grouping nested
-within the other. The hierarchical specification also induces partial
-pooling: proposal effects are shrunk toward the overall proposal mean
-according to the estimated between-proposal variation $\tau_\theta^2$,
-and reviewer effects are pooled analogously through $\tau_b^2$. This
-regularization is particularly relevant in the CRS setting because each
-proposal contributes only two observed grades.
-
-V1 is used as the main CRS model because it represents the recurring
-proposal and reviewer structure directly while avoiding a separate latent
-effect for every one-off proposal--reviewer assessment.
+Estimation follows from Bayesian updating: the likelihood contributed by the
+observed grades is combined with the hierarchical prior distributions to obtain
+the joint posterior distribution of the proposal and reviewer effects and the
+variance parameters. A short mathematical derivation of this updating and the
+resulting partial pooling is given in @sec-app-bayesian-updating.
 
 ## Assumptions and prior specification
 
@@ -677,19 +690,44 @@ $[0.615,0.995]$.
 
 ![Posterior variance shares under V1. Points show posterior medians and vertical intervals show 95% credible intervals.](figures/validation/v1_variance_shares.png){#fig-v1-variance-shares width=72% fig-pos="H"}
 
-The proposal share also has a reliability interpretation. For two ratings
-of the same proposal $i$ made by different reviewers $j$ and $k$,
+The proposal variance share also has a reliability interpretation. Consider two
+ratings of the same proposal $i$ made by different reviewers $j$ and $k$.
+Under V1,
+
+$$
+Y_{ij}
+=
+\bar Y+\theta_i+b_j+\varepsilon_{ij},
+\qquad
+Y_{ik}
+=
+\bar Y+\theta_i+b_k+\varepsilon_{ik}.
+$$
+
+The two ratings share the same proposal effect $\theta_i$, whereas their
+reviewer effects and residual errors are distinct. Under the model assumptions
+that proposal effects, reviewer effects and residual errors are mutually
+independent, and that $b_j$ and $b_k$ are independent for $j\neq k$,
 
 $$
 \operatorname{Cov}(Y_{ij},Y_{ik})
 =
 \operatorname{Var}(\theta_i)
 =
-\tau_\theta^2,
+\tau_\theta^2.
 $$
 
-because the two observations share the same proposal effect but have
-different reviewer and residual terms. Hence,
+Marginally, each rating has variance
+
+$$
+\operatorname{Var}(Y_{ij})
+=
+\operatorname{Var}(Y_{ik})
+=
+\tau_\theta^2+\tau_b^2+\sigma^2.
+$$
+
+It follows that
 
 $$
 \operatorname{Cor}(Y_{ij},Y_{ik})
@@ -700,14 +738,18 @@ $$
 \rho_{\mathrm{proposal}}.
 $$
 
-The proposal variance share is therefore also the model-implied
-intraproposal correlation under V1, following the cross-classified
-reliability interpretation of Jayasinghe et al. [-@jayasinghe2003].
-Its posterior median of approximately 0.05 indicates weak model-implied
-correlation between two ratings of the same proposal. The dominant residual
-share is consistent with the broad posterior rank distributions in Chapter 4,
-although this decomposition alone does not identify the sparse assignment
-design as their cause.
+Thus, under V1, the proposal variance share is also the model-implied
+intraproposal correlation: the expected correlation between two ratings of the
+same proposal by different reviewers. This corresponds to the cross-classified
+reliability interpretation used by Jayasinghe et al. [-@jayasinghe2003].
+
+The posterior median of approximately 0.05 therefore indicates weak
+model-implied agreement attributable to a shared proposal effect. Most of the
+variation in individual grades is instead attributed to reviewer-specific and,
+predominantly, residual review-level variation. This helps explain why the
+posterior ranking remains broad despite observing two ratings per proposal,
+although the variance decomposition alone does not establish that the sparse
+assignment design is the cause of this uncertainty.
 
 For comparison, the same variance decomposition was calculated for the V1
 fit using the equal-weight criterion average $A_r$ as the response.
@@ -746,20 +788,27 @@ b_{a(r)}^{(s)},
 \right).
 $$
 
-Across 5,000 replicated datasets, the observed mean grade of 3.476 was close to the posterior predictive mean of 3.474, and the observed standard deviation of 0.950 was close to the replicated mean of 0.975. The observed mean absolute disagreement between the two reviews of a proposal was 1.095, compared with a posterior predictive mean of 1.064; approximately 40% of replicated datasets produced at least as much mean disagreement as observed.
+The observed mean absolute disagreement between the two reviews of a proposal
+was 1.095, compared with a posterior predictive mean of 1.064. Approximately
+40% of replicated datasets produced at least as much mean disagreement as
+observed, placing the observed value well within the central part of the
+posterior predictive distribution rather than in an extreme tail.
 
-![Posterior predictive checks for V1. Histograms show the distributions of statistics calculated from replicated datasets, while dashed vertical lines show the corresponding observed values.](figures/validation/v1_posterior_predictive_checks.png){#fig-v1-ppc width=90% fig-pos="H"}
-
-A more detailed disagreement check showed that the low posterior predictive probability for disagreements of at least two score points is largely explained by comparing continuous replicated scores with integer-valued observed grades. After mapping the replicated grades to the integer scale from 1 to 5, the
-apparent mismatch became much smaller: the posterior predictive probability
-increased from 0.0088 to 0.272. The derivation and additional disagreement
-checks are given in @sec-app-disagreement.
+A more detailed check showed that the close correspondence is not mechanically
+induced by the shared proposal effect, which cancels when taking the difference
+between the two reviews of a proposal. The corresponding analytic expectation
+was 1.066, almost identical to the simulated value 1.064, and most of this
+disagreement was attributable to residual review-level variation rather than
+persistent reviewer effects. Mapping replicated scores to the observed
+integer-valued 1--5 grid did not reduce the small difference in mean
+disagreement, but it substantially reduced the apparent discrepancy for
+disagreements of at least two score points, with the corresponding posterior
+predictive probability increasing from 0.0088 to 0.272. Full derivations and
+additional disagreement diagnostics are given in @sec-app-disagreement.
 
 The main model-form limitation is visible in the lower-left panel of @fig-v1-ppc. Because the Gaussian likelihood is unbounded, an average of 6.6% of replicated grades fall below 1 or above 5. V1 is therefore retained as a continuous approximation for latent proposal effects and ranking uncertainty, not as a literal generative model for valid future score categories.
 
-The corresponding posterior predictive intervals are reported in
-@sec-app-ppc.
-
+![Posterior predictive checks for V1. Histograms show the distributions of statistics calculated from replicated datasets, while dashed vertical lines show the corresponding observed values.](figures/validation/v1_posterior_predictive_checks.png){#fig-v1-ppc width=90% fig-pos="H"}
 
 ## Prior sensitivity
 
@@ -773,67 +822,540 @@ were replaced by independent $\operatorname{HalfNormal}(0,1)$ priors while keepi
 
 ## Validation conclusion
 
-The validation provides no strong indication that the main V1 ranking conclusions are driven by computational instability, the tested scale priors or a failure to reproduce the observed mean, dispersion and reviewer-disagreement structure. The fitted model attributes most variation to residual review-level variation, and the exact proposal ranks remain weakly identified.
+The validation provides no strong indication that the main V1 ranking
+conclusions are driven by computational instability, the tested scale priors or
+a failure to reproduce the observed mean, dispersion and reviewer-disagreement
+structure. The fitted model attributes most variation to residual review-level
+variation, while the exact proposal ranks remain weakly identified.
 
-The principal model-form caveat is the continuous Gaussian treatment of the five-point score, which permits replicated values outside the admissible range. Subject to this approximation and the non-random sparse assignment design, V1 is retained as the working model for the review-design analysis in Chapter 6.
+The principal model-form caveat is the continuous Gaussian treatment of the
+five-point score, which permits replicated values outside the admissible range.
+Subject to this approximation and the non-random reviewer assignment, V1 is
+retained as the working model. The substantial remaining uncertainty motivates the next chapter, which
+investigates whether the structure of the review design can identify a
+statistically informative single additional review.
 
 # Graph-based review design
 
 ## Motivation and scope
 
-<!-- TODO:
-Investigate how the findings from the Bayesian analysis motivate studying the review design itself.
-Clarify the scope and purpose of this extension.
--->
+The Bayesian analysis in the preceding chapters shows that the broad upper
+ordering of the CRS proposals is relatively stable, while the exact latent
+proposal ranks remain highly uncertain. Each proposal was evaluated by only two
+reviewers, and the reviewer--proposal assignments determine which proposal and
+reviewer effects are informed jointly by the observed grades.
+
+The allocation of evaluations to reviewers is itself a statistical-design
+problem. In research peer review, Cook et al. [-@cook2005] formulate the
+allocation of proposals to reviewers with the explicit aim of facilitating an
+overall ranking, while Stelmakh, Shah and Singh [-@stelmakh2021] study
+reviewer assignment under objectives involving fairness and statistical
+accuracy. Related work on statistical ranking goes one step further:
+Osting, Brune and Osher [-@osting2014] start from an existing pairwise-comparison
+graph and investigate how additional, targeted comparisons can increase the
+information available for ranking. In a Bayesian crowdsourcing setting,
+Simpson and Roberts [-@simpsonroberts2015] similarly select informative
+agent--task assignments according to their expected information gain. These
+settings differ from CRS, but together they provide precedents for treating the
+allocation of additional evaluations as an information-design problem rather
+than as statistically neutral.
+
+The purpose of the present chapter is not to assess whether the original CRS
+reviewer assignments were appropriate. Assignments were based on expertise and
+availability, and detailed information on reviewer eligibility, expertise and
+conflicts of interest is not available for the present analysis. Instead, the
+existing assignment structure is represented mathematically and its connection
+to posterior uncertainty under V1 is examined.
+
+The analysis then considers a deliberately restricted prospective question:
+if exactly one additional review could hypothetically be obtained, which
+currently unobserved reviewer--proposal assignment would provide the greatest
+reduction in uncertainty under V1? The analysis uses established
+optimal-design criteria rather than introducing a new measure of uncertainty,
+and compares several such criteria because different notions of statistical
+precision need not prefer the same additional review.
 
 
 ## Reviewer--proposal assignment structure
 
-<!-- TODO:
-Investigate how the CRS reviewer--proposal assignments can be represented mathematically.
-Identify the graph or design concepts that are actually useful.
--->
+The CRS assignment structure can be represented as a bipartite graph. A graph
+consists of vertices connected by edges, and it is called **bipartite** when
+the vertices can be separated into two groups such that every edge joins one
+group to the other.
+
+This representation is closely related to the **Levi graph**, or incidence
+graph, used in the theory of incomplete block designs [@baileycameron2011].
+In a block design, one class of vertices represents treatments and the other
+represents blocks, with an edge recording that a treatment occurs in a block.
+For the present application, proposals play the role of treatments and
+reviewers play the role of blocks: a reviewer is connected to every proposal
+that the reviewer evaluated.
+
+Formally, define
+
+$$
+G=(P\cup R,E),
+$$
+
+where
+
+$$
+P=\{P_1,\ldots,P_{42}\}
+$$
+
+is the set of proposal vertices,
+
+$$
+R=\{R_1,\ldots,R_9\}
+$$
+
+is the set of reviewer vertices, and
+
+$$
+(P_i,R_j)\in E
+$$
+
+whenever reviewer $j$ evaluated proposal $i$.
+
+The observed CRS design therefore has
+
+$$
+|P|=42,\qquad |R|=9,\qquad |E|=84.
+$$
+
+The **degree** of a vertex is the number of edges incident to it. Every proposal
+vertex has degree two because each proposal received exactly two reviews.
+Reviewer degrees equal reviewer workloads and range from 6 to 12.
+
+A small subset of the observed assignment graph is shown in
+@fig-review-assignment-graph to illustrate the bipartite structure. Reviewer
+vertices are placed on the left and proposal vertices on the right; an edge
+indicates that the reviewer evaluated the corresponding proposal. The figure is
+illustrative only and does not display the complete CRS assignment graph.
+
+![Illustrative subset of the observed CRS reviewer--proposal assignment graph. Reviewer vertices are shown on the left and proposal vertices on the right. Each edge represents one completed review. The subset is taken from the observed CRS assignment structure and is shown only to illustrate the bipartite representation used in the analysis.](figures/review_design/reviewer_proposal_graph_subset.png){#fig-review-assignment-graph width=82% fig-pos="H"}
+
+The graph records only the assignment structure: an edge states that a review
+occurred, not which grade was assigned. It therefore separates the design of
+the evaluation from the numerical outcomes subsequently observed.
 
 
 ## Statistical relevance of the assignment structure
 
-<!-- TODO:
-Investigate how the assignment structure relates to estimation and uncertainty in the Bayesian model.
-Establish the relevant theoretical connection from the literature.
--->
+The graph representation is statistically relevant because the connection
+between incidence graphs and information matrices is well established in
+incomplete block-design theory. Bailey and Cameron [-@baileycameron2011]
+consider an additive treatment--block model and show that, after changing the
+sign of the block parameters, the corresponding information structure can be
+represented through the Laplacian of the Levi graph. The CRS model has an
+analogous crossed structure, with proposal effects replacing treatment effects
+and reviewer effects replacing block effects.
+
+To make this connection explicit, define
+
+$$
+c_j=-b_j.
+$$
+
+For an observed grade assigned by reviewer $j$ to proposal $i$, V1 can then be
+written as
+
+$$
+Y_{ij}-\bar Y
+=
+\theta_i-c_j+\varepsilon_{ij}.
+$$
+
+Collect the proposal and transformed reviewer effects into
+
+$$
+\beta
+=
+(\theta_1,\ldots,\theta_{42},
+c_1,\ldots,c_9)^\top.
+$$
+
+For each observed reviewer--proposal edge $e=(i,j)$, define an
+**oriented incidence vector** $x_e$ containing $+1$ at the position
+corresponding to proposal $i$, $-1$ at the position corresponding to reviewer
+$j$, and zero elsewhere. Stacking the 84 incidence vectors gives an incidence
+matrix $X$, so that
+
+$$
+Y-\bar Y\mathbf 1
+=
+X\beta+\varepsilon.
+$$
+
+For an oriented incidence matrix,
+
+$$
+X^\top X=L_G,
+$$
+
+where $L_G$ is the graph Laplacian. Its diagonal entries are the vertex
+degrees, while an off-diagonal entry is $-1$ when the corresponding proposal
+and reviewer are connected and zero otherwise.
+
+The same matrix enters the conditional posterior information in V1.
+Conditional on $\tau_\theta$, $\tau_b$ and $\sigma$, the prior precision for
+$\beta$ is
+
+$$
+P_0
+=
+\operatorname{diag}
+\left(
+\tau_\theta^{-2}I_{42},
+\tau_b^{-2}I_9
+\right)
+=
+\begin{pmatrix}
+\tau_\theta^{-2} &        &        &        &        \\
+                  & \ddots &        &        &        \\
+                  &        & \tau_\theta^{-2} &        &        \\
+                  &        &        & \tau_b^{-2} &        \\
+                  &        &        &        & \ddots
+\end{pmatrix},
+$$
+
+that is, the first 42 diagonal entries are $\tau_\theta^{-2}$ and the
+remaining nine are $\tau_b^{-2}$.
+
+Combining prior and Gaussian likelihood gives conditional posterior precision
+
+$$
+Q
+=
+P_0+\frac{1}{\sigma^2}X^\top X
+=
+P_0+\frac{1}{\sigma^2}L_G,
+$$
+
+and conditional posterior covariance
+
+$$
+V=Q^{-1}.
+$$
+
+Thus, the assignment graph is not merely a visualization of the review
+structure: its Laplacian contributes directly to the conditional posterior
+precision of the proposal and reviewer effects. Changing an assignment changes
+$L_G$ and hence changes the posterior covariance under the model. A full
+derivation of this matrix representation is given in @sec-app-graph-model.
 
 
 ## Quantifying uncertainty for review design
 
+The remaining question is how to define the statistical value of an additional
+review. Rather than constructing a new uncertainty measure for the CRS setting,
+the analysis uses established criteria from optimal experimental design.
+Bailey and Cameron [-@baileycameron2011] distinguish A-, D- and E-optimality
+for block designs, corresponding respectively to average precision, the volume
+of a joint confidence region, and worst-case precision. Osting, Brune and
+Osher [-@osting2014] use the same three optimality criteria in a statistical
+ranking problem in which the Fisher information is determined by a graph
+Laplacian. Their setting concerns direct pairwise comparisons rather than a
+reviewer--proposal graph, but it provides a direct precedent for using these
+criteria to assess the informativeness of additional edges in an existing
+ranking design.
+
+Because the inferential target in the present analysis is the relative ordering
+of proposals, uncertainty is evaluated for **proposal contrasts** rather than
+for the absolute level of all model parameters. Let $V_\theta$ denote the
+$42\times42$ proposal-effect block of the conditional posterior covariance
+matrix $V$. For proposals $i$ and $k$,
+
+$$
+\operatorname{Var}
+\left(
+\theta_i-\theta_k
+\mid Y
+\right)
+=
+(e_i-e_k)^\top
+V_\theta
+(e_i-e_k),
+$$
+
+where $e_i$ denotes the $i$th standard basis vector.
+
+The primary criterion used here is the **A-optimality criterion**, defined as
+the average posterior variance of all pairwise proposal contrasts,
+
+$$
+L_A(V_\theta)
+=
+\frac{2}{42\cdot41}
+\sum_{i<k}
+(e_i-e_k)^\top
+V_\theta
+(e_i-e_k).
+$$
+
+Smaller values therefore correspond to greater average precision when comparing
+two proposals. This criterion is particularly natural for the present ranking
+problem because proposal ordering depends directly on contrasts
+$\theta_i-\theta_k$. It is the Bayesian covariance analogue of the
+average-contrast criterion underlying A-optimality in classical block-design
+theory [@baileycameron2011].
+
+Two alternative criteria are retained to assess whether the preferred
+additional review depends on the definition of uncertainty. Define the
+centering matrix
+
+$$
+H
+=
+I_{42}
+-
+\frac{1}{42}
+\mathbf 1\mathbf 1^\top.
+$$
+
+The matrix
+
+$$
+H V_\theta H
+$$
+
+represents posterior covariance on the proposal-contrast subspace. It has one
+zero eigenvalue corresponding to a common shift of all proposal effects and
+41 non-zero eigenvalues, denoted
+$\lambda_1,\ldots,\lambda_{41}$.
+
+A **D-optimality** loss is defined by
+
+$$
+L_D(V_\theta)
+=
+\sum_{\ell=1}^{41}
+\log(\lambda_\ell)
+=
+\log\operatorname{pdet}(H V_\theta H),
+$$
+
+where $\operatorname{pdet}$ denotes the **pseudo-determinant**, i.e. the
+product of the non-zero eigenvalues.
+Minimizing this quantity reduces the generalized volume of the joint posterior
+uncertainty region for proposal contrasts. It therefore provides a global
+criterion rather than averaging individual pairwise comparison variances.
+
+Finally, an **E-optimality** loss is defined as
+
+$$
+L_E(V_\theta)
+=
+\lambda_{\max}(H V_\theta H).
+$$
+
+This criterion focuses on the least precisely estimated direction in the
+proposal-contrast space: minimizing it reduces the largest posterior variance
+among normalized contrast directions. In classical optimal-design terminology,
+this is the covariance counterpart of maximizing the smallest relevant
+information eigenvalue [@baileycameron2011; @osting2014].
+
+A-optimality is treated as the primary criterion because the substantive goal
+is comparison and ranking of proposals. D- and E-optimality are used as
+sensitivity criteria representing, respectively, global joint uncertainty and
+worst-case contrast uncertainty. The three quantities are therefore not new
+uncertainty measures introduced for this project; they are Bayesian
+posterior-covariance versions of established optimal-design objectives.
+
+There is one methodological distinction from the classical block-design
+setting. Bailey and Cameron compare alternative designs as wholes, whereas the
+present CRS design has already been observed. The optimization is therefore
+restricted to **one-edge augmentations** of this fixed design. This restriction
+has a direct precedent in targeted data collection: Osting et al.
+[-@osting2014] augment an existing ranking graph with selected additional
+comparisons, while Simpson and Roberts [-@simpsonroberts2015] provide a
+Bayesian precedent for choosing the next agent--task assignment according to
+its expected information value. In the present setting, every currently absent
+reviewer--proposal edge defines one hypothetical augmented design $G+e$.
+Section 6.5 compares these candidate designs by the reduction they produce in
+the three established criteria above.
+
+## Statistical value of a single additional review
+
+The review-design calculation propagates uncertainty in the variance parameters
+rather than fixing them at a single posterior estimate. For each candidate
+assignment, the reduction in uncertainty is evaluated over 5,000 approximately
+evenly spaced retained posterior draws from V1 and then averaged across draws.
+
+As a Monte Carlo stability check, the calculation was also performed using
+1,000 posterior draws. The highest-ranked assignments and the relationships
+between the three design criteria were materially unchanged, so 5,000 draws
+were retained for the final analysis.
+
+There are $42\times9-84=294$ currently unobserved reviewer--proposal pairs.
+Because reviewer expertise, eligibility and conflict-of-interest information is
+not available for this analysis, all 294 pairs are treated as hypothetical
+candidates. The resulting rankings therefore describe statistical
+informativeness under V1 rather than operational reviewer-assignment
+recommendations.
+
+For posterior draw $s$, let
+
+$$
+\tau_\theta^{(s)},\qquad
+\tau_b^{(s)},\qquad
+\sigma^{(s)}
+$$
+
+denote the sampled proposal, reviewer and residual scale parameters. The
+corresponding prior precision matrix is
+
+$$
+P_0^{(s)}
+=
+\operatorname{diag}
+\left(
+\left(\tau_\theta^{(s)}\right)^{-2}I_{42},
+\left(\tau_b^{(s)}\right)^{-2}I_9
+\right).
+$$
+
+Using the observed reviewer--proposal graph $G$, the conditional posterior
+precision and covariance matrices for that draw are
+
+$$
+Q^{(s)}
+=
+P_0^{(s)}
++
+\frac{1}{\left(\sigma^{(s)}\right)^2}L_G,
+$$
+
+and
+
+$$
+V^{(s)}
+=
+\left(Q^{(s)}\right)^{-1}.
+$$
+
+Consider a currently unobserved reviewer--proposal assignment $e$ and let
+$x_e$ denote its oriented incidence vector, with $+1$ at the proposal vertex
+and $-1$ at the reviewer vertex. Adding this review changes the graph
+Laplacian by
+
+$$
+L_{G+e}
+=
+L_G+x_ex_e^\top.
+$$
+
+The corresponding conditional posterior covariance for draw $s$ is
+
+$$
+V_e^{(s)}
+=
+\left(
+Q^{(s)}
++
+\frac{1}{\left(\sigma^{(s)}\right)^2}
+x_ex_e^\top
+\right)^{-1}.
+$$
+
+Because the additional review contributes a rank-one update to the precision
+matrix, the Sherman--Morrison identity gives
+
+$$
+V_e^{(s)}
+=
+V^{(s)}
+-
+\frac{
+V^{(s)}x_ex_e^\top V^{(s)}
+}{
+\left(\sigma^{(s)}\right)^2
++
+x_e^\top V^{(s)}x_e
+}.
+$$
+
+Conditional on the variance parameters in draw $s$, the covariance reduction
+therefore depends only on which reviewer--proposal edge is added, not on the
+numerical grade that would eventually be observed.
+
+For criterion $C\in\{A,D,E\}$, define the reduction in loss for candidate edge
+$e$ and posterior draw $s$ by
+
+$$
+\Delta_C^{(s)}(e)
+=
+L_C\!\left(V_\theta^{(s)}\right)
+-
+L_C\!\left(V_{\theta,e}^{(s)}\right).
+$$
+
+The overall value assigned to candidate edge $e$ is the posterior average
+
+$$
+\overline{\Delta}_C(e)
+=
+\frac{1}{S}
+\sum_{s=1}^{S}
+\Delta_C^{(s)}(e).
+$$
+
+Larger values indicate a greater posterior-averaged reduction in uncertainty
+under the corresponding criterion. Averaging across posterior draws propagates
+the current uncertainty in $\tau_\theta$, $\tau_b$ and $\sigma$ rather than
+replacing these parameters by single plug-in estimates.
+
+This calculation is not a full prospective refit of the hierarchical model.
+Within each posterior draw, the scale parameters are held fixed while the
+covariance change induced by the hypothetical additional review is evaluated.
+An actually observed additional grade could also update the posterior
+distribution of the scale parameters. The analysis therefore quantifies the
+information added by a new assignment conditional on the current V1 posterior,
+rather than modelling that subsequent learning step.
+
+
+## Comparison of single-review criteria
+
 <!-- TODO:
-Investigate which notion of uncertainty is most meaningful for evaluating the review design.
-Consider how it relates to proposal comparisons and ranking.
--->
+Compare the ranking of candidate single reviews under A-, D- and E-optimality.
 
+Assess whether the same reviewer--proposal assignments remain highly informative
+across the three criteria or whether the preferred edge depends materially on
+the definition of uncertainty.
 
-## Additional review scenarios
+Summarize agreement between the candidate rankings, for example using rank
+correlations and the overlap among the highest-ranked candidate edges.
 
-<!-- TODO:
-Investigate how hypothetical additional reviews could change the available information.
-Consider both individual reviews and limited sets of additional reviews.
--->
+Visualize the candidate-edge utilities, preferably using a reviewer--proposal
+heatmap for the primary A-optimality criterion and a compact comparison of the
+three criteria.
 
-
-## Comparison of review-design approaches
-
-<!-- TODO:
-Investigate reasonable ways of allocating additional review effort.
-Determine how alternative approaches can be compared fairly.
+Compare the model-based recommendation with a simple intuitive benchmark, such
+as targeting a proposal with high observed reviewer disagreement, while making
+clear that disagreement and expected information gain are conceptually
+different quantities.
 -->
 
 
 ## Generalization beyond the CRS design
 
 <!-- TODO:
-Investigate which parts of the framework depend on the specific CRS design and which extend more generally.
-Consider evaluation settings with different numbers and patterns of reviews.
--->
+Discuss which parts of the one-step framework depend on the specific CRS design
+and which extend naturally to other sparse peer-review settings.
 
+Explain that the present analysis considers only one additional review. Extending
+the approach to a budget of multiple reviews would require sequential or joint
+optimization because each added assignment changes the information structure
+for subsequent assignments.
+
+Discuss how reviewer eligibility, expertise, workload limits and
+conflict-of-interest constraints could be incorporated into the candidate set
+in a prospective application.
+
+Clarify that the present result is conditional on the fitted V1 model and the
+observed reviewer--proposal design, and that other outcome models or ranking
+objectives could lead to different preferred assignments.
+-->
 
 # Discussion and recommendations
 
@@ -892,7 +1414,7 @@ State the central practical takeaway without introducing new analyses, methods o
 -->
 
 
-# Supplementary analyses {.appendix}
+# Supplementary methods and analyses {.appendix}
 
 ## Correlation definitions {#sec-app-correlation}
 
@@ -920,6 +1442,574 @@ $$
 $$
 
 where $R(\cdot)$ denotes the rank transformation and average ranks are used for ties.
+
+## Bayesian updating and partial pooling in V1 {#sec-app-bayesian-updating}
+
+This section gives a short mathematical explanation of how the observed grades
+inform the proposal and reviewer effects in V1. The purpose is to make the
+Bayesian updating mechanism and the resulting partial pooling explicit.
+
+### From the model to the posterior distribution
+
+Recall that V1 represents review $r$ as
+
+$$
+Y_r
+=
+\bar Y
++
+\theta_{p(r)}
++
+b_{a(r)}
++
+\varepsilon_r,
+\qquad
+\varepsilon_r\sim\mathcal{N}(0,\sigma^2),
+$$
+
+where $\theta_i$ is the latent effect of proposal $i$, $b_j$ is the effect of
+reviewer $j$, and $\sigma^2$ is the residual review-level variance. The
+hierarchical distributions are
+
+$$
+\theta_i\sim\mathcal{N}(0,\tau_\theta^2),
+\qquad
+b_j\sim\mathcal{N}(0,\tau_b^2).
+$$
+
+For given values of the model parameters, the density of one observed grade is
+
+$$
+p(Y_r\mid\theta,b,\sigma)
+=
+\frac{1}{\sqrt{2\pi\sigma^2}}
+\exp\!\left[
+-\frac{
+\left(
+Y_r-\bar Y-\theta_{p(r)}-b_{a(r)}
+\right)^2
+}{
+2\sigma^2
+}
+\right].
+$$
+
+Conditional on the model parameters, the review-level residuals are assumed
+independent. The likelihood of the complete observed dataset
+$Y=(Y_1,\ldots,Y_{84})$ is therefore
+
+$$
+p(Y\mid\theta,b,\sigma)
+=
+\prod_{r=1}^{84}
+p(Y_r\mid\theta,b,\sigma).
+$$
+
+Bayes' theorem combines this likelihood with the prior distributions. For all
+unknown quantities together,
+
+$$
+p(\theta,b,\tau_\theta,\tau_b,\sigma\mid Y)
+=
+\frac{
+p(Y\mid\theta,b,\sigma)\,
+p(\theta,b,\tau_\theta,\tau_b,\sigma)
+}{
+p(Y)
+}.
+$$
+
+Since the denominator $p(Y)$ does not depend on the unknown parameters, the
+same relationship can be written as
+
+$$
+p(\theta,b,\tau_\theta,\tau_b,\sigma\mid Y)
+\propto
+p(Y\mid\theta,b,\sigma)\,
+p(\theta,b,\tau_\theta,\tau_b,\sigma),
+$$
+
+where $\propto$ means "proportional to". Using the hierarchical structure of
+V1 gives
+
+$$
+p(\theta,b,\tau_\theta,\tau_b,\sigma\mid Y)
+\propto
+p(Y\mid\theta,b,\sigma)
+\left[
+\prod_{i=1}^{42}p(\theta_i\mid\tau_\theta)
+\right]
+\left[
+\prod_{j=1}^{9}p(b_j\mid\tau_b)
+\right]
+p(\tau_\theta)p(\tau_b)p(\sigma).
+$$
+
+The posterior therefore combines two sources of information. The likelihood
+describes how compatible particular parameter values are with the observed
+grades, while the priors describe how plausible those parameter values are
+under the hierarchical model before conditioning on the observed grades.
+
+### Updating one proposal effect
+
+The partial-pooling mechanism can be seen explicitly by considering one
+proposal $i$. Let
+
+$$
+\mathcal{R}_i
+=
+\{r:p(r)=i\}
+$$
+
+denote the set of reviews received by proposal $i$, and define
+
+$$
+n_i
+=
+|\mathcal{R}_i|.
+$$
+
+Thus, $n_i$ is simply the number of reviews received by proposal $i$. In the
+CRS data,
+
+$$
+n_i=2
+$$
+
+for every proposal.
+
+To make the updating calculation transparent, suppose temporarily that the
+reviewer effects $b$, the residual variance $\sigma^2$, and the
+between-proposal variance $\tau_\theta^2$ are known.
+
+For a review $r\in\mathcal{R}_i$, define the reviewer-adjusted grade
+
+$$
+Z_r
+=
+Y_r-\bar Y-b_{a(r)}.
+$$
+
+Substituting the V1 model gives
+
+$$
+Z_r
+=
+\theta_i+\varepsilon_r,
+\qquad
+\varepsilon_r\sim\mathcal{N}(0,\sigma^2),
+$$
+
+and therefore
+
+$$
+Z_r\mid\theta_i
+\sim
+\mathcal{N}(\theta_i,\sigma^2).
+$$
+
+The likelihood for $\theta_i$ based on its $n_i$ adjusted grades is
+
+$$
+p(Z_i\mid\theta_i,\sigma)
+=
+\prod_{r\in\mathcal{R}_i}
+p(Z_r\mid\theta_i,\sigma),
+$$
+
+where $Z_i$ denotes the collection of adjusted grades for proposal $i$.
+Ignoring multiplicative constants that do not depend on $\theta_i$,
+
+$$
+p(Z_i\mid\theta_i,\sigma)
+\propto
+\exp\!\left[
+-\frac{1}{2\sigma^2}
+\sum_{r\in\mathcal{R}_i}
+(Z_r-\theta_i)^2
+\right].
+$$
+
+The prior distribution
+
+$$
+\theta_i\sim\mathcal{N}(0,\tau_\theta^2)
+$$
+
+has density, again ignoring constants independent of $\theta_i$,
+
+$$
+p(\theta_i\mid\tau_\theta)
+\propto
+\exp\!\left(
+-\frac{\theta_i^2}{2\tau_\theta^2}
+\right).
+$$
+
+Bayes' theorem gives
+
+$$
+p(\theta_i\mid Z_i,\sigma,\tau_\theta)
+\propto
+p(Z_i\mid\theta_i,\sigma)\,
+p(\theta_i\mid\tau_\theta),
+$$
+
+so
+
+$$
+p(\theta_i\mid Z_i,\sigma,\tau_\theta)
+\propto
+\exp\!\left[
+-\frac{1}{2\sigma^2}
+\sum_{r\in\mathcal{R}_i}
+(Z_r-\theta_i)^2
+-\frac{\theta_i^2}{2\tau_\theta^2}
+\right].
+$$
+
+To identify this posterior distribution, expand the square:
+
+$$
+\sum_{r\in\mathcal{R}_i}(Z_r-\theta_i)^2
+=
+\sum_{r\in\mathcal{R}_i}Z_r^2
+-
+2\theta_i
+\sum_{r\in\mathcal{R}_i}Z_r
++
+n_i\theta_i^2.
+$$
+
+The term $\sum Z_r^2$ does not depend on $\theta_i$ and can therefore be
+absorbed into the proportionality constant. The remaining terms give
+
+$$
+p(\theta_i\mid Z_i,\sigma,\tau_\theta)
+\propto
+\exp\!\left[
+-\frac{1}{2}
+\left\{
+\left(
+\frac{n_i}{\sigma^2}
++
+\frac{1}{\tau_\theta^2}
+\right)\theta_i^2
+-
+2
+\left(
+\frac{
+\sum_{r\in\mathcal{R}_i}Z_r
+}{
+\sigma^2
+}
+\right)\theta_i
+\right\}
+\right].
+$$
+
+A normal density with mean $\mu_i^{(\theta)}$ and variance
+$v_i^{(\theta)}$ has the same quadratic form,
+
+$$
+\exp\!\left[
+-\frac{1}{2v_i^{(\theta)}}
+\left(
+\theta_i-\mu_i^{(\theta)}
+\right)^2
+\right].
+$$
+
+Expanding this square and comparing coefficients gives
+
+$$
+\frac{1}{v_i^{(\theta)}}
+=
+\frac{1}{\tau_\theta^2}
++
+\frac{n_i}{\sigma^2},
+$$
+
+and therefore
+
+$$
+v_i^{(\theta)}
+=
+\left(
+\frac{1}{\tau_\theta^2}
++
+\frac{n_i}{\sigma^2}
+\right)^{-1}.
+$$
+
+The coefficient of $\theta_i$ gives
+
+$$
+\frac{\mu_i^{(\theta)}}{v_i^{(\theta)}}
+=
+\frac{
+\sum_{r\in\mathcal{R}_i}Z_r
+}{
+\sigma^2
+},
+$$
+
+so
+
+$$
+\mu_i^{(\theta)}
+=
+v_i^{(\theta)}
+\frac{
+\sum_{r\in\mathcal{R}_i}Z_r
+}{
+\sigma^2
+}.
+$$
+
+Now define the mean reviewer-adjusted grade for proposal $i$ as
+
+$$
+\bar Z_i
+=
+\frac{1}{n_i}
+\sum_{r\in\mathcal{R}_i}Z_r.
+$$
+
+Since
+
+$$
+\sum_{r\in\mathcal{R}_i}Z_r
+=
+n_i\bar Z_i,
+$$
+
+the posterior mean simplifies to
+
+$$
+\mu_i^{(\theta)}
+=
+\frac{
+n_i\tau_\theta^2
+}{
+\sigma^2+n_i\tau_\theta^2
+}
+\bar Z_i.
+$$
+
+Thus,
+
+$$
+\theta_i\mid Z_i,\sigma,\tau_\theta
+\sim
+\mathcal{N}
+\left(
+\mu_i^{(\theta)},
+v_i^{(\theta)}
+\right).
+$$
+
+### Partial pooling
+
+Define the shrinkage factor
+
+$$
+\kappa_i
+=
+\frac{
+n_i\tau_\theta^2
+}{
+\sigma^2+n_i\tau_\theta^2
+}.
+$$
+
+Because all variance terms are positive,
+
+$$
+0<\kappa_i<1.
+$$
+
+The conditional posterior mean can therefore be written as
+
+$$
+\mu_i^{(\theta)}
+=
+\kappa_i\bar Z_i.
+$$
+
+The reviewer-adjusted observed mean $\bar Z_i$ is consequently pulled toward
+the prior mean zero rather than being used directly as the estimate of the
+proposal effect. This is the partial-pooling mechanism.
+
+The amount of pooling follows directly from $\kappa_i$. More reviews increase
+$n_i$ and therefore give the observed grades more influence. Larger residual
+variation $\sigma^2$ decreases $\kappa_i$ and produces stronger shrinkage,
+because individual reviews are treated as noisier. Larger between-proposal
+variation $\tau_\theta^2$ increases $\kappa_i$, allowing proposal effects to
+remain further away from zero.
+
+For the CRS design, $n_i=2$ for every proposal, so
+
+$$
+\kappa_i
+=
+\frac{
+2\tau_\theta^2
+}{
+\sigma^2+2\tau_\theta^2
+}.
+$$
+
+Since $\theta_i=0$ corresponds to a proposal whose expected grade equals the
+overall mean $\bar Y$, shrinking $\theta_i$ toward zero corresponds to shrinking
+the proposal's fitted grade toward the overall evaluation mean.
+
+### Updating reviewer effects
+
+Reviewer effects are updated in the same way. Let
+
+$$
+\mathcal{S}_j
+=
+\{r:a(r)=j\}
+$$
+
+denote the set of reviews completed by reviewer $j$, and define
+
+$$
+d_j
+=
+|\mathcal{S}_j|.
+$$
+
+Thus, $d_j$ is the number of reviews completed by reviewer $j$.
+
+Suppose temporarily that the proposal effects $\theta$, the residual variance
+$\sigma^2$, and the between-reviewer variance $\tau_b^2$ are known. Define the
+proposal-adjusted grade
+
+$$
+W_r
+=
+Y_r-\bar Y-\theta_{p(r)}.
+$$
+
+For reviews completed by reviewer $j$,
+
+$$
+W_r
+=
+b_j+\varepsilon_r,
+$$
+
+so
+
+$$
+W_r\mid b_j
+\sim
+\mathcal{N}(b_j,\sigma^2).
+$$
+
+Combining these observations with the prior
+
+$$
+b_j\sim\mathcal{N}(0,\tau_b^2)
+$$
+
+and applying the same normal--normal calculation gives
+
+$$
+b_j\mid Y,\theta,\sigma,\tau_b
+\sim
+\mathcal{N}
+\left(
+\mu_j^{(b)},
+v_j^{(b)}
+\right),
+$$
+
+where
+
+$$
+v_j^{(b)}
+=
+\left(
+\frac{1}{\tau_b^2}
++
+\frac{d_j}{\sigma^2}
+\right)^{-1}.
+$$
+
+Define the mean proposal-adjusted grade assigned by reviewer $j$ as
+
+$$
+\bar W_j
+=
+\frac{1}{d_j}
+\sum_{r\in\mathcal{S}_j}W_r.
+$$
+
+The conditional posterior mean is then
+
+$$
+\mu_j^{(b)}
+=
+\frac{
+d_j\tau_b^2
+}{
+\sigma^2+d_j\tau_b^2
+}
+\bar W_j.
+$$
+
+Thus, the several proposals assessed by the same reviewer jointly inform that
+reviewer's scoring tendency. Reviewers with more observed reviews are, all else
+equal, subject to less shrinkage toward zero.
+
+### From the joint posterior to proposal ranks
+
+The calculations above treat some quantities as known only to make the updating
+mechanism visible. In the fitted V1 model, the proposal effects, reviewer
+effects, $\tau_\theta$, $\tau_b$, and $\sigma$ are all unknown and are estimated
+jointly. Their posterior distributions therefore depend on one another.
+
+JAGS uses Markov chain Monte Carlo to generate draws from this joint posterior.
+A retained posterior draw $s$ contains
+
+$$
+\left(
+\theta_1^{(s)},\ldots,\theta_{42}^{(s)},
+b_1^{(s)},\ldots,b_9^{(s)},
+\tau_\theta^{(s)},
+\tau_b^{(s)},
+\sigma^{(s)}
+\right).
+$$
+
+Each draw represents one set of parameter values that is compatible with the
+observed grades and the model assumptions. The proposal effects within that draw,
+
+$$
+\theta_1^{(s)},\ldots,\theta_{42}^{(s)},
+$$
+
+are ordered from largest to smallest to obtain one possible proposal ranking.
+Repeating this calculation across posterior draws produces the posterior rank
+distributions described in Section 3.5.
+
+The Bayesian ranking therefore follows the sequence
+
+$$
+\text{observed grades}
+\longrightarrow
+\text{posterior proposal and reviewer effects}
+\longrightarrow
+\text{posterior proposal ranks}.
+$$
+
+Partial pooling enters before the ranking step: the limited and noisy review
+information is combined with the hierarchical model before the proposal effects
+are ranked.
 
 ## V0 reference-model details {#sec-app-v0}
 
@@ -999,11 +2089,35 @@ $$
 \min\left\{5,\max\left\{1,\operatorname{round}(Y_r^{\mathrm{rep}})\right\}\right\}.
 $$
 
-After this transformation, the posterior predictive mean proportion with disagreement of at least two increased to 0.255 and
+After this transformation, the posterior predictive mean proportion with
+disagreement of at least two increased to 0.255 and
 
 $$
 \mathbb{P}(T_{\mathrm{disc}}^{\mathrm{rep}}\ge T_{\mathrm{obs}}\mid Y)=0.272.
 $$
+
+The same transformation did not improve the agreement for the mean absolute
+disagreement. The posterior predictive mean changed from 1.064 under the
+continuous Gaussian replication to 1.020 after mapping the replicated scores
+to the 1--5 grid, compared with the observed value 1.095. The corresponding
+95% posterior predictive interval for the discretized mean disagreement was
+approximately $[0.738,1.333]$, and
+
+$$
+\mathbb{P}
+\left(
+D_{\mathrm{disc}}^{\mathrm{rep}}
+\ge
+D_{\mathrm{obs}}
+\mid Y
+\right)
+=
+0.332.
+$$
+
+Thus, the grid transformation primarily resolves the apparent discrepancy in
+the threshold-based disagreement statistic rather than the already small
+difference in mean absolute disagreement.
 
 The broader disagreement pattern is summarized in @fig-v1-disagreement-ppc.
 The observed mean, median, 90th percentile, maximum and proportion of
@@ -1040,6 +2154,268 @@ intervals were 36.74 and 36.83 under the baseline and half-normal
 specifications, respectively.
 
 ![Posterior expected ranks under the baseline V1 prior specification and the half-normal prior-sensitivity specification. The dashed identity line represents identical expected ranks under both models.](figures/validation/expected_rank_prior_sensitivity.png){#fig-v1-prior-sensitivity width=82% fig-pos="H"}
+
+## Graph representation and conditional posterior precision {#sec-app-graph-model}
+
+This section derives the connection between the reviewer--proposal assignment
+graph and the conditional posterior uncertainty in V1. The construction is
+closely related to the use of incidence graphs and graph Laplacians in
+incomplete block-design theory [@baileycameron2011], but is written here for
+the Bayesian cross-classified model used in this report.
+
+Recall that V1 is
+
+$$
+Y_r
+=
+\bar Y
++
+\theta_{p(r)}
++
+b_{a(r)}
++
+\varepsilon_r,
+\qquad
+\varepsilon_r\sim\mathcal N(0,\sigma^2).
+$$
+
+To obtain the usual signed incidence-matrix representation, define
+
+$$
+c_j=-b_j.
+$$
+
+The model can then be written as
+
+$$
+Y_r-\bar Y
+=
+\theta_{p(r)}
+-
+c_{a(r)}
++
+\varepsilon_r.
+$$
+
+Collect the 42 proposal effects and nine transformed reviewer effects into the
+51-dimensional vector
+
+$$
+\beta
+=
+(\theta_1,\ldots,\theta_{42},
+c_1,\ldots,c_9)^\top.
+$$
+
+For every observed review $r$, corresponding to an edge between proposal
+$p(r)$ and reviewer $a(r)$, define a row vector $x_r^\top\in\mathbb R^{51}$
+with $+1$ in the position corresponding to proposal $p(r)$, $-1$ in the
+position corresponding to reviewer $a(r)$, and zero elsewhere. Stacking the
+84 row vectors gives the oriented incidence matrix
+
+$$
+X
+=
+\begin{pmatrix}
+x_1^\top\\
+\vdots\\
+x_{84}^\top
+\end{pmatrix},
+$$
+
+which has dimension $84\times51$.
+
+Define the centered response vector
+
+$$
+y
+=
+Y-\bar Y\mathbf 1.
+$$
+
+The complete V1 model can then be written in matrix form as
+
+$$
+y=X\beta+\varepsilon,
+$$
+
+where
+
+$$
+\varepsilon\sim
+\mathcal N(0,\sigma^2 I_{84}).
+$$
+
+Conditional on $\sigma$, the likelihood for $\beta$ is therefore
+
+$$
+p(y\mid\beta,\sigma)
+\propto
+\exp\left[
+-\frac{1}{2\sigma^2}
+(y-X\beta)^\top(y-X\beta)
+\right].
+$$
+
+Expanding the quadratic term gives
+
+$$
+(y-X\beta)^\top(y-X\beta)
+=
+y^\top y
+-
+2\beta^\top X^\top y
++
+\beta^\top X^\top X\beta.
+$$
+
+Since $y^\top y$ does not depend on $\beta$, the part of the likelihood
+involving $\beta$ is
+
+$$
+p(y\mid\beta,\sigma)
+\propto
+\exp\left[
+-\frac12
+\left\{
+\beta^\top
+\left(
+\frac{1}{\sigma^2}X^\top X
+\right)
+\beta
+-
+2\beta^\top
+\left(
+\frac{1}{\sigma^2}X^\top y
+\right)
+\right\}
+\right].
+$$
+
+Thus, the likelihood contributes the precision matrix
+
+$$
+\frac{1}{\sigma^2}X^\top X.
+$$
+
+Because $X$ is the oriented incidence matrix of the bipartite
+reviewer--proposal graph,
+
+$$
+X^\top X=L_G,
+$$
+
+where $L_G$ denotes its graph Laplacian. The orientation chosen for the edges
+does not affect this product. For the present simple bipartite graph, the
+diagonal entries of $L_G$ are the vertex degrees, while an off-diagonal entry
+is $-1$ when the corresponding proposal and reviewer are connected by an
+observed review and zero otherwise.
+
+The hierarchical priors in V1 are
+
+$$
+\theta_i\sim\mathcal N(0,\tau_\theta^2),
+\qquad
+c_j\sim\mathcal N(0,\tau_b^2),
+$$
+
+where the second relation follows from $c_j=-b_j$ and the symmetric prior on
+$b_j$. Conditional on $\tau_\theta$ and $\tau_b$, the prior for $\beta$ is
+therefore multivariate normal with zero mean and precision matrix
+
+$$
+P_0
+=
+\operatorname{diag}
+\left(
+\tau_\theta^{-2}I_{42},
+\tau_b^{-2}I_9
+\right).
+$$
+
+Hence
+
+$$
+p(\beta\mid\tau_\theta,\tau_b)
+\propto
+\exp\left(
+-\frac12\beta^\top P_0\beta
+\right).
+$$
+
+Combining likelihood and prior gives
+
+$$
+p(\beta\mid y,\sigma,\tau_\theta,\tau_b)
+\propto
+\exp\left[
+-\frac12
+\left\{
+\beta^\top
+\left(
+P_0+\frac{1}{\sigma^2}X^\top X
+\right)
+\beta
+-
+2\beta^\top
+\frac{X^\top y}{\sigma^2}
+\right\}
+\right].
+$$
+
+This is the kernel of a multivariate normal distribution. Its conditional
+posterior precision matrix is therefore
+
+$$
+Q
+=
+P_0+\frac{1}{\sigma^2}X^\top X
+=
+P_0+\frac{1}{\sigma^2}L_G,
+$$
+
+and its conditional posterior covariance matrix is
+
+$$
+V
+=
+Q^{-1}
+=
+\left(
+P_0+\frac{1}{\sigma^2}L_G
+\right)^{-1}.
+$$
+
+For completeness, the corresponding conditional posterior mean is
+
+$$
+m
+=
+V\frac{X^\top y}{\sigma^2},
+$$
+
+so that
+
+$$
+\beta
+\mid
+y,\sigma,\tau_\theta,\tau_b
+\sim
+\mathcal N(m,V).
+$$
+
+This establishes the statistical role of the assignment graph. Conditional on
+the variance parameters, the graph Laplacian enters directly into the posterior
+precision of the proposal and reviewer effects. Adding or removing a
+reviewer--proposal edge changes $L_G$ and therefore changes the conditional
+posterior covariance $V$. The graph is consequently not only a visualization
+of the review assignments: it describes part of the information structure of
+the V1 model.
+
+The derivation conditions on $\sigma$, $\tau_\theta$ and $\tau_b$ to make this
+relationship explicit. In the fitted Bayesian model these scale parameters are
+unknown and are estimated jointly by MCMC, as described in Section 3.6 and
+@sec-app-bayesian-updating.
 
 # References {.unnumbered}
 
