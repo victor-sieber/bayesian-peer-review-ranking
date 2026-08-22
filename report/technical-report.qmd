@@ -1328,46 +1328,92 @@ rather than modelling that subsequent learning step.
 
 ## Comparison of single-review criteria
 
-<!-- TODO:
-Compare the ranking of candidate single reviews under A-, D- and E-optimality.
+The 5,000-draw posterior-averaged calculation identified a small group of
+assignments with almost identical utility under A-optimality. The largest
+average reduction in pairwise proposal-contrast variance was obtained for
+P026--R02,
 
-Assess whether the same reviewer--proposal assignments remain highly informative
-across the three criteria or whether the preferred edge depends materially on
-the definition of uncertainty.
+$$
+\overline{\Delta}_A = 3.0535\times 10^{-4}.
+$$
 
-Summarize agreement between the candidate rankings, for example using rank
-correlations and the overlap among the highest-ranked candidate edges.
+P005--R02 and P015--R02 followed with
+$\overline{\Delta}_A=3.0534\times10^{-4}$. The numerical differences between
+these three assignments are extremely small, so their exact ordering should not
+be interpreted as a meaningful separation. P032--R02, P029--R02 and
+P034--R02 formed the next tied group under A-optimality.
 
-Visualize the candidate-edge utilities, preferably using a reviewer--proposal
-heatmap for the primary A-optimality criterion and a compact comparison of the
-three criteria.
+D-optimality gave a very similar upper ordering. P026--R02 was again ranked
+first, followed by P015--R02 and P005--R02. By contrast, E-optimality placed
+P005--R02 and P015--R02 first and second, but then preferred P005--R03 and
+P015--R03. The difference is summarized by the candidate-rank correlations,
 
-Compare the model-based recommendation with a simple intuitive benchmark, such
-as targeting a proposal with high observed reviewer disagreement, while making
-clear that disagreement and expected information gain are conceptually
-different quantities.
--->
+$$
+\rho_{\mathrm S}(A,D)=0.926,
+\qquad
+\rho_{\mathrm S}(A,E)=0.234,
+\qquad
+\rho_{\mathrm S}(D,E)=0.040.
+$$
+
+Thus, A- and D-optimality agree strongly about which additional assignments are
+informative, whereas E-optimality induces a substantially different ordering.
+This is consistent with the objectives defined in Section 6.4: A-optimality
+targets average pairwise contrast variance, D-optimality targets global joint
+uncertainty, and E-optimality targets the single least precise contrast
+direction.
+
+| Candidate assignment | A rank | D rank | E rank |
+|---|---:|---:|---:|
+| P026--R02 | 1 | 1 | 18 |
+| P005--R02 | 2 | 3 | 1 |
+| P015--R02 | 3 | 2 | 2 |
+| P032--R02 | 4 | 4 | 5 |
+| P029--R02 | 4 | 5 | 6 |
+| P034--R02 | 4 | 5 | 7 |
+| P005--R03 | 8 | 41 | 3 |
+| P015--R03 | 9 | 42 | 4 |
+
+The complete A-optimality pattern across all reviewer--proposal pairs is shown
+in @fig-review-design-heatmap. Existing assignments are not candidates and are
+shown separately from the 294 possible additional edges. The highest
+A-optimality utilities are concentrated among assignments involving R02, but
+this should not be interpreted as evidence about reviewer quality. Conditional
+on the variance parameters, the design utility is determined by the assignment
+structure and the covariance model rather than by the future grade itself.
+
+![Posterior-averaged A-optimality utility for all hypothetical single additional reviewer--proposal assignments. Grey cells are assignments already observed and therefore unavailable as candidates. Outlined cells form the highest-ranked A-optimality group (ranks 1--4, including ties). Larger values indicate a greater reduction in average posterior pairwise proposal-contrast variance.](figures/review_design/a_optimality_candidate_heatmap.png){#fig-review-design-heatmap width=82% fig-pos="H"}
+
+Targeting proposals with large observed reviewer disagreement would answer a
+different question from the one studied here. Such a rule would prioritize
+where an additional opinion may be substantively useful, whereas the
+A-, D- and E-optimality criteria quantify reduction in posterior contrast
+uncertainty under V1. Reviewer disagreement is therefore not used as an
+alternative design criterion in this chapter.
 
 
 ## Generalization beyond the CRS design
 
-<!-- TODO:
-Discuss which parts of the one-step framework depend on the specific CRS design
-and which extend naturally to other sparse peer-review settings.
+The matrix formulation is not specific to the numerical CRS results. Any
+crossed reviewer--proposal model with an additive Gaussian information
+structure can represent observed assignments through an incidence matrix and
+evaluate how candidate edges change posterior covariance. The precise utility
+ranking will, however, depend on the fitted variance structure and on the
+uncertainty criterion chosen.
 
-Explain that the present analysis considers only one additional review. Extending
-the approach to a budget of multiple reviews would require sequential or joint
-optimization because each added assignment changes the information structure
-for subsequent assignments.
+The present analysis considers only one additional review. With a budget of
+several reviews, the assignments could be selected sequentially, updating the
+information structure after each added edge, or optimized jointly as a set.
+The single-edge rankings should therefore not be interpreted as a complete
+multi-review allocation.
 
-Discuss how reviewer eligibility, expertise, workload limits and
-conflict-of-interest constraints could be incorporated into the candidate set
-in a prospective application.
-
-Clarify that the present result is conditional on the fitted V1 model and the
-observed reviewer--proposal design, and that other outcome models or ranking
-objectives could lead to different preferred assignments.
--->
+A prospective implementation would also restrict the candidate set before
+optimization. Reviewer expertise, conflicts of interest, workload limits and
+availability could be encoded as eligibility constraints, after which the
+statistical criterion would rank only feasible assignments. Finally, the
+results are conditional on V1 and on the holistic overall grade as the main
+response. Alternative outcome models, including ordinal models, or
+decision-specific objectives could produce different preferred assignments.
 
 # Discussion and recommendations
 
