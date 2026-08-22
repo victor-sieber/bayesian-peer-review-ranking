@@ -12,7 +12,8 @@
 
 required_packages <- c(
   "dplyr",
-  "ggplot2"
+  "ggplot2",
+  "scales"
 )
 
 missing_packages <- required_packages[
@@ -138,10 +139,10 @@ if (length(reviewer_ids) != 9) {
 }
 
 
-# Reconstruct the complete 42 x 9 assignment grid
+# Reconstruct complete 42 x 9 reviewer-proposal grid
 #
-# Candidate pairs have an A_mean value. Pairs absent from the candidate table
-# are the 84 assignments already observed in the original review design.
+# Candidate pairs have an A_mean value. Missing pairs are the 84 assignments
+# already present in the original review design.
 
 all_pairs <- expand.grid(
   proposal_id = proposal_ids,
@@ -179,6 +180,26 @@ heatmap_data <- all_pairs |>
     )
   )
 
+
+candidate_range <- range(
+  heatmap_data$A_mean,
+  na.rm = TRUE
+)
+
+message(
+  "A-optimality range: ",
+  format(
+    candidate_range[1],
+    scientific = TRUE
+  ),
+  " to ",
+  format(
+    candidate_range[2],
+    scientific = TRUE
+  )
+)
+
+
 if (
   sum(
     heatmap_data$assignment_status == "Observed assignment"
@@ -192,10 +213,11 @@ if (
 
 # Plot A-optimality utility
 #
-# A_rank <= 4 outlines the highest-ranked group. Rank 4 is shared by several
-# candidate assignments, so all tied assignments are retained.
+# A_rank <= 4 outlines the highest-ranked candidate group.
+# Rank 4 is shared by multiple assignments.
 
 heatmap_plot <- ggplot2::ggplot() +
+  
   ggplot2::geom_tile(
     data = heatmap_data |>
       dplyr::filter(
@@ -209,6 +231,7 @@ heatmap_plot <- ggplot2::ggplot() +
     color = "white",
     linewidth = 0.25
   ) +
+  
   ggplot2::geom_tile(
     data = heatmap_data |>
       dplyr::filter(
@@ -222,6 +245,7 @@ heatmap_plot <- ggplot2::ggplot() +
     color = "white",
     linewidth = 0.25
   ) +
+  
   ggplot2::geom_tile(
     data = heatmap_data |>
       dplyr::filter(
@@ -234,18 +258,25 @@ heatmap_plot <- ggplot2::ggplot() +
     ),
     fill = NA,
     color = "black",
-    linewidth = 0.7
+    linewidth = 0.9
   ) +
+  
   ggplot2::scale_fill_viridis_c(
-    name = expression(bar(Delta)[A])
+    name = "A-optimality\nuncertainty reduction",
+    labels = scales::label_scientific()
   ) +
+  
   ggplot2::labs(
     x = "Reviewer",
-    y = "Proposal"
+    y = "Proposal",
+    subtitle =
+      "Grey cells indicate existing assignments; coloured cells indicate candidate additional reviews"
   ) +
+  
   ggplot2::theme_minimal(
     base_size = 10
   ) +
+  
   ggplot2::theme(
     panel.grid = ggplot2::element_blank(),
     axis.text.x = ggplot2::element_text(
@@ -258,7 +289,7 @@ heatmap_plot <- ggplot2::ggplot() +
   )
 
 
-# Save figure in the analysis and report figure directories
+# Save figure
 
 figure_path <- file.path(
   figures_dir,
