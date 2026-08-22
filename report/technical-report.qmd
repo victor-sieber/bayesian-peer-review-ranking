@@ -28,11 +28,36 @@ format:
 
 # Abstract {.unnumbered}
 
-Grant peer review often requires decisions from only a small number of evaluations per proposal. This report studies the 2026 CRS Seed Grant evaluation, in which 42 proposals were each reviewed twice by a panel of nine reviewers. A Bayesian hierarchical ranking model separates proposal effects, reviewer-associated scoring tendencies and residual review-level variation, and represents ranking uncertainty through posterior rank distributions.
+Grant peer review often requires funding decisions based on only a small number
+of evaluations per proposal, making the uncertainty of resulting rankings
+difficult to assess. This report studies the 2026 CRS Seed Grant evaluation,
+where 42 proposals were each reviewed twice by a panel of nine reviewers. A
+Bayesian hierarchical ranking model separates proposal effects,
+reviewer-associated scoring tendencies and residual review-level variation,
+while representing ranking uncertainty through posterior rank distributions.
 
-A CRS-specific cross-classified model produced the same four highest posterior-mean proposals as the four proposals that qualified under the final CRS rule, but exact latent ranks remained highly uncertain. The model was computationally stable and insensitive to the tested scale priors. Its posterior median variance shares were 0.050 for proposals, 0.026 for reviewers and 0.896 for residual variation. Posterior predictive checks reproduced the observed mean, dispersion and average reviewer disagreement reasonably well, while the unbounded Gaussian treatment of the five-point score remained an explicit modelling caveat.
+A CRS-specific cross-classified model reproduced the four proposals selected
+under the final CRS decision rule, but substantial uncertainty remained in the
+ordering of individual proposals. The model was computationally stable and
+insensitive to the tested prior specifications. Posterior predictive checks
+showed good agreement with observed review patterns, including average
+reviewer disagreement, while the unbounded Gaussian representation of the
+five-point scores remained an explicit modelling caveat.
 
-An equal-weight average of the four supporting criteria produced materially different proposal ordering, showing that the definition of the evaluation outcome matters more than the distinction between the two tested Bayesian model specifications. Finally, the reviewer--proposal assignment structure was represented as a bipartite graph and used to evaluate one hypothetical additional review. A- and D-optimality gave similar candidate rankings, whereas E-optimality emphasized a different uncertainty direction. The results support Bayesian ranking as an uncertainty-aware supplement to transparent evaluation rules and show how additional review effort can be targeted statistically once operational eligibility constraints are specified.
+Changing the evaluation outcome from the holistic overall grade to an
+equal-weight average of four supporting criteria produced materially different
+proposal rankings, indicating that the definition of the evaluation outcome can
+have a stronger influence than the choice between the tested Bayesian model
+specifications. Finally, the reviewer--proposal allocation was represented as
+a bipartite graph to evaluate hypothetical additional reviews using Bayesian
+A-, D- and E-optimality criteria. The analysis identifies assignments that
+would provide the largest expected reduction in ranking uncertainty under the
+fitted model, while requiring operational constraints such as reviewer
+expertise and availability before practical use.
+
+Overall, the results demonstrate how Bayesian ranking can complement
+transparent evaluation rules by quantifying uncertainty and identifying where
+additional review effort could provide the greatest statistical benefit.
 
 
 # Introduction
