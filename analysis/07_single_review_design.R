@@ -328,8 +328,8 @@ message(
 
 # Select posterior draws for the review-design calculation
 #
-# Start with 1,000 draws. Once the implementation has been checked,
-# this can be increased to assess Monte Carlo stability.
+# Start with 5,000 draws.
+# A previous 1,000-draw run was used to assess Monte Carlo stability and saved in the analysis folder for comparison: "review_design_1000".
 
 n_design_draws <- min(
   5000L,
@@ -830,27 +830,43 @@ write.csv(
 )
 
 
-# Posterior-median plug-in sensitivity calculation
+# Posterior-median plug-in sensitivity analysis
 
-median_scales <- c(
-  tau_proposal = median(
-    v1_draws[, "tau_proposal"]
-  ),
-  tau_assessor = median(
-    v1_draws[, "tau_assessor"]
-  ),
-  sigma = median(
-    v1_draws[, "sigma"]
+tau_theta_median <- median(
+  v1_draws[, "tau_proposal"]
+)
+
+tau_b_median <- median(
+  v1_draws[, "tau_assessor"]
+)
+
+sigma_median <- median(
+  v1_draws[, "sigma"]
+)
+
+message(
+  "\nPosterior median scales:"
+)
+
+print(
+  c(
+    tau_theta = tau_theta_median,
+    tau_b = tau_b_median,
+    sigma = sigma_median
   )
 )
 
 write.csv(
   data.frame(
-    parameter = names(
-      median_scales
+    parameter = c(
+      "tau_proposal",
+      "tau_assessor",
+      "sigma"
     ),
-    posterior_median = as.numeric(
-      median_scales
+    posterior_median = c(
+      tau_theta_median,
+      tau_b_median,
+      sigma_median
     )
   ),
   file.path(
@@ -860,6 +876,355 @@ write.csv(
   row.names = FALSE
 )
 
+# Construct P0, Q and V using posterior medians
+
+P0_median <- diag(
+  c(
+    rep(
+      1 / tau_theta_median^2,
+      n_proposals
+    ),
+    rep(
+      1 / tau_b_median^2,
+      n_reviewers
+    )
+  )
+)
+
+Q_median <-
+  P0_median +
+  L_G / sigma_median^2
+
+V_median <- solve(
+  Q_median
+)
+
+V_theta_median <- V_median[
+  seq_len(n_proposals),
+  seq_len(n_proposals),
+  drop = FALSE
+]
+
+
+# Covariance on proposal-contrast subspace
+
+S_median <- crossprod(
+  C,
+  V_theta_median %*% C
+)
+
+S_median <- (
+  S_median +
+    t(S_median)
+) / 2
+
+S_inverse_median <- solve(
+  S_median
+)
+
+baseline_E_median <- max(
+  eigen(
+    S_median,
+    symmetric = TRUE,
+    only.values = TRUE
+  )$values
+)
+
+
+# Storage
+
+plugin_A <- numeric(
+  n_candidates
+)
+
+plugin_D <- numeric(
+  n_candidates
+)
+
+plugin_E <- numeric(
+  n_candidates
+)
+
+
+# Evaluate all candidate edges once at posterior medians
+
+for (e in seq_len(n_candidates)) {
+  
+  x_e <- as.numeric(
+    candidate_X[
+      e,
+      ,
+      drop = FALSE
+    ]
+  )
+  
+  u <- as.numeric(
+    V_median %*% x_e
+  )
+  
+  denominator <-
+    sigma_median^2 +
+    sum(
+      x_e * u
+    )
+  
+  if (
+    !is.finite(denominator) ||
+    denominator <= 0
+  ) {
+    stop(
+      "Invalid Sherman-Morrison denominator in plug-in analysis."
+    )
+  }
+  
+  u_theta <- u[
+    seq_len(n_proposals)
+  ]
+  
+  z <- as.numeric(
+    crossprod(
+      C,
+      u_theta
+    )
+  )
+  
+  
+  # A-optimality reduction
+  
+  plugin_A[e] <-
+    (
+      2 /
+        (n_proposals - 1)
+    ) *
+    sum(
+      z^2
+    ) /
+    denominator
+  
+  
+  # D-optimality reduction
+  
+  determinant_fraction <-
+    as.numeric(
+      crossprod(
+        z,
+        S_inverse_median %*% z
+      )
+    ) /
+    denominator
+  
+  determinant_fraction <- min(
+    max(
+      determinant_fraction,
+      0
+    ),
+    1 - 1e-12
+  )
+  
+  plugin_D[e] <-
+    -log1p(
+      -determinant_fraction
+    )
+  
+  
+  # E-optimality reduction
+  
+  S_e <-
+    S_median -
+    tcrossprod(
+      z
+    ) /
+    denominator
+  
+  S_e <- (
+    S_e +
+      t(S_e)
+  ) / 2
+  
+  updated_E <- max(
+    eigen(
+      S_e,
+      symmetric = TRUE,
+      only.values = TRUE
+    )$values
+  )
+  
+  plugin_E[e] <-
+    baseline_E_median -
+    updated_E
+}
+
+
+# Create plug-in ranking table
+
+plugin_results <- candidate_edges |>
+  dplyr::mutate(
+    A_plugin = plugin_A,
+    D_plugin = plugin_D,
+    E_plugin = plugin_E,
+    
+    A_plugin_rank = rank(
+      -A_plugin,
+      ties.method = "min"
+    ),
+    
+    D_plugin_rank = rank(
+      -D_plugin,
+      ties.method = "min"
+    ),
+    
+    E_plugin_rank = rank(
+      -E_plugin,
+      ties.method = "min"
+    )
+  )
+
+
+# Compare with posterior-averaged rankings
+
+plugin_comparison <- candidate_results |>
+  dplyr::select(
+    candidate_id,
+    proposal_id,
+    reviewer_id,
+    A_mean,
+    D_mean,
+    E_mean,
+    A_rank,
+    D_rank,
+    E_rank
+  ) |>
+  dplyr::left_join(
+    plugin_results,
+    by = c(
+      "candidate_id",
+      "proposal_id",
+      "reviewer_id"
+    )
+  )
+
+
+# Spearman rank correlations
+
+plugin_rank_correlations <- data.frame(
+  criterion = c(
+    "A",
+    "D",
+    "E"
+  ),
+  
+  spearman = c(
+    cor(
+      plugin_comparison$A_rank,
+      plugin_comparison$A_plugin_rank,
+      method = "spearman"
+    ),
+    
+    cor(
+      plugin_comparison$D_rank,
+      plugin_comparison$D_plugin_rank,
+      method = "spearman"
+    ),
+    
+    cor(
+      plugin_comparison$E_rank,
+      plugin_comparison$E_plugin_rank,
+      method = "spearman"
+    )
+  )
+)
+
+
+# Save outputs
+
+write.csv(
+  plugin_comparison,
+  file.path(
+    results_dir,
+    "posterior_average_vs_plugin.csv"
+  ),
+  row.names = FALSE
+)
+
+write.csv(
+  plugin_rank_correlations,
+  file.path(
+    results_dir,
+    "plugin_rank_correlations.csv"
+  ),
+  row.names = FALSE
+)
+
+
+# Print sensitivity results
+
+message(
+  "\nPosterior-average vs posterior-median plug-in rank correlations:"
+)
+
+print(
+  plugin_rank_correlations
+)
+
+message(
+  "\nTop five plug-in candidates under A-optimality:"
+)
+
+print(
+  plugin_results |>
+    dplyr::arrange(
+      A_plugin_rank
+    ) |>
+    dplyr::select(
+      proposal_id,
+      reviewer_id,
+      A_plugin,
+      A_plugin_rank
+    ) |>
+    dplyr::slice_head(
+      n = 5
+    )
+)
+
+message(
+  "\nTop five plug-in candidates under D-optimality:"
+)
+
+print(
+  plugin_results |>
+    dplyr::arrange(
+      D_plugin_rank
+    ) |>
+    dplyr::select(
+      proposal_id,
+      reviewer_id,
+      D_plugin,
+      D_plugin_rank
+    ) |>
+    dplyr::slice_head(
+      n = 5
+    )
+)
+
+message(
+  "\nTop five plug-in candidates under E-optimality:"
+)
+
+print(
+  plugin_results |>
+    dplyr::arrange(
+      E_plugin_rank
+    ) |>
+    dplyr::select(
+      proposal_id,
+      reviewer_id,
+      E_plugin,
+      E_plugin_rank
+    ) |>
+    dplyr::slice_head(
+      n = 5
+    )
+)
 
 # Print main results
 

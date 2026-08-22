@@ -1110,8 +1110,10 @@ H
 I_{42}
 -
 \frac{1}{42}
-\mathbf 1\mathbf 1^\top.
+\mathbf 1\mathbf 1^\top
 $$
+
+where $\mathbf 1\in\mathbb{R}^{42}$ denotes the vector of ones.
 
 The matrix
 
@@ -1304,6 +1306,16 @@ Larger values indicate a greater posterior-averaged reduction in uncertainty
 under the corresponding criterion. Averaging across posterior draws propagates
 the current uncertainty in $\tau_\theta$, $\tau_b$ and $\sigma$ rather than
 replacing these parameters by single plug-in estimates.
+
+As a sensitivity check, the calculation was repeated using posterior-median
+plug-in values for the three scale parameters instead of averaging utility over
+posterior draws. The resulting candidate rankings were largely preserved:
+the Spearman correlations with the posterior-averaged rankings were 0.873 for
+A-optimality, 0.990 for D-optimality and 0.894 for E-optimality. The five
+highest-ranked A-optimality candidates were identical as a set under both
+calculations, while four of the five highest-ranked candidates overlapped under
+D- and E-optimality. Because some lower-order candidate ranks changed, the
+posterior-averaged calculation is retained as the primary analysis. Additional details are provided in @sec-app-review-design-sensitivity.
 
 This calculation is not a full prospective refit of the hierarchical model.
 Within each posterior draw, the scale parameters are held fixed while the
@@ -2416,6 +2428,45 @@ The derivation conditions on $\sigma$, $\tau_\theta$ and $\tau_b$ to make this
 relationship explicit. In the fitted Bayesian model these scale parameters are
 unknown and are estimated jointly by MCMC, as described in Section 3.6 and
 @sec-app-bayesian-updating.
+
+## Posterior-median sensitivity of the review-design calculation {#sec-app-review-design-sensitivity}
+
+As a sensitivity analysis, the single-review design calculation was repeated
+using posterior-median plug-in values for the V1 scale parameters rather than
+averaging utility over posterior draws. The posterior medians were
+
+$$
+\widetilde{\tau}_\theta = 0.220,
+\qquad
+\widetilde{\tau}_b = 0.157,
+\qquad
+\widetilde{\sigma} = 0.920.
+$$
+
+For these fixed values, the conditional covariance matrix was constructed once,
+and the A-, D- and E-optimality reductions were recalculated for all 294
+currently unobserved reviewer--proposal assignments.
+
+| Criterion | Spearman correlation with posterior-averaged ranking | Top-five overlap |
+|---|---:|---:|
+| A-optimality | 0.873 | 5 / 5 |
+| D-optimality | 0.990 | 4 / 5 |
+| E-optimality | 0.894 | 4 / 5 |
+
+The highest-ranked part of the candidate ordering was therefore stable to the
+plug-in calculation. Under A-optimality, the same five assignments appeared in
+the top five under both approaches. Under D- and E-optimality, four of the five
+highest-ranked assignments were shared. The lower overall rank correlation for
+A-optimality indicates that some candidate positions further down the ranking
+are more sensitive to whether posterior uncertainty in the scale parameters is
+averaged over or replaced by a single representative value.
+
+The sensitivity calculation does not compare the magnitudes of the
+posterior-averaged and plug-in utility reductions directly. Because the design
+criteria are nonlinear functions of the scale parameters, evaluating a
+criterion at posterior-median parameter values need not reproduce the posterior
+mean of that criterion. The comparison is therefore used only to assess the
+robustness of the candidate ordering.
 
 # References {.unnumbered}
 
