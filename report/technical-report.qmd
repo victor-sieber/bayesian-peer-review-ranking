@@ -28,19 +28,11 @@ format:
 
 # Abstract {.unnumbered}
 
-<!-- TODO:
-Write this last.
+Grant peer review often requires decisions from only a small number of evaluations per proposal. This report studies the 2026 CRS Seed Grant evaluation, in which 42 proposals were each reviewed twice by a panel of nine reviewers. A Bayesian hierarchical ranking model separates proposal effects, reviewer-associated scoring tendencies and residual review-level variation, and represents ranking uncertainty through posterior rank distributions.
 
-Briefly summarize:
-- the evaluation problem;
-- the data;
-- the Bayesian modelling approach;
-- the main empirical findings;
-- the model-validation results;
-- the criterion analysis;
-- the graph-based review-design extension;
-- the main recommendation.
--->
+A CRS-specific cross-classified model produced the same four highest posterior-mean proposals as the four proposals that qualified under the final CRS rule, but exact latent ranks remained highly uncertain. The model was computationally stable and insensitive to the tested scale priors. Its posterior median variance shares were 0.050 for proposals, 0.026 for reviewers and 0.896 for residual variation. Posterior predictive checks reproduced the observed mean, dispersion and average reviewer disagreement reasonably well, while the unbounded Gaussian treatment of the five-point score remained an explicit modelling caveat.
+
+An equal-weight average of the four supporting criteria produced materially different proposal ordering, showing that the definition of the evaluation outcome matters more than the distinction between the two tested Bayesian model specifications. Finally, the reviewer--proposal assignment structure was represented as a bipartite graph and used to evaluate one hypothetical additional review. A- and D-optimality gave similar candidate rankings, whereas E-optimality emphasized a different uncertainty direction. The results support Bayesian ranking as an uncertainty-aware supplement to transparent evaluation rules and show how additional review effort can be targeted statistically once operational eligibility constraints are specified.
 
 
 # Introduction
@@ -131,27 +123,23 @@ and the relevant notion of uncertainty have been studied more carefully.
 
 ## Scope and structure of the report
 
-<!-- TODO:
-Clarify the final scope once the remaining analyses are complete.
+The holistic overall grade is the response for the main Bayesian analysis. The
+four supporting criteria are examined separately, including an equal-weight
+criterion average used as a descriptive sensitivity analysis rather than as a
+preferred scoring rule. V0 reproduces the continuous Heyard reference
+specification, while the simpler cross-classified V1 model is used as the main
+CRS model. After comparing the resulting rankings, Chapter 5 evaluates the
+computational stability, posterior predictive behaviour and prior sensitivity
+of V1.
 
-Current scope to keep in mind:
-- the holistic overall grade is the response for the main Bayesian analysis;
-- the four supporting criteria are considered separately;
-- requested budget is outside the main statistical model;
-- V0 serves as the Heyard reference specification;
-- V1 is the CRS-specific main model;
-- model validation precedes the review-design extension;
-- the graph-based part concerns the design and allocation of review effort.
-
-LITERATURE TO INVESTIGATE:
-- Heyard et al. (2022) as the main methodological reference.
-- Existing grant-review literature using multilevel or cross-classified models.
-- Existing literature on review allocation / experimental design before
-  making any novelty claim.
-
-Do not claim that the project introduces a new Bayesian or graph-theoretic
-method unless the literature review later justifies such a statement.
--->
+Chapter 6 then treats the reviewer--proposal assignment structure as a
+statistical-design problem. It asks which one currently unobserved assignment
+would most reduce posterior uncertainty under V1 and compares A-, D- and
+E-optimality criteria. Because reviewer expertise, conflicts and eligibility
+are not available, these candidate assignments are interpreted only as
+statistical information rankings. The final discussion brings together the
+ranking, validation, criterion and review-design results and derives practical
+implications for future CRS evaluations.
 
 
 # Evaluation design and descriptive analysis
@@ -1419,57 +1407,203 @@ decision-specific objectives could produce different preferred assignments.
 
 ## Answers to the research questions
 
-<!-- TODO:
-Answer the final research questions using the completed analyses.
-Keep the conclusions tied closely to the evidence obtained in the project.
--->
+**Research Question 1.** Under V1, P022, P032, P023 and P041 occupied the first
+four posterior-mean positions. These proposals also had the most favourable
+broad ordering, but their exact ranks were weakly identified: the 90% posterior
+rank intervals extended to ranks 36--38. The posterior expected ranks of the
+four proposals ranged from 13.08 to 16.22, illustrating the strong movement of
+uncertain ranks toward the centre of the 42-proposal rank scale.
+
+**Research Question 2.** The same four proposals that qualified under the final
+CRS rule occupied the first four posterior-mean V1 positions. V1 also closely
+agreed with the Heyard reference model V0, with Spearman correlation 0.995
+between posterior-mean ranks and Pearson correlation 0.992 between expected
+ranks. The Bayesian analysis therefore did not overturn the observed upper
+ordering. Its main contribution is to show that the fine ordering within and
+below that group is much less certain than an integer ranking suggests.
+
+**Research Question 3.** V1 was computationally stable, with maximum PSRF
+1.0017 and minimum effective sample size 1,627. Posterior predictive checks
+reproduced the observed mean, dispersion and mean reviewer disagreement
+reasonably well, and replacing the baseline scale priors by half-normal priors
+had negligible effect on the ranking. The main model-form caveat is the
+continuous Gaussian treatment of the integer-valued 1--5 score, which places
+about 6.6% of replicated grades outside the admissible range.
+
+**Research Question 4.** Scientific quality was much more strongly associated
+with the holistic overall grade than the other three criteria, with Pearson
+and Spearman correlations of 0.892 and 0.890. An equal-weight average of all
+four criteria remained strongly related to the holistic grade but changed the
+Bayesian ordering materially: the correlation between V1 expected ranks under
+the two response definitions was 0.863, and only three of the four original
+qualifiers remained in the criterion-average posterior-mean top four. The
+analysis therefore shows that outcome definition matters, without establishing
+that either response is preferable.
+
+**Research Question 5.** Under the primary A-optimality criterion, P026--R02,
+P005--R02 and P015--R02 formed an almost tied highest-value group, with
+P026--R02 ranked first by a very small numerical margin. A- and D-optimality
+gave strongly similar candidate rankings
+($\rho_{\mathrm S}=0.926$), whereas E-optimality produced a substantially
+different ordering. These results identify statistically informative
+hypothetical assignments under V1; they are not operational recommendations
+because expertise, conflicts and eligibility are not included.
 
 
 ## Interpretation of the main findings
 
-<!-- TODO:
-Bring together the Bayesian ranking, criterion analysis, validation and review-design results.
-Identify the main scientific story emerging across the analyses.
--->
+The central finding is not a different winner produced by a Bayesian model.
+The upper ordering is stable across the observed scores, the final CRS
+qualification rule, V0 and V1, while the posterior distributions show that the
+exact latent ranks are highly uncertain. This is consistent with the fitted
+variance structure: the posterior median proposal share is only 0.050, whereas
+the residual share is 0.896. With two reviews per proposal, the data provide
+limited information for distinguishing many proposal effects precisely.
+
+The analyses also separate two different sources of sensitivity. Simplifying
+the Heyard reference model from V0 to V1 changes the ranking very little,
+whereas replacing the holistic grade by an equal-weight criterion average
+changes it substantially more. The numerical ranking is therefore more
+sensitive to how the evaluation outcome is defined than to the distinction
+between the two tested hierarchical specifications.
+
+The review-design analysis connects this uncertainty to the structure of data
+collection. Under V1, an additional assignment changes the graph Laplacian and
+therefore the conditional posterior covariance. This makes it possible to rank
+potential additional reviews by their statistical information value. The
+preferred edge is nevertheless objective-dependent, particularly under
+E-optimality, and a practical allocation would first need to incorporate
+reviewer eligibility and expertise.
 
 
 ## Implications for CRS
 
-<!-- TODO:
-Investigate which practical conclusions or recommendations are supported for future CRS evaluations.
-Distinguish suggestions supported by the results from more speculative possibilities.
--->
+For future CRS evaluations, the scoring rule used for the final decision should
+be specified as clearly as possible before reviews are collected. In the 2026
+materials, the original call described an average across criteria and
+reviewers, while the implemented procedure used a separate holistic overall
+grade. The present analysis shows that these two response definitions can lead
+to materially different proposal orderings even when analysed with the same
+Bayesian model.
+
+When only a small number of reviews are available, fine distinctions between
+proposal ranks should also be interpreted cautiously. Posterior rank intervals
+or selected pairwise posterior probabilities can complement a simple score
+table when the relative ordering itself matters. This does not require
+replacing a transparent qualification rule; it provides information about how
+strongly the available reviews support distinctions between proposals.
+
+If additional review capacity is available, it can be allocated deliberately
+rather than uniformly. A practical version of the Chapter 6 calculation would
+first remove ineligible reviewer--proposal pairs based on expertise, conflicts,
+availability and workload, and would then optimize a pre-specified criterion
+such as A-optimality over the remaining candidates. The specific reviewer IDs
+identified in the retrospective calculation should not be used as direct
+assignment recommendations because those operational constraints were not part
+of the analysis.
 
 
 ## Ranking uncertainty and decision making
 
-<!-- TODO:
-Investigate how uncertainty in the latent ranking relates to uncertainty in practical evaluation decisions.
-Clarify what the Bayesian results do and do not imply about the original CRS outcome.
--->
+The final CRS rule and the Bayesian ranking answer different questions. The CRS
+rule is deterministic once the two observed grades are known: in 2026 a
+proposal qualified if it received at least one grade of 5 and no grade below 4.
+The Bayesian model instead estimates latent proposal effects and asks how
+uncertain their relative ordering remains after accounting for reviewer
+effects and residual variation.
+
+Consequently, broad posterior rank intervals do not imply that the four
+funding decisions were incorrect. All four observed qualifiers were also the
+first four proposals by posterior-mean V1 effect, and the available capacity
+was not binding. The uncertainty result is narrower: the data do not support
+strong claims about the exact latent ordering of many proposals. If a future
+decision required a strict ordering near a funding boundary, this distinction
+between observed qualification and latent rank uncertainty would become more
+important.
 
 
 ## Limitations
 
-<!-- TODO:
-Identify the main data, modelling, design and interpretation limitations of the project.
-Distinguish limitations specific to the CRS case from more general limitations of sparse peer review.
--->
+The first limitation is the size and sparsity of the dataset. The analysis is
+based on 42 proposals, nine reviewers and 84 reviews, with exactly two reviews
+per proposal. Variance components and proposal ranks are therefore estimated
+from limited replication, and the resulting uncertainty is itself an important
+part of the result.
+
+Second, reviewer assignments were based on expertise and availability rather
+than random allocation. Reviewer effects in V1 consequently describe
+reviewer-associated scoring tendencies and should not be interpreted causally
+as reviewer bias. The same issue limits the Chapter 6 design analysis:
+expertise, conflicts of interest and other operational constraints are absent
+from the candidate set.
+
+Third, V1 treats the five-point holistic grade as Gaussian with homogeneous
+residual variance. This provides a simple continuous ranking model but allows
+replicated scores outside the observed 1--5 range. The prior-sensitivity
+analysis does not address this likelihood assumption, and an ordinal model was
+not fitted as a formal sensitivity analysis.
+
+Fourth, the criterion-average analysis is an equal-weight counterfactual. It
+does not recover the weights reviewers implicitly used when assigning the
+holistic grade and does not establish that equal weighting would be a better
+decision rule. Similarly, the single-review design calculation conditions on
+the current V1 posterior and evaluates a covariance update with fixed scale
+parameters within each draw; it does not model how an observed future grade
+would subsequently update the full hierarchical model.
+
+Finally, the study is a retrospective analysis of one small grant call. The
+qualitative conclusions about sparse review, uncertainty and targeted
+additional information may transfer to related settings, but the numerical
+rankings and preferred review assignments are specific to the CRS design and
+model fitted here.
 
 
 ## Future work
 
-<!-- TODO:
-Identify natural extensions suggested by the results and remaining limitations.
-Consider methodological, empirical and prospective validation directions.
--->
+A natural model extension is an ordinal hierarchical specification that
+respects the five observed score categories while retaining proposal and
+reviewer effects. Comparing such a model with V1 would directly assess whether
+the continuous-score approximation affects the ranking conclusions.
+
+For review design, the next step is to incorporate eligibility constraints and
+extend the one-edge calculation to several additional reviews. Sequential
+selection would recompute the information structure after each added review,
+while joint optimization could target the best set under a fixed review
+budget. Decision-focused utilities could also be considered when the primary
+goal is resolving uncertainty near a qualification or funding boundary rather
+than reducing global ranking uncertainty.
+
+The strongest empirical validation would be prospective. Applying a
+pre-specified ranking and review-design procedure in a future CRS call would
+allow the predicted information gains to be compared with the uncertainty
+actually observed after additional reviews are collected.
 
 # Conclusion
 
-<!-- TODO:
-Summarize the overall contribution and main findings of the project.
-State the central practical takeaway without introducing new analyses, methods or literature.
--->
+The CRS Seed Grant 2026 evaluation provides a small but informative example of
+the uncertainty created when many proposals are assessed by only a few
+reviewers. A Bayesian cross-classified model preserved the same four strongest
+posterior-mean proposals as the final CRS qualification procedure, while
+showing that the exact latent ranking remained highly uncertain. The main
+ranking conclusion was stable to the more complex Heyard reference
+specification and to the tested scale priors, although the continuous Gaussian
+treatment of the five-point score remains a modelling limitation.
+
+The analysis also showed that the choice of evaluation outcome matters. An
+equal-weight average of the four supporting criteria produced a more noticeable
+change in proposal ordering than the change from V0 to V1. This supports
+specifying clearly in advance whether a holistic grade, criterion-based score
+or another summary is intended to drive the decision.
+
+Finally, the reviewer--proposal assignment graph provides a direct connection
+between the review design and posterior uncertainty under V1. A-, D- and
+E-optimality can therefore be used to evaluate the statistical value of one
+additional review, although the preferred assignment depends on the objective
+and must be restricted by operational eligibility in practice. The main
+practical takeaway is to combine transparent decision rules with explicit
+uncertainty summaries and, where additional review effort is available, to
+allocate that effort according to a pre-specified statistical objective among
+feasible reviewers.
 
 
 # Supplementary methods and analyses {.appendix}
