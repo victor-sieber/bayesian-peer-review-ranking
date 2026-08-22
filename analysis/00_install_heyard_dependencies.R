@@ -1,7 +1,7 @@
 # Run once in a new session
 cran_packages <- c(
   "remotes", "runjags", "dplyr", "tidyr", "ggplot2", "coda",
-  "bayesplot", "ggridges", "stringr", "ggrepel", "tibble"
+  "bayesplot", "ggridges", "stringr", "ggrepel", "tibble", "igraph"
 )
 
 missing_packages <- cran_packages[
