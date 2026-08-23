@@ -44,20 +44,18 @@ showed good agreement with observed review patterns, including average
 reviewer disagreement, while the unbounded Gaussian representation of the
 five-point scores remained an explicit modelling caveat.
 
-Changing the evaluation outcome from the holistic overall grade to an
-equal-weight average of four supporting criteria produced materially different
-proposal rankings, indicating that the definition of the evaluation outcome can
-have a stronger influence than the choice between the tested Bayesian model
-specifications. Finally, the reviewer--proposal allocation was represented as
-a bipartite graph to evaluate hypothetical additional reviews using Bayesian
-A-, D- and E-optimality criteria. The analysis identifies assignments that
-would provide the largest expected reduction in ranking uncertainty under the
-fitted model, while requiring operational constraints such as reviewer
-expertise and availability before practical use.
+Finally, the reviewer--proposal assignment structure was used to study where
+additional reviews could be most informative. Although different statistical
+criteria preferred somewhat different individual assignments, a practical
+comparison of small additional-review budgets found very little difference in
+global uncertainty reduction between random allocation, targeting proposals
+with high reviewer disagreement and model-based sequential allocation.
 
-Overall, the results demonstrate how Bayesian ranking can complement
-transparent evaluation rules by quantifying uncertainty and identifying where
-additional review effort could provide the greatest statistical benefit.
+Overall, the results show how Bayesian ranking can complement transparent
+evaluation rules by making ranking uncertainty explicit. They also suggest that
+the value of targeted additional reviews depends on the purpose of the extra
+evaluation: in the present CRS design, carefully optimizing a small number of
+assignments offered little advantage for reducing global ranking uncertainty.
 
 
 # Introduction
@@ -158,13 +156,16 @@ computational stability, posterior predictive behaviour and prior sensitivity
 of V1.
 
 Chapter 6 then treats the reviewer--proposal assignment structure as a
-statistical-design problem. It asks which one currently unobserved assignment
-would most reduce posterior uncertainty under V1 and compares A-, D- and
-E-optimality criteria. Because reviewer expertise, conflicts and eligibility
-are not available, these candidate assignments are interpreted only as
-statistical information rankings. The final discussion brings together the
-ranking, validation, criterion and review-design results and derives practical
-implications for future CRS evaluations.
+statistical-design problem. It first asks which one currently unobserved
+assignment would most reduce posterior uncertainty under V1 and compares A-,
+D- and E-optimality criteria. It then extends the primary A-optimality criterion
+to a practical comparison of small additional-review budgets under random,
+disagreement-targeted and sequential A-optimal allocation. Because reviewer
+expertise, conflicts and eligibility are not available, these analyses are
+interpreted as statistical design comparisons rather than operational assignment
+recommendations. The final discussion brings together the ranking, validation,
+criterion and review-design results and derives practical implications for future
+CRS evaluations.
 
 
 # Evaluation design and descriptive analysis
@@ -880,13 +881,18 @@ conflicts of interest is not available for the present analysis. Instead, the
 existing assignment structure is represented mathematically and its connection
 to posterior uncertainty under V1 is examined.
 
-The analysis then considers a deliberately restricted prospective question:
+The analysis first considers a deliberately restricted prospective question:
 if exactly one additional review could hypothetically be obtained, which
 currently unobserved reviewer--proposal assignment would provide the greatest
-reduction in uncertainty under V1? The analysis uses established
-optimal-design criteria rather than introducing a new measure of uncertainty,
-and compares several such criteria because different notions of statistical
-precision need not prefer the same additional review.
+reduction in uncertainty under V1? Established optimal-design criteria are used
+rather than introducing a new measure of uncertainty, and several criteria are
+compared because different notions of statistical precision need not prefer the
+same additional review.
+
+After establishing the single-review calculation, the primary A-optimality
+criterion is extended to a small multi-review budget. This provides a practical
+comparison between random allocation, targeting proposals with high observed
+reviewer disagreement, and sequential model-based allocation.
 
 
 ## Reviewer--proposal assignment structure
@@ -1397,13 +1403,117 @@ structure and the covariance model rather than by the future grade itself.
 
 ![Posterior-averaged A-optimality utility for all hypothetical single additional reviewer--proposal assignments. Grey cells are assignments already observed and therefore unavailable as candidates. Outlined cells form the highest-ranked A-optimality group (ranks 1--4, including ties). Larger values indicate a greater reduction in average posterior pairwise proposal-contrast variance.](figures/review_design/a_optimality_candidate_heatmap.png){#fig-review-design-heatmap width=82% fig-pos="H"}
 
-Targeting proposals with large observed reviewer disagreement would answer a
-different question from the one studied here. Such a rule would prioritize
-where an additional opinion may be substantively useful, whereas the
-A-, D- and E-optimality criteria quantify reduction in posterior contrast
-uncertainty under V1. Reviewer disagreement is therefore not used as an
-alternative design criterion in this chapter.
+Targeting proposals with large observed reviewer disagreement answers a
+different question from A-optimal design. Such a rule prioritizes proposals for
+which the original reviewers expressed more divergent judgments, whereas
+A-optimality targets reduction in global posterior contrast uncertainty under
+V1. This distinction motivates using disagreement targeting as a deliberately
+different practical benchmark in the following policy comparison rather than
+as another optimal-design criterion.
 
+## Practical comparison of limited-review allocation policies
+
+The single-review analysis identifies which one additional evaluation would
+most reduce posterior uncertainty under a specified design criterion. In
+practice, however, an evaluation process may have a small budget of several
+additional reviews. To examine this setting, three allocation policies were
+compared for budgets of one to six additional reviews. Each proposal was
+allowed to receive at most one additional review, so the policies allocate
+selective third reviews rather than repeatedly reviewing the same proposal.
+
+The **random policy** provides a no-targeting benchmark by selecting a currently
+unobserved reviewer--proposal assignment at random at each step.
+
+The **disagreement-targeted policy** prioritizes proposals according to the
+absolute difference between their two original overall grades. Among proposals
+with the currently highest disagreement, the available reviewer--proposal edge
+with the largest A-optimality reduction is selected. Thus, observed disagreement
+determines *which proposal* receives another opinion, while A-optimality is used
+only to choose the most informative available reviewer within the targeted
+group.
+
+The **sequential A-optimal policy** instead searches globally over all eligible
+remaining assignments. At each step, the edge with the largest
+posterior-averaged A-optimality reduction is selected and the conditional
+posterior covariance is updated before the next assignment is chosen.
+A-optimality is retained because it is the primary criterion in Section 6.4 and
+directly measures average uncertainty in pairwise proposal contrasts. The
+procedure is greedy and sequential; it is not claimed to be the jointly optimal
+set of several additional reviews.
+
+For policy $\pi$ and a budget of $m$ additional reviews, define the
+posterior-averaged cumulative A-optimality reduction as
+
+$$
+\overline{\Delta}_A(m;\pi)
+=
+\frac{1}{S}
+\sum_{s=1}^{S}
+\left[
+L_A\!\left(V_{\theta,0}^{(s)}\right)
+-
+L_A\!\left(V_{\theta,m,\pi}^{(s)}\right)
+\right],
+$$
+
+where $V_{\theta,0}^{(s)}$ denotes the proposal covariance under the observed
+design and $V_{\theta,m,\pi}^{(s)}$ denotes the covariance after applying
+policy $\pi$ for $m$ additional reviews. To express this reduction relative to
+the initial level of uncertainty, define
+
+$$
+G_m(\pi)
+=
+100
+\frac{
+\overline{\Delta}_A(m;\pi)
+}{
+\overline{L}_A(0)
+},
+$$
+
+where
+
+$$
+\overline{L}_A(0)
+=
+\frac{1}{S}
+\sum_{s=1}^{S}
+L_A\!\left(V_{\theta,0}^{(s)}\right).
+$$
+
+The sequential policies were evaluated over 5,000 approximately evenly spaced
+V1 posterior draws. The random benchmark used 5,000 simulated allocation paths
+with a fixed random seed, balanced across the same posterior draws. The
+comparison therefore propagates the current uncertainty in the V1 scale
+parameters while using the same posterior resolution as the final single-review
+design analysis.
+
+At a budget of six additional reviews, the posterior-averaged reduction in
+average pairwise proposal-contrast variance was 1.609% under sequential
+A-optimal allocation, 1.604% under disagreement-targeted allocation and 1.592%
+under random allocation. Thus, despite selecting substantially different
+reviewer--proposal assignments, the three policies produced very similar
+reductions in the global A-optimality criterion throughout the examined budget
+range.
+
+![Posterior-averaged reduction in average pairwise proposal-contrast variance
+under random, disagreement-targeted and sequential A-optimal allocation of up
+to six additional reviews. Each proposal can receive at most one additional
+review. The near-overlap of the curves reflects the small difference in global
+A-optimality performance between the three allocation policies.](figures/review_design/review_policy_comparison.png){#fig-review-policy-comparison width=86% fig-pos="H"}
+
+The near-equivalence is itself informative. Under V1 and the global
+A-optimality objective, optimizing the placement of a small number of additional
+reviews provides little improvement over random supplementation in the present
+CRS design. At a budget of six reviews, sequential A-optimal allocation exceeded
+the random benchmark by only 0.017 percentage points. The
+disagreement-targeted policy nevertheless addresses a different substantive
+objective: it deliberately concentrates additional opinions on proposals for
+which the original reviewers disagreed. Its similar A-optimality performance
+therefore does not imply that disagreement targeting is unnecessary; rather,
+the policies pursue different allocation principles while producing very similar
+reductions in the global contrast-variance criterion considered here.
 
 ## Generalization beyond the CRS design
 
@@ -1411,22 +1521,23 @@ The matrix formulation is not specific to the numerical CRS results. Any
 crossed reviewer--proposal model with an additive Gaussian information
 structure can represent observed assignments through an incidence matrix and
 evaluate how candidate edges change posterior covariance. The precise utility
-ranking will, however, depend on the fitted variance structure and on the
-uncertainty criterion chosen.
+ranking and the relative performance of allocation policies will, however,
+depend on the fitted variance structure and on the uncertainty objective chosen.
 
-The present analysis considers only one additional review. With a budget of
-several reviews, the assignments could be selected sequentially, updating the
-information structure after each added edge, or optimized jointly as a set.
-The single-edge rankings should therefore not be interpreted as a complete
-multi-review allocation.
+The limited-budget comparison uses a greedy sequential rule: after each added
+edge, the information structure is updated and the next assignment is selected.
+This is computationally convenient but is not equivalent to jointly optimizing
+the complete set of additional reviews. The disagreement-targeted policy also
+uses only the disagreement observed in the original two reviews; it does not
+simulate a third grade and subsequently revise which proposals should be
+targeted.
 
-A prospective implementation would also restrict the candidate set before
-optimization. Reviewer expertise, conflicts of interest, workload limits and
-availability could be encoded as eligibility constraints, after which the
-statistical criterion would rank only feasible assignments. Finally, the
-results are conditional on V1 and on the holistic overall grade as the main
-response. Alternative outcome models, including ordinal models, or
-decision-specific objectives could produce different preferred assignments.
+A prospective implementation would first restrict the candidate set according
+to reviewer expertise, conflicts of interest, workload limits and availability.
+The statistical allocation rule would then operate only over feasible
+assignments. A fully adaptive Bayesian design could additionally observe each
+new grade, update the complete hierarchical model and then choose the next
+review.
 
 # Discussion and recommendations
 
@@ -1474,6 +1585,15 @@ different ordering. These results identify statistically informative
 hypothetical assignments under V1; they are not operational recommendations
 because expertise, conflicts and eligibility are not included.
 
+As a practical extension, random, disagreement-targeted and sequential
+A-optimal allocation were compared for up to six selective third reviews.
+Despite choosing different assignments, the three policies produced nearly
+identical reductions in the global A-optimality criterion. At six additional
+reviews, the corresponding reductions were 1.592%, 1.604% and 1.609%,
+respectively. Thus, under V1 and for the small review budgets considered here,
+the statistical benefit of optimizing the exact placement of additional reviews
+was small relative to the effect of adding reviews itself.
+
 
 ## Interpretation of the main findings
 
@@ -1492,14 +1612,22 @@ changes it substantially more. The numerical ranking is therefore more
 sensitive to how the evaluation outcome is defined than to the distinction
 between the two tested hierarchical specifications.
 
-The review-design analysis connects this uncertainty to the structure of data
-collection. Under V1, an additional assignment changes the graph Laplacian and
-therefore the conditional posterior covariance. This makes it possible to rank
-potential additional reviews by their statistical information value. The
-preferred edge is nevertheless objective-dependent, particularly under
-E-optimality, and a practical allocation would first need to incorporate
-reviewer eligibility and expertise.
+The review-design analysis connects ranking uncertainty to the structure of
+data collection. Under V1, an additional assignment changes the graph
+Laplacian and therefore the conditional posterior covariance. The single-review
+analysis shows that individual assignments can be ranked according to their
+statistical information value and that the preferred edge depends on the
+uncertainty objective.
 
+The limited-budget comparison adds an important qualification. Although
+sequential A-optimality, disagreement targeting and random allocation select
+different reviewer--proposal assignments, their reductions in global average
+pairwise contrast variance are almost indistinguishable for budgets of up to
+six additional reviews. In the present design, the precise placement of a small
+number of additional reviews therefore matters little for this particular
+global uncertainty objective. This does not preclude larger differences for
+decision-focused objectives or under different reviewer--proposal assignment
+structures.
 
 ## Implications for CRS
 
@@ -1518,14 +1646,22 @@ table when the relative ordering itself matters. This does not require
 replacing a transparent qualification rule; it provides information about how
 strongly the available reviews support distinctions between proposals.
 
-If additional review capacity is available, it can be allocated deliberately
-rather than uniformly. A practical version of the Chapter 6 calculation would
-first remove ineligible reviewer--proposal pairs based on expertise, conflicts,
-availability and workload, and would then optimize a pre-specified criterion
-such as A-optimality over the remaining candidates. The specific reviewer IDs
-identified in the retrospective calculation should not be used as direct
-assignment recommendations because those operational constraints were not part
-of the analysis.
+If additional review capacity is available, its allocation can nevertheless be
+treated as an explicit design choice. For the global A-optimality objective and
+the small review budgets considered here, however, model-based targeting
+provided little additional reduction in uncertainty relative to random
+supplementation. At six additional reviews, the reductions were 1.609% under
+sequential A-optimal allocation and 1.592% under random allocation. A complex
+optimization procedure would therefore not be justified solely by the global
+precision gain observed in this retrospective CRS design.
+
+Other objectives may still motivate selective allocation. In particular,
+additional reviews could deliberately be directed toward proposals with strong
+reviewer disagreement or toward proposals close to a decision boundary. In a
+real CRS process, any statistical policy would first need to respect reviewer
+expertise, conflicts of interest, availability and workload. The anonymized
+reviewer IDs identified here should therefore not be interpreted as direct
+assignment recommendations.
 
 
 ## Ranking uncertainty and decision making
@@ -1546,7 +1682,6 @@ decision required a strict ordering near a funding boundary, this distinction
 between observed qualification and latent rank uncertainty would become more
 important.
 
-
 ## Limitations
 
 The first limitation is the size and sparsity of the dataset. The analysis is
@@ -1559,29 +1694,33 @@ Second, reviewer assignments were based on expertise and availability rather
 than random allocation. Reviewer effects in V1 consequently describe
 reviewer-associated scoring tendencies and should not be interpreted causally
 as reviewer bias. The same issue limits the Chapter 6 design analysis:
-expertise, conflicts of interest and other operational constraints are absent
-from the candidate set.
+expertise, conflicts of interest, workload constraints and availability are
+absent from the candidate set.
 
-Third, V1 treats the five-point holistic grade as Gaussian with homogeneous
+Third, the review-design calculations condition on the current V1 posterior
+and evaluate covariance updates with fixed scale parameters within each draw.
+The sequential policy comparison repeatedly updates this conditional covariance
+structure, but it does not simulate the numerical grades that would be observed
+or re-fit the full hierarchy after each additional review. The
+disagreement-targeted policy also uses disagreement in the original two reviews
+rather than updating the targeting rule after observing a third score.
+
+Fourth, V1 treats the five-point holistic grade as Gaussian with homogeneous
 residual variance. This provides a simple continuous ranking model but allows
 replicated scores outside the observed 1--5 range. The prior-sensitivity
 analysis does not address this likelihood assumption, and an ordinal model was
 not fitted as a formal sensitivity analysis.
 
-Fourth, the criterion-average analysis is an equal-weight counterfactual. It
+Fifth, the criterion-average analysis is an equal-weight counterfactual. It
 does not recover the weights reviewers implicitly used when assigning the
 holistic grade and does not establish that equal weighting would be a better
-decision rule. Similarly, the single-review design calculation conditions on
-the current V1 posterior and evaluates a covariance update with fixed scale
-parameters within each draw; it does not model how an observed future grade
-would subsequently update the full hierarchical model.
+decision rule.
 
 Finally, the study is a retrospective analysis of one small grant call. The
 qualitative conclusions about sparse review, uncertainty and targeted
 additional information may transfer to related settings, but the numerical
 rankings and preferred review assignments are specific to the CRS design and
 model fitted here.
-
 
 ## Future work
 
@@ -1590,13 +1729,28 @@ respects the five observed score categories while retaining proposal and
 reviewer effects. Comparing such a model with V1 would directly assess whether
 the continuous-score approximation affects the ranking conclusions.
 
-For review design, the next step is to incorporate eligibility constraints and
-extend the one-edge calculation to several additional reviews. Sequential
-selection would recompute the information structure after each added review,
-while joint optimization could target the best set under a fixed review
-budget. Decision-focused utilities could also be considered when the primary
-goal is resolving uncertainty near a qualification or funding boundary rather
-than reducing global ranking uncertainty.
+For review design, the next step is to incorporate operational eligibility
+constraints and compare the present greedy sequential rule with joint
+optimization under a fixed review budget. A fully adaptive prospective design
+could observe each additional grade, update the complete Bayesian model and
+only then choose the next assignment. Decision-focused utilities could also be
+considered when the primary goal is resolving uncertainty for particular
+proposals, such as cases with substantial reviewer disagreement or proposals
+near a qualification boundary, rather than reducing global ranking uncertainty.
+
+The limited-budget comparison also raises a broader structural question: under
+which review designs does graph-based targeting provide a meaningful advantage
+over random supplementation? One hypothesis is that the advantage increases
+when reviewer--proposal graphs contain stronger workload imbalance, clustering
+or connectivity bottlenecks, particularly when persistent reviewer variation is
+large relative to residual review-level variation. In such settings, an
+additional edge that connects weakly linked parts of the assignment graph may
+carry substantially more information than another review within an already
+well-connected region. A simulation study could vary both the assignment-graph
+structure and the variance components systematically to test this hypothesis.
+Targeting may also become more consequential when the uncertainty criterion is
+restricted to a small decision-relevant subset of proposals rather than averaged
+over all proposal pairs.
 
 The strongest empirical validation would be prospective. Applying a
 pre-specified ranking and review-design procedure in a future CRS call would
@@ -1622,13 +1776,15 @@ or another summary is intended to drive the decision.
 
 Finally, the reviewer--proposal assignment graph provides a direct connection
 between the review design and posterior uncertainty under V1. A-, D- and
-E-optimality can therefore be used to evaluate the statistical value of one
-additional review, although the preferred assignment depends on the objective
-and must be restricted by operational eligibility in practice. The main
-practical takeaway is to combine transparent decision rules with explicit
-uncertainty summaries and, where additional review effort is available, to
-allocate that effort according to a pre-specified statistical objective among
-feasible reviewers.
+E-optimality can be used to evaluate the statistical value of individual
+additional reviews, but the limited-budget comparison showed that random,
+disagreement-targeted and sequential A-optimal allocation produced very similar
+reductions in global average pairwise contrast variance. Thus, while the graph
+framework provides a principled way to evaluate possible assignments, complex
+targeting was not practically important for this objective in the present CRS
+design. The broader practical takeaway is to combine transparent decision rules
+with explicit uncertainty summaries and to define clearly what additional
+review effort is intended to resolve before choosing an allocation strategy.
 
 
 # Supplementary methods and analyses {.appendix}
