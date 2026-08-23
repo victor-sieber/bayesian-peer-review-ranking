@@ -1,0 +1,13 @@
+"policy","step","proposal_id","reviewer_id","observed_abs_disagreement","posterior_mean_marginal_A_reduction"
+"Disagreement-targeted",1,"P037","R04",3,0.000301486818373802
+"Disagreement-targeted",2,"P026","R02",2,0.000305235132924068
+"Disagreement-targeted",3,"P029","R02",2,0.000304860850454223
+"Disagreement-targeted",4,"P034","R02",2,0.000304354865505298
+"Disagreement-targeted",5,"P035","R07",2,0.000303206334709477
+"Disagreement-targeted",6,"P036","R07",2,0.000303160050061843
+"Sequential A-optimal",1,"P026","R02",2,0.000305354423679503
+"Sequential A-optimal",2,"P015","R02",1,0.000305087923232797
+"Sequential A-optimal",3,"P029","R02",2,0.000304820302966693
+"Sequential A-optimal",4,"P005","R02",1,0.000304460893582996
+"Sequential A-optimal",5,"P032","R02",1,0.000304297894550927
+"Sequential A-optimal",6,"P018","R02",1,0.000304453857229519

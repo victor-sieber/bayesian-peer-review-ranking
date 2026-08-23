@@ -1,0 +1,2 @@
+At a budget of 6 additional reviews, the posterior-averaged reduction in average pairwise proposal-contrast variance was 1.609% under sequential A-optimal allocation, 1.604% under disagreement-targeted allocation, and 1.592% under random allocation.
+Relative to random allocation, the difference was +0.017 percentage points for sequential A-optimal allocation and +0.012 percentage points for disagreement-targeted allocation.

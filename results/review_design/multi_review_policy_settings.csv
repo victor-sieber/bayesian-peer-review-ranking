@@ -1,0 +1,6 @@
+"setting","value"
+"max_budget",6
+"posterior_draws_used",5000
+"random_paths",5000
+"random_seed",20260823
+"max_one_additional_review_per_proposal",1
