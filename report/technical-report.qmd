@@ -318,15 +318,18 @@ in the CRS setting.
 
 The reference model V0 reproduces the continuous homogeneous-variance
 specification of Heyard et al. [-@heyard2022]. Let $r=1,\ldots,84$ index
-completed reviews, let $p(r)$ denote the proposal evaluated in review $r$, and
-let $a(r)$ denote the reviewer who produced that review. The observed holistic
-overall grade is $Y_r$, $\bar Y$ denotes its sample mean over all 84 reviews,
-and $Y=(Y_1,\ldots,Y_{84})^\top$ denotes the full vector of observed grades.
+completed reviews, $i=1,\ldots,42$ index proposals, and $j=1,\ldots,9$ index
+reviewers. For review $r$, let $p(r)$ denote the proposal evaluated and
+$a(r)$ the reviewer who produced the review. The observed holistic overall
+grade is $Y_r$, $\bar Y$ denotes its sample mean over all 84 reviews, and
+$Y=(Y_1,\ldots,Y_{84})^\top$ denotes the full vector of observed grades.
 
 The model is
 
 $$
-Y_r \mid \theta,\lambda
+Y_r
+\mid
+\theta_{p(r)},\lambda_{p(r),a(r)},\sigma
 \sim
 \mathcal{N}\!\left(
 \bar Y+\theta_{p(r)}+\lambda_{p(r),a(r)},
@@ -334,32 +337,46 @@ Y_r \mid \theta,\lambda
 \right),
 $$
 
-with
+with proposal effects
 
 $$
 \theta_i\sim\mathcal{N}(0,\tau_\theta^2),
+\qquad i=1,\ldots,42,
 $$
 
-and
+and assessment effects
 
 $$
 \lambda_{ij}\sim\mathcal{N}(\nu_j,\tau_\lambda^2),
 \qquad
-\nu_j\sim\mathcal{N}(0,0.5^2).
+i=1,\ldots,42,\quad j=1,\ldots,9,
 $$
 
-The latent proposal effect $\theta_i$ is the quantity used for ranking.
-For reviewer $j$, $\nu_j$ represents a persistent reviewer-specific scoring
-tendency. The assessment effect $\lambda_{ij}$ is centred on $\nu_j$, so that
-$\lambda_{ij}-\nu_j$ represents an additional deviation specific to reviewer
-$j$ evaluating proposal $i$.
+with
+
+$$
+\nu_j\sim\mathcal{N}(0,0.5^2),
+\qquad j=1,\ldots,9.
+$$
+
+For review $r$, $\theta_{p(r)}$ is therefore the effect of the proposal being
+evaluated, $\nu_{a(r)}$ is the persistent scoring tendency of the reviewer who
+produced that review, and $\lambda_{p(r),a(r)}$ is the corresponding
+proposal--reviewer assessment effect. Hence
+
+$$
+\lambda_{p(r),a(r)}-\nu_{a(r)}
+$$
+
+represents the additional assessment-specific deviation for that observed
+reviewer--proposal pair.
 
 V0 is retained as the methodological reference model rather than as the
 preferred CRS specification. Each reviewer--proposal pair is observed only once
-in the CRS data, so the pair-specific deviation $\lambda_{ij}-\nu_j$ is informed
-by only one score and is difficult to distinguish from residual review-level
-variation. This motivates the simpler V1 model, which retains persistent
-proposal and reviewer effects but removes the additional pair-specific layer.
+in the CRS data, so this assessment-specific deviation is informed by only one
+score and is difficult to distinguish from residual review-level variation.
+This motivates the simpler V1 model, which retains persistent proposal and
+reviewer effects but removes the additional assessment-specific layer.
 
 ## V1: CRS cross-classified model
 
@@ -385,6 +402,8 @@ or equivalently,
 
 $$
 Y_r
+\mid
+\theta_{p(r)}, b_{a(r)}, \sigma
 \sim
 \mathcal{N}\!\left(
 \bar Y+\theta_{p(r)}+b_{a(r)},
@@ -392,17 +411,22 @@ Y_r
 \right).
 $$
 
-Here, $\theta_i$ represents the proposal-specific deviation from the overall
-mean, $b_j$ represents a persistent reviewer-specific scoring tendency, and
-$\varepsilon_r$ captures residual review-level variation. The hierarchical
-distributions are
+Here, $\theta_{p(r)}$ is the effect of the proposal evaluated in review $r$,
+$b_{a(r)}$ is the persistent scoring tendency of the reviewer who produced
+that review, and $\varepsilon_r$ captures residual review-level variation.
+The proposal and reviewer effects satisfy
 
 $$
 \theta_i\sim\mathcal{N}(0,\tau_\theta^2),
-\qquad
-b_j\sim\mathcal{N}(0,\tau_b^2).
+\qquad i=1,\ldots,42,
 $$
 
+and
+
+$$
+b_j\sim\mathcal{N}(0,\tau_b^2),
+\qquad j=1,\ldots,9.
+$$
 The proposal effects $\theta_i$ are the quantities used for ranking. Because
 reviewer assignments were based on expertise and availability rather than
 random allocation, the reviewer effects $b_j$ are interpreted descriptively as
@@ -549,13 +573,20 @@ with expected ranks 13.08, 15.87, 15.87 and 16.22, respectively. These are
 exactly the four proposals that satisfied the final CRS qualification threshold.
 
 Because each observed proposal mean is based on only two integer-valued grades,
-the observed-score ranking is coarse. The 42 proposals take only seven distinct
-mean-score values, so several proposals share the same observed rank before any
-model-based adjustment is applied.
+the deterministic observed-score ranking is itself highly clustered. Across the
+42 proposals, only seven distinct mean overall grades occur, so many proposals
+share exactly the same observed-score rank. The clusters in the left-hand
+column of @fig-v1-ranking-comparison therefore arise before any Bayesian
+modelling is applied.
 
-Despite the clear posterior-mean ordering, uncertainty in the exact latent ranks
-remains substantial. The 90% posterior rank interval for P022 was 1--36; for
-P023 and P032 it was 1--37; and for P041 it was 1--38. The observed-score
+V1 produces a finer posterior-mean ordering by accounting for the crossed
+proposal--reviewer structure and partial pooling. However, the posterior rank
+distributions show that many of these finer distinctions are only weakly
+supported by the available reviews. The 90% posterior rank interval for P022
+was 1--36; for P023 and P032 it was 1--37; and for P041 it was 1--38.
+Expected rank summarizes this uncertainty rather than implying that the
+deterministic score averages provide a more precisely identified underlying
+ordering. The observed-score
 rank, posterior-mean rank and expected rank are compared in
 @fig-v1-ranking-comparison.
 
@@ -1416,6 +1447,12 @@ single edge depends on the uncertainty criterion. However, for the global
 A-optimality objective and budgets of up to six reviews, the exact allocation
 policy matters very little. This does not rule out larger differences under
 other assignment structures or more decision-focused objectives.
+
+Taken together, the analyses of this project did not identify a substantially superior ranking
+model or additional-review allocation policy. Their main contribution is instead
+to distinguish which conclusions are robust, which depend materially on the
+definition of the evaluation outcome, and where additional methodological
+complexity provides little gain under the present sparse design.
 
 ## Implications for CRS
 
