@@ -1511,9 +1511,7 @@ likelihood. This permits values outside the observed 1--5 range. The
 prior-sensitivity analysis does not address this likelihood assumption, and an
 ordinal model was not fitted as a formal sensitivity analysis.
 
-Fifth, the criterion-average analysis is an equal-weight counterfactual. It
-does not recover the weights reviewers implicitly used in assigning the
-holistic grade and does not establish that equal weighting is preferable.
+Fifth, the criterion-average analysis is an equal-weight counterfactual. It does not identify how reviewers combined the criteria when assigning the holistic grade and does not establish that equal weighting is preferable.
 
 Finally, this is a retrospective analysis of one small grant call. The
 qualitative findings may inform related settings, but the numerical rankings,
