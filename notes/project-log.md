@@ -461,6 +461,88 @@ Produce posterior rank uncertainty summaries before extending the analysis.
 - Finish the discussion, recommendations, abstract and conclusion.
 - Complete one full self-review before Rachel's detailed report read.
 
+## 2026-08-22 — Finalized single-review design results
+
+### Completed
+- Completed the 5,000-draw posterior-averaged single-review design analysis.
+- Added the posterior-median plug-in sensitivity calculation.
+- Compared A-, D- and E-optimal candidate rankings.
+- Created the A-optimality candidate heatmap.
+- Wrote the numerical single-review results and sensitivity analysis into Chapter 6.
+
+### Main findings
+- P026--R02, P005--R02 and P015--R02 form an almost tied highest-value A-optimal group.
+- A- and D-optimality produce strongly similar candidate rankings, while E-optimality differs substantially.
+- The highest-ranked assignments are stable to the posterior-median plug-in calculation.
+- High utility for assignments involving R02 reflects the fitted design structure and should not be interpreted as reviewer quality.
+
+### Next steps
+- Extend the single-review analysis to small multi-review budgets.
+- Compare random, disagreement-targeted and sequential model-based allocation.
+
+
+## 2026-08-23 — Multi-review allocation policy comparison
+
+### Completed
+- Implemented the comparison of random, disagreement-targeted and sequential A-optimal allocation.
+- Evaluated budgets of one to six additional reviews with at most one extra review per proposal.
+- Used 5,000 posterior draws and 5,000 balanced random allocation paths.
+- Added the review-policy comparison figure and results to Chapter 6.
+- Extended the discussion to practical constraints and future graph-design questions.
+
+### Main findings
+- At six additional reviews, global A-optimality improved by 1.592% under random allocation, 1.604% under disagreement-targeting and 1.609% under sequential A-optimal allocation.
+- The three policies therefore perform almost identically for the global A-optimality objective in the present CRS design.
+- This result does not imply that the policies are equivalent for local or decision-focused objectives.
+
+### Next steps
+- Complete the discussion, recommendations and conclusion.
+- Perform a systematic final edit of the full technical report.
+
+
+## 2026-08-24 to 2026-08-25 — Final report restructuring and editing
+
+### Completed
+- Systematically edited Chapters 1--8 to reduce repetition while retaining the substantive explanations and previous supervisor feedback.
+- Revised the abstract for accessibility and clarified the distinction between the CRS qualification rule, observed-score ranking and Bayesian ranking.
+- Improved cross-references, figure/table captions and notation throughout the report.
+- Refined the validation, criterion-analysis and graph-design interpretations.
+- Reviewed and cleaned the supplementary derivations and diagnostics.
+- Reduced PDF margins, retained A4 formatting and separated the supplement onto a new page.
+
+### Main findings
+- The report now distinguishes more clearly between model uncertainty, computational stability and deterministic decision rules.
+- Changing the evaluation outcome has a larger effect on ranking than changing from V0 to V1.
+- The graph-design extension can be presented as an application of established optimal-design ideas rather than as a new graph-theoretic method.
+
+### Next steps
+- Discuss the near-final report with Rachel.
+- Incorporate final supervisor comments.
+- Begin preparing the project presentation.
+
+
+## 2026-08-26 — Final meeting with Rachel and notation/interpretation revisions
+
+### Completed
+- Discussed the near-final technical report with Rachel.
+- Identified ambiguity caused by switching between review-level notation and proposal/reviewer indices.
+- Revised V0 and V1 so that review $r$ is linked explicitly to proposal $p(r)$ and reviewer $a(r)$.
+- Made the likelihood dependencies explicit using $\theta_{p(r)}$, $\lambda_{p(r),a(r)}$ and $b_{a(r)}$.
+- Clarified the interpretation of the ranking-comparison figure.
+- Added that the deterministic observed-score ranking is already highly clustered because only seven distinct proposal mean grades occur.
+- Discussed the need to explain the graph-based review-design chapter much more intuitively in the presentation.
+
+### Main findings
+- The deterministic observed-score rule is fixed given the observed scores, but this does not imply a precisely identified underlying proposal ordering.
+- Large score clusters are already present before Bayesian modelling; expected ranks make uncertainty in the latent ordering explicit.
+- The notation is clearer when $r$ indexes reviews while $i$ and $j$ index the distinct proposal and reviewer effects.
+- Chapter 6 is mathematically documented in the report, but the presentation should focus on the practical question and intuition rather than the full derivation.
+
+### Next steps
+- Complete one final proofread of the technical report.
+- Build an intuitive understanding of Chapter 6 for oral explanation.
+- Prepare the final project presentation.
+
 #Template
 ## YYYY-MM-DD — Short description
 
