@@ -1,6 +1,6 @@
 ---
-title: "Bayesian Ranking and Graph-Based Review Design under Sparse Evaluation Data"
-subtitle: "A Case Study of the CRS Seed Grants 2026"
+title: "How Much Can Sparse Peer Review Tell Us?"
+subtitle: "Bayesian Ranking, Outcome Sensitivity, and Review Design for Research Funding Decisions"
 
 author:
   - name: Victor Sieber
