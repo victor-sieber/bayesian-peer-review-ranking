@@ -1,194 +1,227 @@
-# Bayesian Ranking and Graph-Based Review Design under Sparse Evaluation Data
+# How Much Can Sparse Peer Review Tell Us?
+
+**Bayesian Ranking, Outcome Sensitivity, and Review Design for Research Funding Decisions**
 
 This repository contains the analysis code, derived results, figures,
-documentation and technical report for a statistical re-analysis of the CRS
-Seed Grant 2026 evaluation at the Center for Reproducible Science, University
-of Zurich.
+documentation and technical report for a statistical re-analysis of the
+2026 CRS Seed Grant evaluation at the Center for Reproducible Science and
+Research Synthesis (CRS), University of Zurich.
 
-The project studies how Bayesian hierarchical modelling can quantify
-uncertainty in proposal rankings when only a small number of reviews are
-available, and how the reviewer--proposal assignment structure can be used to
-study the statistical value of additional reviews.
+The project studies what can be learned about proposal rankings when each
+proposal receives only a small number of reviews, how conclusions depend on
+the chosen evaluation outcome and Bayesian model specification, and whether
+additional reviews can be allocated to reduce uncertainty more efficiently.
 
 ## Project overview
 
 The CRS Seed Grant 2026 evaluation contained 42 proposals, nine reviewers and
-84 completed reviews, with exactly two independent reviews per proposal. Each
-review included four supporting criterion scores and a separate holistic overall
-grade on a five-point scale.
+84 completed reviews, with exactly two reviews per proposal. Each review
+included four supporting criterion scores and a separate holistic overall
+grade, all recorded on an integer scale from 1 to 5.
 
-The main analysis uses the holistic overall grade and compares two Bayesian
-ranking specifications:
+The main Bayesian analysis uses the holistic overall grade and compares two
+model specifications:
 
-- **V0:** continuous Heyard reference specification.
-- **V1:** CRS-specific cross-classified Gaussian model with persistent proposal
-  and reviewer effects.
+- **V0:** the continuous hierarchical reference specification based on
+  Heyard et al. (2022).
+- **V1:** a simpler CRS-specific cross-classified Gaussian model with proposal
+  effects, persistent reviewer effects and residual review-level variation.
 
-The report then validates V1, examines the relationship between the four
-supporting criteria and the holistic grade, and extends the fitted model to a
-graph-based review-design analysis.
+V1 is assessed using MCMC diagnostics, posterior predictive checks and prior
+sensitivity. The analysis also compares the holistic overall grade with an
+equal-weight average of the four supporting criterion scores.
 
-The review-design analysis represents completed reviewer--proposal assignments
-as a bipartite graph. It first evaluates all 294 currently unobserved
-assignments as hypothetical single additional reviews under posterior-averaged
-A-, D- and E-optimality.
+The final part of the project represents the reviewer--proposal assignment
+structure as a bipartite graph and evaluates hypothetical additional reviews.
+All 294 currently unobserved reviewer--proposal assignments are compared using
+posterior-averaged A-, D- and E-optimality criteria. A practical extension then
+compares random, disagreement-targeted and sequential A-optimal allocation for
+budgets of one to six additional reviews.
 
-A practical extension then compares budgets of one to six additional reviews
-under three allocation policies:
+The review-design analyses are retrospective statistical comparisons rather
+than operational assignment recommendations. Reviewer expertise, conflicts of
+interest, workload restrictions and availability are not represented in the
+candidate set.
 
-- **Random allocation:** no statistical targeting.
-- **Disagreement-targeted allocation:** prioritize proposals with the largest
-  observed disagreement between their two original reviewers and choose the
-  most A-informative available reviewer within the currently
-  highest-disagreement group.
-- **Sequential A-optimal allocation:** repeatedly choose the available
-  reviewer--proposal assignment with the largest posterior-averaged reduction
-  in average pairwise proposal-contrast variance, updating the covariance after
-  each added review.
+## Main report
 
-For comparability, each proposal can receive at most one additional review in
-the policy comparison. These analyses are retrospective statistical design
-comparisons rather than operational assignment recommendations because reviewer
-expertise, conflicts of interest, workload constraints and availability are not
-included.
+The technical report is available at
+
+`report/technical-report.pdf`
+
+and its Quarto source is
+
+`report/technical-report.qmd`.
+
+The report can be rendered from the repository root with
+
+```bash
+quarto render report/technical-report.qmd
+```
+
+## Data availability
+
+The row-level **pseudonymized** analytical dataset is not stored in this Git
+repository.
+
+During project development, the dataset remains in approved local/UZH storage.
+Following final CRS review and authorization, the pseudonymized analytical
+dataset is intended to be deposited separately on Zenodo. The resulting
+citation and persistent identifier will then be added to this repository.
+
+The analysis scripts currently expect the local filename
+
+`data/evaluation_anonymized.csv`
+
+when analyses requiring the row-level data are rerun.
+
+The historical filename contains the term `anonymized`, but the data are more
+accurately described as pseudonymized. The re-identification key is stored
+separately and is not part of this repository or the analytical workflow.
+
+Derived statistical summaries required to document the analyses are stored
+under `results/`.
+
+See [`data/README.md`](data/README.md) for additional information.
+
+## Reproducibility
+
+Detailed instructions for reproducing the analyses from a fresh clone are
+provided in [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
+
+After the Zenodo release, a user will be able to clone the repository, download
+the pseudonymized analytical dataset, save it as
+
+`data/evaluation_anonymized.csv`
+
+and rerun the analysis pipeline.
 
 ## Repository structure
 
-- `analysis/`  
-  R scripts for model fitting, validation, criterion analysis and review-design
-  calculations.
+```text
+evaluation-data/
+├── analysis/
+│   └── model/
+├── data/
+├── figures/
+├── report/
+├── results/
+├── notes/
+├── README.md
+└── REPRODUCIBILITY.md
+```
 
-- `analysis/model/`  
-  JAGS model specifications used by the Bayesian fits.
+- `analysis/` contains the R scripts implementing the statistical analyses.
+- `analysis/model/` contains the JAGS model specifications.
+- `data/` contains data-access documentation. The row-level analytical dataset
+  itself is excluded from Git.
+- `figures/` contains figures generated by the analysis scripts.
+- `report/` contains the Quarto source, rendered technical report, bibliography
+  and report-specific figure files.
+- `results/` contains derived numerical summaries and diagnostics used to
+  document the analyses.
+- `notes/` contains retained project documentation that is relevant to the
+  finished analysis.
 
-- `results/`  
-  Derived model summaries, ranking outputs, validation results and
-  review-design results.
+## Analysis workflow
 
-- `figures/`  
-  Figures generated by the analysis scripts.
+The numbered scripts in `analysis/` form the main analysis pipeline. Their
+purposes are summarized below so that the role of each file can be understood
+without first reading the implementation.
 
-- `report/`  
-  Quarto technical report, bibliography, title template and report figure
-  copies.
+| Script | Purpose |
+|---|---|
+| `00_install_heyard_dependencies.R` | Installs the R packages required for the analysis, including the packages needed to reproduce the Heyard reference model. |
+| `01_fit_v0_heyard_reference.R` | Fits **V0**, the continuous hierarchical reference specification based on Heyard et al. (2022). It produces posterior proposal-ranking quantities and saves the fitted posterior object used in later comparisons. |
+| `02_fit_v1_cross_classified.R` | Fits **V1**, the main CRS cross-classified model with proposal effects, persistent reviewer effects and residual review-level variation. This is the principal Bayesian model used throughout the report. |
+| `03_compare_v0_v1.R` | Compares V0 and V1 using posterior-mean ranks, expected ranks, posterior rank intervals and pairwise ordering behaviour. It evaluates whether simplifying the reference model materially changes the ranking conclusions. |
+| `04_validate_v1.R` | Performs the main validation of V1, including MCMC diagnostics, posterior variance decomposition and posterior predictive checks for important features of the observed grades. |
+| `04b_fit_v1_prior_sensitivity.R` | Refits V1 using half-normal scale priors instead of the baseline uniform scale priors and compares the resulting parameter estimates and proposal rankings. |
+| `04c_investigate_v1_disagreement.R` | Investigates reviewer disagreement in more detail. It derives the expected absolute difference between two reviews under V1 using the folded-normal distribution and compares this analytic result with posterior predictive simulations, including a diagnostic mapping of replicated grades to the integer 1--5 score grid. |
+| `05_analyze_criteria.R` | Examines the four supporting criterion scores and their relationship with the holistic overall grade. It calculates review-level and proposal-level summaries and constructs the equal-weight criterion average used in the outcome-sensitivity analysis. |
+| `06_fit_compare_v1_criterion_average.R` | Refits V1 using the equal-weight average of the four criterion scores as the response and compares the resulting ranking with the main holistic-grade V1 ranking. This assesses sensitivity to the definition of the evaluation outcome. |
+| `06a_visualize_review_graph.R` | Constructs and visualizes the reviewer--proposal assignment structure as a bipartite graph for use in the technical report. |
+| `07_single_review_design.R` | Implements the **single-additional-review design analysis**. It constructs the incidence matrix and graph Laplacian, evaluates all 294 currently unobserved reviewer--proposal assignments and calculates posterior-averaged A-, D- and E-optimality improvements using rank-one covariance updates. |
+| `08_visualize_review_design_results.R` | Produces the main visual summaries of the single-review design analysis, including the reviewer--proposal A-optimality heatmap used in Chapter 6. |
+| `09_compare_review_allocation_policies.R` | Extends the review-design calculation to budgets of one to six additional reviews. It compares random allocation, disagreement-targeted allocation and greedy sequential A-optimal allocation using the posterior-averaged reduction in global A-optimality loss. |
 
-- `notes/`  
-  Project log, literature notes and project documentation.
+## Approximate dependency structure
 
-- `data/`  
-  Data-access and re-identification documentation. Evaluation data are not
-  stored in GitLab.
-
-## Analysis scripts
-
-### `analysis/00_install_heyard_dependencies.R`
-
-Installs the R packages required for the Bayesian ranking workflow and installs
-`ERforResearch` when needed.
-
-### `analysis/01_fit_v0_heyard_reference.R`
-
-Validates the analytical data, reconstructs the CRS qualification rule, fits
-the continuous Heyard reference model V0, and saves posterior summaries,
-rankings and the V0 ranking figure.
-
-### `analysis/02_fit_v1_cross_classified.R`
-
-Fits the CRS-specific cross-classified Gaussian model V1 with proposal and
-reviewer effects, then saves the posterior fit, ranking summaries and V1
-ranking figure.
-
-### `analysis/03_compare_v0_v1.R`
-
-Compares V0 and V1 without refitting them, including posterior-mean ranks,
-expected ranks, rank uncertainty and selected pairwise posterior comparisons.
-
-### `analysis/04_validate_v1.R`
-
-Evaluates V1 computational diagnostics, posterior variance shares and posterior
-predictive behaviour, and generates trace, variance-share and
-posterior-predictive figures.
-
-### `analysis/04b_fit_v1_prior_sensitivity.R`
-
-Re-fits V1 with half-normal scale priors and compares rankings, uncertainty,
-scale parameters and variance shares with the baseline prior specification.
-
-### `analysis/04c_investigate_v1_disagreement.R`
-
-Studies within-proposal reviewer disagreement under V1 using posterior
-predictive simulation and the analytic folded-normal expectation, including
-continuous and discretized disagreement diagnostics.
-
-### `analysis/05_analyze_criteria.R`
-
-Describes the four supporting criteria, computes their Pearson and Spearman
-associations with the holistic overall grade, constructs an equal-weight
-criterion average, and produces review- and proposal-level comparisons.
-
-### `analysis/06_fit_compare_v1_criterion_average.R`
-
-Re-fits V1 using the equal-weight criterion average as the response and
-compares its ranking, uncertainty and variance decomposition with the
-holistic-grade V1 fit.
-
-### `analysis/06a_visualize_review_graph.R`
-
-Builds an illustrative observed reviewer--proposal bipartite subgraph for the
-graph-design chapter.
-
-### `analysis/07_single_review_design.R`
-
-Builds the reviewer--proposal incidence matrix and graph Laplacian and evaluates
-all 294 currently unobserved single-review assignments under posterior-averaged
-A-, D- and E-optimality using rank-one covariance updates. It also performs the
-posterior-median plug-in sensitivity check.
-
-### `analysis/08_visualize_review_design_results.R`
-
-Reads the derived single-review design results and creates the A-optimality
-reviewer--proposal heatmap used in Chapter 6. It does not refit a model or
-access the evaluation dataset.
-
-### `analysis/09_compare_review_allocation_policies.R`
-
-Extends the primary A-optimality calculation to budgets of one to six
-additional reviews and compares random, disagreement-targeted and sequential
-A-optimal allocation. Each proposal can receive at most one additional review.
-The script uses derived disagreement and single-review outputs together with
-the saved V1 posterior, updates the covariance sequentially using the same
-rank-one calculation as the single-review analysis, and creates the
-limited-budget policy-comparison figure.
-
-## JAGS model files
-
-### `analysis/model/model_v0_heyard_reference.txt`
-
-Continuous V0 reference specification following the Heyard workflow.
-
-### `analysis/model/model_v1_cross_classified.txt`
-
-Main V1 crossed proposal--reviewer model.
-
-### `analysis/model/model_v1_halfnormal_sensitivity.txt`
-
-V1 sensitivity specification with half-normal scale priors.
-
-## Suggested analysis order
-
-Run scripts from the repository root in the following order:
+The principal dependencies between scripts are approximately
 
 ```text
-00_install_heyard_dependencies.R
 01_fit_v0_heyard_reference.R
+        |
+        +--> 03_compare_v0_v1.R
+
 02_fit_v1_cross_classified.R
-03_compare_v0_v1.R
-04_validate_v1.R
+        |
+        +--> 03_compare_v0_v1.R
+        +--> 04_validate_v1.R
+        +--> 04c_investigate_v1_disagreement.R
+        +--> 06_fit_compare_v1_criterion_average.R
+        +--> 07_single_review_design.R
+                 |
+                 +--> 08_visualize_review_design_results.R
+                 +--> 09_compare_review_allocation_policies.R
+
 04b_fit_v1_prior_sensitivity.R
-04c_investigate_v1_disagreement.R
+        |
+        +--> prior-sensitivity comparison
+
 05_analyze_criteria.R
-06_fit_compare_v1_criterion_average.R
-06a_visualize_review_graph.R
-07_single_review_design.R
-08_visualize_review_design_results.R
-09_compare_review_allocation_policies.R
+        |
+        +--> descriptive criterion analysis
+        +--> criterion-average outcome used in script 06
+```
+
+The numbering reflects the approximate order in which the analyses should be
+rerun.
+
+## JAGS model specifications
+
+The Bayesian model definitions used by the fitting scripts are stored under
+
+`analysis/model/`.
+
+The model files implement:
+
+- the V0 reference hierarchy with proposal effects, reviewer-level tendencies
+  and proposal--reviewer assessment effects;
+- the V1 cross-classified hierarchy with proposal effects, persistent reviewer
+  effects and a common residual variance;
+- the prior-sensitivity version of V1, which retains the same likelihood and
+  hierarchical structure while changing the scale priors.
+
+The corresponding R scripts prepare the data, call the JAGS models, collect
+posterior draws and write the derived results used by subsequent analyses.
+
+## Software
+
+The analyses were developed in R and use JAGS for Bayesian computation.
+
+A working installation of the following software is required for full
+reproduction:
+
+- R
+- JAGS
+- Quarto, if the technical report is to be rendered
+
+The `session_info.txt` files stored under `results/` record the R and package
+versions used for the corresponding analyses.
+
+Required R packages can be installed from the repository root with
+
+```r
+source("analysis/00_install_heyard_dependencies.R")
+```
+
+## Interpretation
+
+The Bayesian analyses are intended as uncertainty-aware decision support rather
+than as retrospective replacements for the CRS qualification procedure.
+
+Similarly, the graph-based review-design calculations quantify statistical
+information under the fitted V1 model. They do not account for reviewer
+expertise, conflicts of interest, availability or other operational assignment
+constraints.

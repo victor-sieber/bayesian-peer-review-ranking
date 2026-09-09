@@ -10,32 +10,7 @@
 # source("analysis/04b_fit_v1_prior_sensitivity.R")
 
 
-# 1. Make Homebrew JAGS visible to RStudio
-
-jags_path <- "/opt/homebrew/bin/jags"
-
-if (!file.exists(jags_path)) {
-  stop(
-    "JAGS was not found at ",
-    jags_path,
-    ". Check with `which jags` in Terminal."
-  )
-}
-
-Sys.setenv(
-  PATH = paste(
-    dirname(jags_path),
-    Sys.getenv("PATH"),
-    sep = ":"
-  )
-)
-
-runjags::runjags.options(
-  jagspath = jags_path
-)
-
-
-# 2. Check packages
+# 1. Check packages
 
 required_packages <- c(
   "ERforResearch",
@@ -63,6 +38,34 @@ if (length(missing_packages) > 0) {
     ". Run analysis/00_install_heyard_dependencies.R first."
   )
 }
+
+
+# 2. Locate JAGS
+
+jags_path <- Sys.which("jags")
+
+if (!nzchar(jags_path)) {
+  homebrew_jags <- "/opt/homebrew/bin/jags"
+
+  if (file.exists(homebrew_jags)) {
+    jags_path <- homebrew_jags
+  }
+}
+
+if (!nzchar(jags_path)) {
+  stop(
+    "JAGS executable not found. Install JAGS and ensure `jags` is available on PATH."
+  )
+}
+
+runjags::runjags.options(
+  jagspath = jags_path
+)
+
+message(
+  "Using JAGS executable: ",
+  jags_path
+)
 
 
 # 3. Paths
@@ -319,24 +322,24 @@ original_benchmark <- reviews |>
   ) |>
   dplyr::summarise(
     n_reviews = dplyr::n(),
-    
+
     mean_overall_grade = mean(
       overall_grade
     ),
-    
+
     minimum_grade = min(
       overall_grade
     ),
-    
+
     maximum_grade = max(
       overall_grade
     ),
-    
+
     qualifies_original =
       n_reviews == 2 &
       maximum_grade == 5 &
       minimum_grade >= 4,
-    
+
     .groups = "drop"
   ) |>
   dplyr::arrange(
@@ -409,42 +412,42 @@ initial_values_v1 <- lapply(
     n_chains
   ),
   function(chain) {
-    
+
     list(
       proposal_intercept = runif(
         n_proposals,
         min = -2,
         max = 2
       ),
-      
+
       assessor_intercept = runif(
         n_reviewers,
         min = -2,
         max = 2
       ),
-      
+
       sigma = runif(
         1,
         min = 0.000001,
         max = 2
       ),
-      
+
       tau_proposal = runif(
         1,
         min = 0.000001,
         max = 2
       ),
-      
+
       tau_assessor = runif(
         1,
         min = 0.000001,
         max = 2
       ),
-      
+
       .RNG.name = rng_names[
         chain
       ],
-      
+
       .RNG.seed = rng_seeds[
         chain
       ]
@@ -458,40 +461,40 @@ message(
 
 mcmc_fit <- ERforResearch::get_mcmc_samples(
   data = reviews,
-  
+
   id_proposal = "proposal_id",
-  
+
   id_assessor = "reviewer_id",
-  
+
   grade_variable = "overall_grade",
-  
+
   path_to_jags_model = model_path,
-  
+
   ordinal_scale = FALSE,
-  
+
   heterogeneous_residuals = FALSE,
-  
+
   n_chains = n_chains,
-  
+
   n_iter = 50000,
-  
+
   n_burnin = 10000,
-  
+
   n_adapt = 10000,
-  
+
   max_iter = 50000,
-  
+
   seed = 20260727,
-  
+
   rhat_threshold = 1.1,
-  
+
   runjags_method = "parallel",
-  
+
   quiet = TRUE,
-  
+
   names_variables_to_sample =
     variables_to_sample,
-  
+
   initial_values =
     initial_values_v1
 )
@@ -522,19 +525,19 @@ write.csv(
 
 er_results <- ERforResearch::get_er_from_jags(
   data = reviews,
-  
+
   id_proposal = "proposal_id",
-  
+
   id_assessor = "reviewer_id",
-  
+
   grade_variable = "overall_grade",
-  
+
   ordinal_scale = FALSE,
-  
+
   heterogeneous_residuals = FALSE,
-  
+
   mcmc_samples = mcmc_fit,
-  
+
   rank_pm = TRUE
 )
 
@@ -576,20 +579,20 @@ saveRDS(
 
 ranking_plot <- ERforResearch::plotting_er_results(
   er_results = er_results,
-  
+
   id_proposal = "id_proposal",
-  
+
   how_many_fundable = NULL,
-  
+
   title =
     "CRS Seed Grant 2026 — V1 half-normal prior sensitivity",
-  
+
   ordering_increasing = TRUE,
-  
+
   draw_funding_line = FALSE,
-  
+
   result_show = TRUE,
-  
+
   easy_numbering = FALSE
 )
 
@@ -655,16 +658,16 @@ ranking_comparison <- baseline_ranking |>
     delta_rank_pm =
       rank_pm_halfnormal -
       rank_pm_baseline,
-    
+
     abs_delta_rank_pm =
       abs(
         delta_rank_pm
       ),
-    
+
     delta_er =
       er_halfnormal -
       er_baseline,
-    
+
     abs_delta_er =
       abs(
         delta_er
@@ -730,23 +733,23 @@ summarise_rank_draws <- function(
     draws,
     model
 ) {
-  
+
   rank_draws <- draws[
     ,
     rank_columns,
     drop = FALSE
   ]
-  
+
   data.frame(
     proposal_id = proposal_ids,
-    
+
     model = model,
-    
+
     expected_rank =
       colMeans(
         rank_draws
       ),
-    
+
     q05 =
       apply(
         rank_draws,
@@ -754,7 +757,7 @@ summarise_rank_draws <- function(
         stats::quantile,
         probs = 0.05
       ),
-    
+
     q95 =
       apply(
         rank_draws,
@@ -762,7 +765,7 @@ summarise_rank_draws <- function(
         stats::quantile,
         probs = 0.95
       ),
-    
+
     row.names = NULL
   ) |>
     dplyr::mutate(
@@ -777,7 +780,7 @@ rank_uncertainty_comparison <-
       baseline_draws,
       "Baseline Uniform(0,2)"
     ),
-    
+
     summarise_rank_draws(
       sensitivity_draws,
       "Half-normal(0,1)"
@@ -801,27 +804,27 @@ summarise_parameter <- function(
     parameter,
     model
 ) {
-  
+
   values <- draws[
     ,
     parameter
   ]
-  
+
   data.frame(
     model = model,
-    
+
     parameter = parameter,
-    
+
     posterior_mean =
       mean(
         values
       ),
-    
+
     posterior_median =
       median(
         values
       ),
-    
+
     q025 =
       unname(
         stats::quantile(
@@ -829,7 +832,7 @@ summarise_parameter <- function(
           0.025
         )
       ),
-    
+
     q975 =
       unname(
         stats::quantile(
@@ -837,7 +840,7 @@ summarise_parameter <- function(
           0.975
         )
       ),
-    
+
     row.names = NULL
   )
 }
@@ -853,14 +856,14 @@ scale_parameter_comparison <-
     lapply(
       scale_parameters,
       function(parameter) {
-        
+
         dplyr::bind_rows(
           summarise_parameter(
             baseline_draws,
             parameter,
             "Baseline Uniform(0,2)"
           ),
-          
+
           summarise_parameter(
             sensitivity_draws,
             parameter,
@@ -887,70 +890,70 @@ summarise_variance_shares <- function(
     draws,
     model
 ) {
-  
+
   proposal_variance <-
     draws[
       ,
       "tau_proposal"
     ]^2
-  
+
   reviewer_variance <-
     draws[
       ,
       "tau_assessor"
     ]^2
-  
+
   residual_variance <-
     draws[
       ,
       "sigma"
     ]^2
-  
+
   total_variance <-
     proposal_variance +
     reviewer_variance +
     residual_variance
-  
+
   proposal_share <-
     proposal_variance /
     total_variance
-  
+
   reviewer_share <-
     reviewer_variance /
     total_variance
-  
+
   residual_share <-
     residual_variance /
     total_variance
-  
+
   shares <- list(
     Proposal = proposal_share,
     Reviewer = reviewer_share,
     Residual = residual_share
   )
-  
+
   dplyr::bind_rows(
     lapply(
       names(shares),
       function(component) {
-        
+
         values <- shares[[component]]
-        
+
         data.frame(
           model = model,
-          
+
           component = component,
-          
+
           posterior_mean =
             mean(
               values
             ),
-          
+
           posterior_median =
             median(
               values
             ),
-          
+
           q025 =
             unname(
               stats::quantile(
@@ -958,7 +961,7 @@ summarise_variance_shares <- function(
                 0.025
               )
             ),
-          
+
           q975 =
             unname(
               stats::quantile(
@@ -966,7 +969,7 @@ summarise_variance_shares <- function(
                 0.975
               )
             ),
-          
+
           row.names = NULL
         )
       }
@@ -980,7 +983,7 @@ variance_share_comparison <-
       baseline_draws,
       "Baseline Uniform(0,2)"
     ),
-    
+
     summarise_variance_shares(
       sensitivity_draws,
       "Half-normal(0,1)"
@@ -1013,32 +1016,32 @@ summarise_convergence <- function(
     fit,
     model
 ) {
-  
+
   psrf <- fit$summary[
     ,
     "psrf"
   ]
-  
+
   ess <- fit$summary[
     ,
     "SSeff"
   ]
-  
+
   data.frame(
     model = model,
-    
+
     maximum_psrf =
       max(
         psrf,
         na.rm = TRUE
       ),
-    
+
     minimum_ess =
       min(
         ess,
         na.rm = TRUE
       ),
-    
+
     weakest_ess_parameter =
       rownames(
         fit$summary
@@ -1047,7 +1050,7 @@ summarise_convergence <- function(
           ess
         )
       ],
-    
+
     row.names = NULL
   )
 }
@@ -1058,7 +1061,7 @@ convergence_comparison <-
       baseline_fit,
       "Baseline Uniform(0,2)"
     ),
-    
+
     summarise_convergence(
       mcmc_fit,
       "Half-normal(0,1)"
@@ -1115,7 +1118,7 @@ pairwise_comparison <- data.frame(
     "Baseline Uniform(0,2)",
     "Half-normal(0,1)"
   ),
-  
+
   probability_P032_gt_P023 = c(
     mean(
       baseline_draws[
@@ -1127,7 +1130,7 @@ pairwise_comparison <- data.frame(
           p023_column
         ]
     ),
-    
+
     mean(
       sensitivity_draws[
         ,
@@ -1187,52 +1190,52 @@ sensitivity_summary <- data.frame(
     "Median baseline 90% rank interval width",
     "Median half-normal 90% rank interval width"
   ),
-  
+
   value = c(
     stats::cor(
       ranking_comparison$rank_pm_baseline,
       ranking_comparison$rank_pm_halfnormal,
       method = "spearman"
     ),
-    
+
     stats::cor(
       ranking_comparison$er_baseline,
       ranking_comparison$er_halfnormal,
       method = "pearson"
     ),
-    
+
     sum(
       ranking_comparison$delta_rank_pm != 0
     ),
-    
+
     mean(
       ranking_comparison$abs_delta_rank_pm
     ),
-    
+
     max(
       ranking_comparison$abs_delta_rank_pm
     ),
-    
+
     mean(
       ranking_comparison$abs_delta_er
     ),
-    
+
     max(
       ranking_comparison$abs_delta_er
     ),
-    
+
     mean(
       baseline_widths
     ),
-    
+
     mean(
       sensitivity_widths
     ),
-    
+
     median(
       baseline_widths
     ),
-    
+
     median(
       sensitivity_widths
     )
@@ -1282,13 +1285,13 @@ expected_rank_plot <-
   ggplot2::labs(
     title =
       "Expected ranks under alternative V1 priors",
-    
+
     subtitle =
       "Baseline Uniform(0,2) versus half-normal(0,1)",
-    
+
     x =
       "Baseline V1 expected rank",
-    
+
     y =
       "Half-normal V1 expected rank"
   ) +
@@ -1345,15 +1348,15 @@ variance_share_plot <-
   ggplot2::labs(
     title =
       "V1 variance shares under alternative priors",
-    
+
     subtitle =
       "Points show posterior medians; intervals show 95% credible intervals",
-    
+
     x = NULL,
-    
+
     y =
       "Share of total model variance",
-    
+
     shape =
       "Prior specification"
   ) +

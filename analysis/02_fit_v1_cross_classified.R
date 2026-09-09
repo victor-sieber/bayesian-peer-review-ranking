@@ -4,29 +4,62 @@
 # Run from the evaluation-data project root with:
 # source("analysis/02_fit_v1_cross_classified.R")
 
-# 1. Make Homebrew JAGS visible to RStudio
-jags_path <- "/opt/homebrew/bin/jags"
+# 1. Check packages
 
-if (!file.exists(jags_path)) {
-  stop("JAGS was not found at ", jags_path, ". Check with `which jags` in Terminal.")
-}
+required_packages <- c(
+  "ERforResearch",
+  "runjags",
+  "dplyr",
+  "ggplot2"
+)
 
-Sys.setenv(PATH = paste(dirname(jags_path), Sys.getenv("PATH"), sep = ":"))
-runjags::runjags.options(jagspath = jags_path)
-
-# 2. Check packages
-required_packages <- c("ERforResearch", "runjags", "dplyr", "ggplot2")
 missing_packages <- required_packages[
-  !vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)
+  !vapply(
+    required_packages,
+    requireNamespace,
+    logical(1),
+    quietly = TRUE
+  )
 ]
 
 if (length(missing_packages) > 0) {
   stop(
     "Missing R packages: ",
-    paste(missing_packages, collapse = ", "),
+    paste(
+      missing_packages,
+      collapse = ", "
+    ),
     ". Run analysis/00_install_heyard_dependencies.R first."
   )
 }
+
+
+# 2. Locate JAGS
+
+jags_path <- Sys.which("jags")
+
+if (!nzchar(jags_path)) {
+  homebrew_jags <- "/opt/homebrew/bin/jags"
+
+  if (file.exists(homebrew_jags)) {
+    jags_path <- homebrew_jags
+  }
+}
+
+if (!nzchar(jags_path)) {
+  stop(
+    "JAGS executable not found. Install JAGS and ensure `jags` is available on PATH."
+  )
+}
+
+runjags::runjags.options(
+  jagspath = jags_path
+)
+
+message(
+  "Using JAGS executable: ",
+  jags_path
+)
 
 # 3. Paths
 
@@ -197,31 +230,31 @@ initial_values_v1 <- lapply(
         min = -2,
         max = 2
       ),
-      
+
       assessor_intercept = runif(
         n_reviewers,
         min = -2,
         max = 2
       ),
-      
+
       sigma = runif(
         1,
         min = 0.000001,
         max = 2
       ),
-      
+
       tau_proposal = runif(
         1,
         min = 0.000001,
         max = 2
       ),
-      
+
       tau_assessor = runif(
         1,
         min = 0.000001,
         max = 2
       ),
-      
+
       .RNG.name = rng_names[chain],
       .RNG.seed = rng_seeds[chain]
     )
@@ -235,29 +268,29 @@ mcmc_fit <- ERforResearch::get_mcmc_samples(
   id_proposal = "proposal_id",
   id_assessor = "reviewer_id",
   grade_variable = "overall_grade",
-  
+
   # Explicitly use the V1 cross-classified JAGS specification.
   path_to_jags_model = model_path,
-  
+
   ordinal_scale = FALSE,
   heterogeneous_residuals = FALSE,
-  
+
   n_chains = n_chains,
   n_iter = 50000,
   n_burnin = 10000,
   n_adapt = 10000,
-  
+
   # Same as n_iter: prevents repeated automatic extensions.
   max_iter = 50000,
-  
+
   seed = 20260727,
-  
+
   # Convergence threshold used for this baseline analysis.
   rhat_threshold = 1.1,
-  
+
   runjags_method = "parallel",
   quiet = TRUE,
-  
+
   # nu is deliberately absent from both of these.
   names_variables_to_sample = variables_to_sample,
   initial_values = initial_values_v1

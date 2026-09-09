@@ -9,10 +9,10 @@
 # macOS
 .DS_Store
 
-# No data files are stored in GitLab
+# Row-level evaluation data are not stored in Git
 data/*
 
-# Allow documentation files
+# Keep public data documentation
 !data/README.md
 
 # Credentials and private files
@@ -23,18 +23,24 @@ data/*
 credentials*
 secrets*
 
-# Quarto-generated dependency folders
+# Generated Bayesian fit/posterior objects
+*.rds
+*.RDS
+
+# Quarto-generated cache/dependency folders
+.quarto/
+_freeze/
 report/technical-report_files/
 
-# Temporary files
+# Temporary files and archives
 tmp/
 cache/
 *.log
+*.zip
 
-# Private notes on Peter's workflow
+# Internal development notes
+notes/project-log.md
 notes/peter-workflow.md
 
 # Local copies of academic papers
 notes/literature/papers/
-# Large reproducible Bayesian fit objects
-results/**/*.rds

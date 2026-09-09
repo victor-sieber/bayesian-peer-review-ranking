@@ -1,14 +1,31 @@
-# Data
+# Data availability
 
-No data files are stored in this GitLab repository.
+The row-level analytical dataset used in this project is pseudonymized and is
+not stored directly in this Git repository.
 
-During development, restricted source data and intermediate files are stored
-locally or in approved UZH storage and are excluded from Git.
+During project development, the dataset remains in approved local/UZH storage
+and is excluded from Git.
 
-The finalized anonymized dataset is intended to be archived separately on
-Zenodo. Once available, this file will provide the dataset citation, persistent
-identifier, access instructions, variable documentation, and any limitations
-on reuse.
+Following final CRS review and authorization, the pseudonymized analytical
+dataset is intended to be archived separately on Zenodo.
 
-Analysis scripts in this repository will be linked to the archived dataset so
-that the approved analysis can be reproduced without storing data in GitLab.
+**Zenodo:** link to be added
+
+Once the release has been finalized, this file will be updated with the final
+dataset citation, persistent identifier and access information.
+
+The existing analysis scripts expect the dataset locally under the filename
+
+```text
+data/evaluation_anonymized.csv
+```
+
+The filename is retained for compatibility with the existing analysis workflow.
+The data are more accurately described as pseudonymized because the
+re-identification key is stored separately and is not part of this repository,
+the analytical dataset release or the analysis workflow.
+
+Instructions for reproducing the analysis after obtaining the dataset are
+provided in
+
+[`../REPRODUCIBILITY.md`](../REPRODUCIBILITY.md).

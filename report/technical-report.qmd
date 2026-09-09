@@ -22,7 +22,7 @@ format:
     embed-resources: true
   pdf:
     toc: true
-    toc-depth: 2
+    toc-depth: 3
     number-sections: true
     papersize: a4
     geometry:
@@ -194,7 +194,7 @@ relationship with that grade.
 
 According to the published CRS Seed Grant results [@crs2026results], funding was available for proposals that received the highest overall grade from at least one reviewer and no grade below the second-highest category. Since the overall grade was scored on a scale from 1 to 5, this means that a proposal qualified if it received at least one grade of 5 and its second grade was at least 4. With exactly two reviews per proposal, the qualifying score combinations were therefore (5, 5), (5, 4), and (4, 5). Equivalently, a proposal qualified if its mean overall grade was at least 4.5.
 
-This procedure should be interpreted as a score-based qualification threshold rather than as a fixed top-four selection rule. Four proposals satisfied the threshold in the 2026 evaluation round. Since the call indicated that approximately six projects could be funded, the available funding capacity was not binding and no additional prioritization among qualified proposals was required.
+This procedure should be interpreted as a score-based qualification threshold rather than as a fixed top-four selection rule. Four proposals satisfied the threshold in the 2026 evaluation round. Since the call indicated that approximately six projects could be funded, the available funding capacity was not binding and no additional prioritisation among qualified proposals was required.
 
 
 
@@ -207,7 +207,7 @@ supporting CRS criteria correspond equally closely to the separately assigned
 holistic overall grade.
 
 Let $C_{rc}$ denote the score assigned in review $r$ to criterion $c$, and let
-$Y_r$ denote the holistic overall grade. Their relationship was summarized
+$Y_r$ denote the holistic overall grade. Their relationship was summarised
 descriptively using Pearson correlation for linear association and Spearman
 correlation for monotonic rank association. The sample definitions are given in
 @sec-app-correlation. These correlations are interpreted descriptively because
@@ -267,9 +267,9 @@ denote the equal-weight average of all eight criterion scores received across it
 
 The two proposal-level summaries remained strongly related, with Pearson correlation 0.848 and Spearman correlation 0.881. Their relationship is shown in @fig-proposal-criterion-overall.
 
-![Proposal-level equal-weight criterion average versus mean holistic overall grade. The dashed identity line represents identical proposal-level summaries. CRS qualifiers and proposals with the largest **raw-rank changes** are labelled.](figures/criteria_descriptive/proposal_level_criterion_average_vs_overall.png){#fig-proposal-criterion-overall width=85% fig-pos="H"}
+![Proposal-level equal-weight criterion average versus mean holistic overall grade. The dashed identity line represents identical proposal-level summaries. All CRS qualifiers are labelled; the five proposals with the largest absolute raw-rank changes are additionally labelled.](figures/criteria_descriptive/proposal_level_criterion_average_vs_overall.png){#fig-proposal-criterion-overall width=85% fig-pos="H"}
 
-The holistic proposal average is relatively coarse because it is calculated from only two integer-valued grades, whereas $A_i$ averages eight criterion scores and therefore has finer numerical resolution. Raw-rank changes are consequently sensitive to the breaking of ties and are not emphasized here.
+The holistic proposal average is relatively coarse because it is calculated from only two integer-valued grades, whereas $A_i$ averages eight criterion scores and therefore has finer numerical resolution. Raw-rank changes are consequently sensitive to the breaking of ties and are not emphasised here.
 
 At the top of the distribution, P022 had a criterion average of 4.75, while
 P032 and P041 had 4.50. These are three of the four proposals that qualified
@@ -292,7 +292,7 @@ of these effects.
 Their approach builds on earlier Bayesian methods for ranking random effects.
 In particular, Laird and Louis [-@laird1989] developed Bayes and empirical-Bayes
 methods for estimating ranks in variance-component models. Heyard et al.
-summarize posterior ranking uncertainty using the expected rank of each
+summarise posterior ranking uncertainty using the expected rank of each
 proposal, which is also the principal Bayesian ranking quantity used in this
 report and is defined formally in @sec-posterior-ranking.
 
@@ -451,9 +451,11 @@ derivation of this updating and the resulting partial pooling is given in
 
 Both V0 and V1 treat the observed grades as conditionally Gaussian with a
 common residual variance and assume exchangeable proposal effects around zero.
-V1 additionally assumes exchangeable reviewer effects around zero. The overall
-mean $\bar Y$ is fixed at the observed sample mean rather than estimated as a
-separate intercept.
+Both models also contain exchangeable zero-centred reviewer-level terms: V0
+through $\nu_j$, which centres the proposal--reviewer assessment effects
+$\lambda_{ij}$, and V1 directly through $b_j$. The overall mean $\bar Y$ is
+fixed at the observed sample mean rather than estimated as a separate
+intercept.
 
 For V0,
 
@@ -531,10 +533,11 @@ the rank scale is 21.5. When pairwise ordering probabilities are close to 0.5,
 expected ranks therefore move toward the centre of the rank scale.
 
 Three ranking summaries are distinguished throughout the analysis. The
-**raw-score rank** orders proposals by their mean observed overall grade, the
+**observed-score rank** orders proposals by their mean observed overall grade, with
+tied observed proposal means receiving average ranks. The
 **posterior-mean rank** orders the posterior means of $\theta_i$, and the
 **expected rank** averages the rank of proposal $i$ across the posterior
-distribution. Rank uncertainty is summarized by the 90% posterior rank
+distribution. Rank uncertainty is summarised by the 90% posterior rank
 interval, defined by the 5th and 95th percentiles of $R_i$.
 
 For particular proposals, pairwise posterior probabilities such as
@@ -584,7 +587,7 @@ proposal--reviewer structure and partial pooling. However, the posterior rank
 distributions show that many of these finer distinctions are only weakly
 supported by the available reviews. The 90% posterior rank interval for P022
 was 1--36; for P023 and P032 it was 1--37; and for P041 it was 1--38.
-Expected rank summarizes this uncertainty rather than implying that the
+Expected rank summarises this uncertainty rather than implying that the
 deterministic score averages provide a more precisely identified underlying
 ordering. The observed-score
 rank, posterior-mean rank and expected rank are compared in
@@ -601,7 +604,8 @@ rather than as a retrospective replacement for the qualification rule.
 posterior expected rank for the V1 cross-classified model. The movement of
 expected ranks toward the centre of the rank scale reflects substantial
 posterior uncertainty in the exact proposal
-ordering.](figures/model_comparison/ranking_comparison_V1.png){#fig-v1-ranking-comparison width=95% fig-pos="H"}
+ordering. The package-generated labels “Fixed” and “ER” correspond to the observed-score
+rank and posterior expected rank, respectively.](figures/model_comparison/ranking_comparison_V1.png){#fig-v1-ranking-comparison width=95% fig-pos="H"}
 
 ## Robustness of the ranking to the Heyard reference specification
 
@@ -935,7 +939,10 @@ The present analysis does not assess whether the original CRS assignments were
 appropriate. They were based on expertise and availability, while detailed
 eligibility and conflict-of-interest information is unavailable. Instead, the
 observed assignment structure is used to ask which hypothetical additional
-reviews would reduce posterior uncertainty under V1.
+reviews would reduce posterior uncertainty under V1. The calculation evaluates
+the information gained from adding an assignment itself; it does not simulate
+a specific numerical grade for that hypothetical review and then refit the
+complete Bayesian model.
 
 The analysis first compares individual additional assignments using established
 A-, D- and E-optimality criteria. The primary A-optimality criterion is then
@@ -999,14 +1006,20 @@ $$
 c_j=-b_j.
 $$
 
-Here $c_j$ is only a sign-transformed reviewer effect; it does not denote a
-graph connection. An observed grade from reviewer $j$ for proposal $i$ can then
-be written as
+Here, $c_j$ is only a sign-transformed reviewer effect; it does not denote a
+graph connection.
+
+For the graph representation, it is convenient to index an observed grade by
+the endpoints of its edge. Write $Y_{ij}$ and $\varepsilon_{ij}$ for the grade
+and residual associated with an observed reviewer--proposal pair $(i,j)\in E$.
+The V1 model for an observed edge can then be written as
 
 $$
 Y_{ij}-\bar Y
 =
-\theta_i-c_j+\varepsilon_{ij}.
+\theta_i-c_j+\varepsilon_{ij},
+\qquad
+\varepsilon_{ij}\sim\mathcal N(0,\sigma^2).
 $$
 
 Collect the effects into
@@ -1018,10 +1031,19 @@ $$
 $$
 
 For edge $e=(i,j)$, let $x_e$ be the oriented incidence vector with $+1$ at
-proposal $i$, $-1$ at reviewer $j$, and zero elsewhere. Stacking the 84 vectors
-gives the incidence matrix $X$. Let
-$Y=(Y_1,\ldots,Y_{84})^\top$ denote the vector of observed grades and
-$\mathbf 1\in\mathbb R^{84}$ the vector of ones. Then
+proposal $i$, $-1$ at reviewer $j$, and zero elsewhere. Stacking the 84
+incidence vectors as rows gives the incidence matrix $X$.
+
+Let $Y\in\mathbb R^{84}$ denote the vector obtained by stacking the 84 observed
+grades $Y_{ij}$ in the same order as the rows of $X$, and let
+$\varepsilon\in\mathbb R^{84}$ denote the corresponding vector of residual
+terms $\varepsilon_{ij}$, stacked in the same order. Under the model assumptions,
+
+$$
+\varepsilon\sim\mathcal N(0,\sigma^2I_{84}).
+$$
+
+Let $\mathbf 1\in\mathbb R^{84}$ denote the vector of ones. Then
 
 $$
 Y-\bar Y\mathbf 1
@@ -1039,7 +1061,11 @@ where $L_G$ is the graph Laplacian: diagonal entries are vertex degrees and
 off-diagonal entries are $-1$ for connected proposal--reviewer pairs and zero
 otherwise.
 
-Conditional on $\tau_\theta$, $\tau_b$ and $\sigma$, the prior precision for
+Here, precision means the inverse of covariance. Since the proposal and
+reviewer priors have variances $\tau_\theta^2$ and $\tau_b^2$, their
+corresponding prior precisions are $\tau_\theta^{-2}$ and $\tau_b^{-2}$.
+
+Conditional on $\tau_\theta$ and $\tau_b$, the prior precision matrix for
 $\beta$ is
 
 $$
@@ -1050,10 +1076,12 @@ P_0
 0_{9\times42} & \tau_b^{-2}I_9
 \end{pmatrix}.
 $$
-The zero off-diagonal blocks reflect prior independence between the proposal and
-reviewer effects.
 
-The conditional posterior precision and covariance are therefore
+The zero off-diagonal blocks reflect prior independence between the proposal
+and reviewer effects.
+
+Conditional on $\sigma$, $\tau_\theta$ and $\tau_b$, the posterior precision
+and covariance matrices are
 
 $$
 Q
@@ -1064,8 +1092,15 @@ V=Q^{-1}.
 $$
 
 The assignment graph thus enters directly into posterior precision: changing an
-edge changes $L_G$ and therefore the conditional posterior covariance. A full
-derivation is given in @sec-app-graph-model.
+edge changes $L_G$ and therefore the conditional posterior covariance.
+
+The review-design calculation therefore follows a simple sequence: the
+assignment graph determines $L_G$, $L_G$ enters the conditional posterior
+precision $Q$, $Q^{-1}$ determines posterior covariance, and additional reviews
+are evaluated by how much they reduce uncertainty in the proposal-effect block
+of that covariance.
+
+A full derivation is given in @sec-app-graph-model.
 
 ## Quantifying uncertainty for review design {#sec-review-design-criteria}
 
@@ -1074,33 +1109,107 @@ defined. Rather than introducing a CRS-specific measure, the analysis uses
 A-, D- and E-optimality, established criteria in experimental design
 [@baileycameron2011; @osting2014].
 
-Because ranking depends on differences between proposal effects, uncertainty is
-evaluated on proposal contrasts. Let $V_\theta$ denote the $42\times42$
-proposal-effect block of $V$. For proposals $i$ and $k$,
+Because the Bayesian ranking is based on the 42 proposal effects rather than
+the reviewer effects, the relevant uncertainty is the posterior uncertainty in
 
 $$
-\operatorname{Var}(\theta_i-\theta_k\mid Y)
+\theta
+=
+(\theta_1,\ldots,\theta_{42})^\top.
+$$
+
+Conditional on $\sigma$, $\tau_\theta$ and $\tau_b$, partition the full
+$51\times51$ posterior covariance matrix as
+
+$$
+V
+=
+\begin{pmatrix}
+V_\theta & V_{\theta c}\\
+V_{c\theta} & V_c
+\end{pmatrix}.
+$$
+
+The matrix $V_\theta\in\mathbb R^{42\times42}$ is therefore the conditional
+posterior covariance matrix of the proposal effects,
+
+$$
+V_\theta
+=
+\operatorname{Cov}
+\left(
+\theta
+\mid
+Y,\sigma,\tau_\theta,\tau_b
+\right).
+$$
+
+Its diagonal entries are the conditional posterior variances of individual
+proposal effects, while its off-diagonal entries are their conditional posterior
+covariances.
+
+### A-optimality: average uncertainty in pairwise proposal comparisons
+
+Ranking depends on comparisons between proposal effects. For proposals $i$ and
+$k$, the conditional posterior variance of their difference is
+
+$$
+\operatorname{Var}
+\left(
+\theta_i-\theta_k
+\mid
+Y,\sigma,\tau_\theta,\tau_b
+\right)
 =
 (e_i-e_k)^\top V_\theta(e_i-e_k),
 $$
 
-where $e_i$ is the $i$th standard basis vector.
+where $e_i$ denotes the $i$th standard basis vector in $\mathbb R^{42}$.
 
-The primary **A-optimality** loss is the average variance of all pairwise
-proposal contrasts,
+There are
+
+$$
+\binom{42}{2}
+=
+\frac{42\cdot41}{2}
+=
+861
+$$
+
+unordered proposal pairs. The A-optimality loss is defined as the average
+posterior variance across these 861 pairwise contrasts,
 
 $$
 L_A(V_\theta)
 =
-\frac{2}{42\cdot41}
+\frac{1}{861}
 \sum_{i<k}
 (e_i-e_k)^\top V_\theta(e_i-e_k).
 $$
 
-Smaller values therefore indicate greater average precision in pairwise
-proposal comparisons.
+Thus, smaller values of $L_A$ indicate greater average precision in pairwise
+proposal comparisons. A-optimality is treated as the **primary criterion** because the substantive target
+is the relative ordering of proposals. Its loss is the average posterior
+variance across all pairwise proposal contrasts, which are the quantities that
+directly determine pairwise ordering. It therefore provides a symmetric global
+measure of ranking precision without privileging a particular proposal or
+contrast direction.
 
-For the alternative criteria, define the centering matrix
+### Proposal contrasts and the centering matrix
+
+The absolute level of all proposal effects is irrelevant for ranking. Adding
+the same constant $d$ to every proposal effect,
+
+$$
+\theta
+\longmapsto
+\theta+d\mathbf 1,
+$$
+
+does not change any pairwise difference $\theta_i-\theta_k$. Ranking therefore
+depends only on contrasts between proposal effects.
+
+To remove this common-shift direction, define the centering matrix
 
 $$
 H
@@ -1110,12 +1219,75 @@ I_{42}
 \frac{1}{42}\mathbf 1\mathbf 1^\top,
 $$
 
-where $\mathbf 1\in\mathbb R^{42}$ is the vector of ones. The matrix $HV_\theta H$ represents covariance on the proposal-contrast
-subspace. Because $H$ projects out the common-shift direction,
-$HV_\theta H$ has one zero eigenvalue and 41 non-zero eigenvalues
-$\lambda_1,\ldots,\lambda_{41}$.
+where $\mathbf 1\in\mathbb R^{42}$ is the vector of ones. For any
+$x\in\mathbb R^{42}$,
 
-The **D-optimality** loss is
+$$
+Hx
+=
+x-\bar x\mathbf 1,
+$$
+
+so $H$ subtracts the mean of the components of $x$. In particular,
+
+$$
+H\mathbf 1=0.
+$$
+
+Multiplication by $H$ removes the common component of a vector. In particular,
+for any $a\in\mathbb R^{42}$,
+
+$$
+Ha
+=
+a-\bar a\mathbf 1,
+\qquad
+\bar a=\frac{1}{42}\mathbf 1^\top a.
+$$
+
+Thus, $Ha$ has entries summing to zero. Moreover, if $a$ already satisfies
+$\mathbf 1^\top a=0$, then $Ha=a$, whereas $H\mathbf 1=0$. The matrix $H$
+therefore removes the common-shift direction and projects onto the
+41-dimensional proposal-contrast subspace
+
+$$
+\{a\in\mathbb R^{42}:\mathbf 1^\top a=0\}.
+$$
+
+This is the space of linear comparisons between proposal effects whose
+coefficients sum to zero. Pairwise differences are a special case because
+$e_i-e_k$ belongs to this subspace.
+
+The covariance of the centred proposal-effect vector $H\theta$ is
+
+$$
+\operatorname{Cov}
+\left(
+H\theta
+\mid
+Y,\sigma,\tau_\theta,\tau_b
+\right)
+=
+HV_\theta H,
+$$
+
+since $H$ is symmetric. Thus, $HV_\theta H$ describes posterior uncertainty
+after removing the common-shift direction that is irrelevant for ranking.
+
+This projection is used because ranking is invariant to a common shift of all
+proposal effects, not because $V_\theta$ itself is singular.
+
+Because one of the 42 directions has been removed, $HV_\theta H$ has one zero
+eigenvalue corresponding to $\mathbf 1$ and 41 non-zero eigenvalues,
+
+$$
+\lambda_1,\ldots,\lambda_{41}.
+$$
+
+### D-optimality: joint uncertainty in the contrast space
+
+D-optimality summarises the overall joint uncertainty in the
+41-dimensional proposal-contrast space. Its loss is
 
 $$
 L_D(V_\theta)
@@ -1125,28 +1297,65 @@ L_D(V_\theta)
 \log\operatorname{pdet}(HV_\theta H),
 $$
 
-where $\operatorname{pdet}$ is the product of the non-zero eigenvalues. It
-measures global joint uncertainty in the proposal-contrast space.
+where $\operatorname{pdet}$ denotes the product of the non-zero eigenvalues.
 
-The **E-optimality** loss is
+The square roots of the eigenvalues determine, up to a common scaling factor,
+the lengths of the principal semi-axes of the posterior uncertainty ellipsoid
+in the contrast space. Its volume is therefore proportional to
+
+$$
+\prod_{\ell=1}^{41}\sqrt{\lambda_\ell}.
+$$
+
+Minimising $L_D$ is consequently equivalent to minimising this joint
+uncertainty volume.
+
+### E-optimality: worst-case contrast uncertainty
+
+The 41 non-zero eigenvalues of $HV_\theta H$ describe posterior uncertainty
+along orthogonal directions in the proposal-contrast space. E-optimality
+focuses only on the largest of these eigenvalues, corresponding to the
+least precisely determined contrast direction:
 
 $$
 L_E(V_\theta)
 =
-\lambda_{\max}(HV_\theta H),
+\lambda_{\max}(HV_\theta H).
 $$
 
-which targets the least precisely estimated normalized contrast direction.
+Equivalently,
 
-A-optimality is primary because proposal ranking depends directly on pairwise
-contrasts. D- and E-optimality provide sensitivity to different notions of
-uncertainty: joint uncertainty and worst-case contrast uncertainty,
-respectively.
+$$
+L_E(V_\theta)
+=
+\max_{\substack{
+\mathbf 1^\top a=0\\
+\|a\|=1
+}}
+a^\top V_\theta a.
+$$
 
-Classical block-design theory compares complete designs, whereas the CRS design
-is already observed. The present problem therefore considers one-edge
-augmentations $G+e$ of the existing graph, analogous to targeted augmentation
-of an existing ranking design [@osting2014].
+Here, $a^\top\theta$ represents a linear comparison of proposal effects.
+The condition $\mathbf 1^\top a=0$ makes it a contrast, so that adding the
+same constant to every proposal effect does not change the comparison. The
+normalisation $\|a\|=1$ prevents the variance from being made arbitrarily
+large simply by rescaling $a$. Since
+
+$$
+\operatorname{Var}(a^\top\theta\mid Y,\sigma,\tau_\theta,\tau_b)
+=
+a^\top V_\theta a,
+$$
+
+the equivalent maximum formulation asks for the unit-length proposal contrast
+with the largest conditional posterior variance. E-optimality therefore
+targets the worst-determined direction in the contrast space.
+
+The three criteria consequently emphasise different aspects of uncertainty:
+A-optimality averages uncertainty over all pairwise proposal comparisons,
+D-optimality summarises overall joint uncertainty in the contrast space, and
+E-optimality targets the single least precisely estimated normalised contrast
+direction. D- and E-optimality are retained as sensitivity criteria, while A-optimality is our primary criterion.
 
 ## Statistical value of a single additional review {#sec-single-review-design}
 
@@ -1163,9 +1372,36 @@ under V1 rather than operational assignment recommendations.
 
 The calculation propagates uncertainty in the scale parameters by evaluating
 each candidate over 5,000 approximately evenly spaced posterior draws from V1.
-For draw $s$, the matrices in the preceding sections are evaluated at
-$\tau_\theta^{(s)}$, $\tau_b^{(s)}$ and $\sigma^{(s)}$, giving covariance
-$V^{(s)}$.
+
+For posterior draw $s$, let
+
+$$
+P_0^{(s)}
+=
+\begin{pmatrix}
+\left(\tau_\theta^{(s)}\right)^{-2}I_{42}
+&
+0_{42\times9}
+\\
+0_{9\times42}
+&
+\left(\tau_b^{(s)}\right)^{-2}I_9
+\end{pmatrix}
+$$
+
+denote the prior precision matrix evaluated at that draw. Define
+
+$$
+Q^{(s)}
+=
+P_0^{(s)}
++
+\frac{1}{\left(\sigma^{(s)}\right)^2}L_G,
+\qquad
+V^{(s)}
+=
+\left(Q^{(s)}\right)^{-1}.
+$$
 
 For a candidate edge $e$ with incidence vector $x_e$, adding the review changes
 the graph Laplacian by
@@ -1176,8 +1412,28 @@ L_{G+e}
 L_G+x_ex_e^\top.
 $$
 
-The resulting rank-one precision update gives, by the Sherman--Morrison
-identity,
+The corresponding updated precision matrix for posterior draw $s$ is therefore
+
+$$
+Q_e^{(s)}
+=
+Q^{(s)}
++
+\frac{1}{\left(\sigma^{(s)}\right)^2}
+x_ex_e^\top.
+$$
+
+The updated covariance is
+
+$$
+V_e^{(s)}
+=
+\left(Q_e^{(s)}\right)^{-1}.
+$$
+
+This covariance could be obtained by inverting the full updated precision
+matrix for every candidate edge. Because the change in precision is rank one,
+the Sherman--Morrison identity instead gives the updated inverse directly:
 
 $$
 V_e^{(s)}
@@ -1193,40 +1449,52 @@ x_e^\top V^{(s)}x_e
 }.
 $$
 
+Thus, $V_e^{(s)}$ is the conditional posterior covariance that would result
+from adding candidate review $e$ while holding the scale parameters fixed at
+posterior draw $s$.
+
 Let $V_\theta^{(s)}$ and $V_{\theta,e}^{(s)}$ denote the
 $42\times42$ proposal-effect blocks of $V^{(s)}$ and $V_e^{(s)}$,
-respectively.
+respectively. These matrices describe the conditional posterior uncertainty in
+the proposal effects before and after adding candidate review $e$.
 
-Conditional on the scale parameters, the covariance reduction therefore
-depends on the assignment added, not on the future numerical grade.
+Conditional on the scale parameters, the covariance reduction depends on the
+assignment added, not on the future numerical grade. The actual grade would
+affect the posterior mean of the proposal and reviewer effects, but not this
+conditional covariance update.
 
-For criterion $C\in\{A,D,E\}$, define
+For criterion $C\in\{A,D,E\}$, define the reduction in uncertainty for
+posterior draw $s$ as
 
 $$
 \Delta_C^{(s)}(e)
 =
 L_C\!\left(V_\theta^{(s)}\right)
 -
-L_C\!\left(V_{\theta,e}^{(s)}\right),
+L_C\!\left(V_{\theta,e}^{(s)}\right).
 $$
 
-and average over posterior draws,
+The posterior-averaged utility of candidate edge $e$ is then
 
 $$
-\overline{\Delta}_C(e)
+\Delta_C(e)
 =
 \frac{1}{S}
 \sum_{s=1}^{S}
-\Delta_C^{(s)}(e).
+\Delta_C^{(s)}(e),
+\qquad
+S=5000.
 $$
 
-Larger values indicate a greater posterior-averaged reduction in uncertainty.
+Larger values of $\Delta_C(e)$ indicate a greater posterior-averaged reduction
+in uncertainty under criterion $C$.
+
 A 1,000-draw calculation gave materially similar highest-ranked assignments,
 supporting the use of 5,000 draws in the final analysis.
 
 As a further sensitivity check, posterior-median plug-in scale parameters
-produced broadly similar candidate rankings and the same five highest-ranked
-A-optimal assignments as a set. Detailed results are given in
+produced broadly similar candidate rankings and retained the same leading
+A-optimal assignments. Detailed results are given in
 @sec-app-review-design-sensitivity.
 
 This is not a full prospective refit of V1. Within each posterior draw, the
@@ -1236,20 +1504,22 @@ update their posterior distributions.
 ## Comparison of single-review criteria
 
 The posterior-averaged calculation identified a small group of assignments with
-almost identical A-optimality utility. P026--R02 gave the largest reduction,
+almost identical A-optimality utility. P026--R02 gave the largest reduction in
+the A-optimality loss,
 
 $$
-\overline{\Delta}_A
+\Delta_A(\text{P026--R02})
 =
-3.0535\times10^{-4},
+3.0535\times10^{-4}.
 $$
 
-followed by P005--R02 and P015--R02 at
+It was followed by P005--R02 and P015--R02 at
 $3.0534\times10^{-4}$. These differences are too small to support a meaningful
 distinction between the three assignments.
 
 D-optimality produced a similar upper ordering, whereas E-optimality differed
-more substantially. Across all 294 candidates,
+more substantially. Across all 294 candidate assignments, the Spearman rank
+correlations between the criterion-specific candidate rankings were
 
 $$
 \rho_{\mathrm S}(A,D)=0.926,
@@ -1259,9 +1529,14 @@ $$
 \rho_{\mathrm S}(D,E)=0.040.
 $$
 
-Thus, A- and D-optimality agree strongly about candidate assignments, while the
-worst-direction criterion represented by E-optimality gives a different
-ordering.
+Thus, A- and D-optimality agree strongly about which additional assignments are
+most informative, while E-optimality, which targets the worst remaining
+contrast direction, produces a substantially different ordering. The strong
+agreement between A and D suggests that the A-optimal ranking is robust across
+two global measures of proposal uncertainty. Its disagreement with E shows,
+however, that the preferred assignment is not criterion-independent: a design
+focused specifically on the single worst-identified contrast can favour
+different reviewer--proposal pairs.
 
 | Candidate assignment | A rank | D rank | E rank |
 |---|---:|---:|---:|
@@ -1277,9 +1552,11 @@ ordering.
 : Selected highest-ranked candidate assignments under the posterior-averaged A-, D- and E-optimality criteria. {#tbl-single-review-candidates}
 
 The full A-optimality pattern is shown in @fig-review-design-heatmap. High
-utilities are concentrated among assignments involving R02, but this reflects
-the assignment structure and covariance model and should not be interpreted as
-evidence about reviewer quality.
+utilities are concentrated among assignments involving R02. This reflects
+R02's position in the existing assignment graph and the resulting posterior
+covariance structure under V1; it should not be interpreted as evidence that
+R02 is intrinsically a better, worse, more reliable, or more informative
+reviewer.
 
 ![Posterior-averaged A-optimality utility for hypothetical additional
 reviewer--proposal assignments. Grey cells indicate existing assignments;
@@ -1288,7 +1565,7 @@ indicate greater reductions in average pairwise proposal-contrast
 variance.](figures/review_design/a_optimality_candidate_heatmap.png){#fig-review-design-heatmap width=82% fig-pos="H"}
 
 Targeting proposals with high observed reviewer disagreement addresses a
-different objective. It prioritizes proposals whose original reviewers gave
+different objective. It prioritises proposals whose original reviewers gave
 divergent judgments, whereas A-optimality reduces global posterior contrast
 uncertainty. This motivates the disagreement-targeted benchmark considered
 next.
@@ -1299,21 +1576,35 @@ The single-review calculation was extended to budgets of one to six additional
 reviews. Each proposal could receive at most one additional review, so the
 policies allocate selective third reviews.
 
-The **random policy** selects an available reviewer--proposal assignment
-uniformly at random. The **disagreement-targeted policy** selects among
-proposals that have not yet received an additional review and have the highest
-absolute difference between their two original grades, then chooses the
-available reviewer edge with the largest A-optimality reduction within that
-group. The **sequential A-optimal policy** instead chooses the globally best
-remaining edge at each step and updates the covariance before selecting the
-next edge. This procedure is greedy and is not claimed to identify the jointly
-optimal set of reviews.
+Three allocation policies were compared.
 
-For policy $\pi$ and budget $m$, define the posterior-averaged cumulative
-A-optimality reduction as
+The **random policy** selects an available reviewer--proposal assignment
+uniformly at random.
+
+The **disagreement-targeted policy** first identifies, among proposals that
+have not yet received an additional review, those with the largest absolute
+difference between their two original grades. Within that set, it chooses the
+available reviewer assignment with the largest posterior-averaged
+A-optimality reduction defined in @sec-single-review-design.
+
+The **sequential A-optimal policy** uses a greedy sequential procedure: at each
+step, it selects the currently best remaining assignment according to
+A-optimality, updates the covariance, and then selects the next assignment.
+It therefore does not search over all possible sets of additional reviews
+simultaneously and is not guaranteed to identify the jointly optimal set for a
+given review budget.
+
+For posterior draw $s$, let $V_{\theta,0}^{(s)}$ denote the proposal-effect
+covariance matrix before any additional reviews are added. For policy $\pi$ and
+budget $m$, let $V_{\theta,m,\pi}^{(s)}$ denote the corresponding
+proposal-effect covariance after allocating $m$ additional reviews according to
+that policy.
+
+The cumulative A-optimality improvement for policy $\pi$ at budget $m$ is
+defined as the posterior-averaged reduction in A-optimality loss,
 
 $$
-\overline{\Delta}_A(m;\pi)
+\Delta_A(m;\pi)
 =
 \frac{1}{S}
 \sum_{s=1}^{S}
@@ -1324,28 +1615,39 @@ L_A\!\left(V_{\theta,m,\pi}^{(s)}\right)
 \right].
 $$
 
-Relative to the baseline uncertainty,
+To express this reduction relative to the baseline level of uncertainty, define
 
 $$
-G_m(\pi)
-=
-100
-\frac{
-\overline{\Delta}_A(m;\pi)
-}{
-\overline{L}_A(0)
-},
-\qquad
-\overline{L}_A(0)
+L_A(0)
 =
 \frac{1}{S}
 \sum_{s=1}^{S}
-L_A\!\left(V_{\theta,0}^{(s)}\right).
+L_A\!\left(V_{\theta,0}^{(s)}\right),
 $$
 
-The sequential policies were evaluated over 5,000 posterior draws, while the
-random benchmark used 5,000 simulated allocation paths with fixed seed
-20260823, balanced across the same draws.
+and
+
+$$
+\operatorname{Gain}_m(\pi)
+=
+100
+\frac{
+\Delta_A(m;\pi)
+}{
+L_A(0)
+}.
+$$
+
+Thus, $\operatorname{Gain}_m(\pi)$ is the percentage reduction in the baseline
+average pairwise proposal-contrast variance achieved by policy $\pi$ after
+allocating $m$ additional reviews.
+
+The disagreement-targeted and sequential A-optimal policies were evaluated
+over 5,000 posterior draws. The random benchmark used 5,000 simulated
+allocation paths with fixed seed 20260823, balanced across the same posterior
+draws. For the random policy, the reported reduction therefore averages both
+over posterior uncertainty in the scale parameters and over randomness in the
+simulated allocation path.
 
 At six additional reviews, average pairwise proposal-contrast variance was
 reduced by 1.609% under sequential A-optimal allocation, 1.604% under
@@ -1360,7 +1662,7 @@ review.](figures/review_design/review_policy_comparison.png){#fig-review-policy-
 
 At six reviews, sequential A-optimal allocation exceeded the random benchmark
 by only 0.017 percentage points. Thus, under V1 and this global uncertainty
-criterion, optimizing the exact placement of a small number of additional
+criterion, optimising the exact placement of a small number of additional
 reviews provides little improvement over random supplementation in the present
 CRS design.
 
@@ -1369,20 +1671,27 @@ uncertainty. The disagreement-targeted policy deliberately addresses a
 different substantive objective by concentrating additional opinions on
 proposals whose original reviewers disagreed.
 
-## Generalization beyond the CRS design
+## Generalisation beyond the CRS design
 
 The matrix formulation applies more generally to crossed reviewer--proposal
-models with an additive Gaussian information structure, although candidate
-utilities will depend on the assignment graph, fitted variance components and
-chosen uncertainty criterion.
+models with an additive Gaussian information structure. The value of particular
+additional reviews will nevertheless depend on the existing assignment graph,
+the fitted variance components and the chosen uncertainty criterion.
 
-The present multi-review comparison uses a greedy sequential update rather than
-joint optimization, and the disagreement-targeted policy retains the
-disagreement observed in the original two reviews rather than updating it after
-a hypothetical third grade. A prospective implementation would also restrict
-candidate assignments according to expertise, conflicts of interest, workload
-and availability. A fully adaptive Bayesian design could then observe each new
-grade, update the hierarchical model and choose the next assignment.
+The sequential A-optimal policy considered here is greedy rather than jointly
+optimal over a fixed review budget. A more general design framework could
+instead optimise sets of additional assignments jointly, subject to the
+relevant operational constraints.
+
+The disagreement-targeted policy also uses the disagreement observed in the
+original two reviews and does not update this quantity after a hypothetical
+third grade. A prospective implementation could instead observe each new grade,
+refit or update the hierarchical model, and use the resulting information when
+choosing the next assignment.
+
+Any operational implementation would additionally need to restrict candidate
+assignments according to reviewer expertise, conflicts of interest, workload
+and availability.
 
 # Discussion and recommendations
 
@@ -1527,13 +1836,17 @@ the continuous-score approximation affects the ranking conclusions.
 
 For review design, future work could incorporate operational eligibility
 constraints such as expertise, conflicts of interest, workload and availability,
-and compare the present greedy sequential rule with joint optimization under a
+and compare the present greedy sequential rule with joint optimisation under a
 fixed review budget. A fully adaptive design could observe each additional
 grade, refit the Bayesian model and then choose the next assignment.
 Decision-focused utilities could also target uncertainty for particular
 proposals, for example those with substantial reviewer disagreement or near a
 qualification boundary, rather than averaging uncertainty over all proposal
-pairs.
+pairs. Within such a target subset, future work could compare average-case
+A-optimal allocation with worst-case E-optimal allocation. The substantially
+different single-review E-optimal ranking observed here suggests that such a
+decision-focused comparison could yield different allocation choices from the
+present global A-optimal analysis.
 
 The limited-budget comparison also raises a broader structural question: when
 does graph-based targeting meaningfully outperform random supplementation?
@@ -2185,7 +2498,10 @@ Under V0, P022 had posterior-mean rank 1 and expected rank 11.85. P023, P032 and
 
 For completeness, @fig-v0-ranking-comparison shows the comparison between the observed-score rank, posterior-mean rank and expected rank under V0.
 
-![Proposal rankings under the observed-score ranking, posterior-mean ranking and posterior expected rank for the V0 Heyard reference model.](figures/model_comparison/ranking_comparison_V0.png){#fig-v0-ranking-comparison width=95% fig-pos="H"}
+![Proposal rankings under the observed-score ranking, posterior-mean ranking and
+posterior expected rank for the V0 Heyard reference model. The package-generated
+labels “Fixed” and “ER” correspond to the observed-score rank and posterior
+expected rank, respectively.](figures/model_comparison/ranking_comparison_V0.png){#fig-v0-ranking-comparison width=95% fig-pos="H"}
 
 ## V1 MCMC trace plots {#sec-app-trace}
 
@@ -2322,7 +2638,7 @@ Thus, the grid transformation primarily resolves the apparent discrepancy in
 the threshold-based disagreement statistic rather than the already small
 difference in mean absolute disagreement.
 
-The broader disagreement pattern is summarized in @fig-v1-disagreement-ppc.
+The broader disagreement pattern is summarised in @fig-v1-disagreement-ppc.
 The observed mean, median, 90th percentile, maximum and proportion of
 disagreements of at least three score points are all compatible with their
 posterior predictive distributions. The clearest departure is the frequency
@@ -2442,7 +2758,7 @@ Y
 $$
 
 denote the vector of observed grades and let
-$\mathbf 1\in\mathbb R^{84}$ denote the vector of ones. Define the centered
+$\mathbf 1\in\mathbb R^{84}$ denote the vector of ones. Define the centred
 response vector
 
 $$
@@ -2510,11 +2826,13 @@ p(y\mid\beta,\sigma)
 \right].
 $$
 
-Thus, the likelihood contributes the precision matrix
+Thus, the likelihood contributes the information term
 
 $$
-\frac{1}{\sigma^2}X^\top X.
+\frac{1}{\sigma^2}X^\top X
 $$
+
+to the posterior precision of $\beta$.
 
 Because $X$ is the oriented incidence matrix of the bipartite
 reviewer--proposal graph,
@@ -2523,11 +2841,23 @@ $$
 X^\top X=L_G,
 $$
 
-where $L_G$ denotes its graph Laplacian. The orientation chosen for the edges
-does not affect this product. For the present simple bipartite graph, the
-diagonal entries of $L_G$ are the vertex degrees, while an off-diagonal entry
+where $L_G$ denotes the graph Laplacian. In the usual graph-theoretic
+definition,
+
+$$
+L_G=D-A,
+$$
+
+where $D$ is the diagonal matrix of vertex degrees and $A$ is the adjacency
+matrix of the graph, i.e. $A_{ij}=1$ if vertices $i$ and $j$ are connected by an edge and
+$A_{ij}=0$ otherwise. For the present simple bipartite graph, the diagonal
+entries of $L_G$ are therefore the vertex degrees, while an off-diagonal entry
 is $-1$ when the corresponding proposal and reviewer are connected by an
 observed review and zero otherwise.
+
+The identity $X^\top X=L_G$ shows that this standard graph Laplacian arises
+directly from the incidence-matrix representation of the reviewer--proposal
+assignments. The orientation chosen for the edges does not affect this product.
 
 The hierarchical priors in V1 are
 
@@ -2561,6 +2891,17 @@ p(\beta\mid\tau_\theta,\tau_b)
 \right).
 $$
 
+By Bayes' theorem, conditional on $\sigma$, $\tau_\theta$ and $\tau_b$, the posterior density of $\beta$ is proportional to the product of the likelihood and the prior,
+
+$$
+p(\beta \mid y,\sigma,\tau_\theta,\tau_b)
+\propto
+p(y\mid\beta,\sigma)\,
+p(\beta\mid\tau_\theta,\tau_b).
+$$
+
+Because both terms have Gaussian kernels, multiplying them adds their exponents. The quadratic contribution from the likelihood is therefore added to the quadratic contribution from the prior.
+
 Combining likelihood and prior gives
 
 $$
@@ -2581,15 +2922,28 @@ P_0+\frac{1}{\sigma^2}X^\top X
 \right].
 $$
 
-This is the kernel of a multivariate normal distribution. Its conditional
-posterior precision matrix is therefore
+A multivariate normal density in $\beta$ has a quadratic kernel of the form
+
+$$
+\exp\left[
+-\frac12
+\left\{
+\beta^\top Q\beta
+-
+2\beta^\top h
+\right\}
+\right].
+$$
+
+Comparing this form with the posterior kernel above shows that the conditional
+posterior precision matrix is
 
 $$
 Q
 =
 P_0+\frac{1}{\sigma^2}X^\top X
 =
-P_0+\frac{1}{\sigma^2}L_G,
+P_0+\frac{1}{\sigma^2}L_G.
 $$
 
 and its conditional posterior covariance matrix is
@@ -2627,6 +2981,33 @@ directly into the posterior precision of the proposal and reviewer effects.
 Adding or removing an edge changes $L_G$ and therefore the conditional
 posterior covariance $V$.
 
+If a hypothetical additional review is added between proposal $i$ and reviewer $j$, its incidence vector $x_e^\top$ is appended as one additional row of the incidence matrix,
+
+$$
+X_{\mathrm{new}}
+=
+\begin{pmatrix}
+X\\
+x_e^\top
+\end{pmatrix}.
+$$
+
+Therefore,
+
+$$
+X_{\mathrm{new}}^\top X_{\mathrm{new}}
+=
+X^\top X + x_e x_e^\top.
+$$
+
+Since $X^\top X=L_G$, the Laplacian of the augmented graph is
+
+$$
+L_{G+e}=L_G+x_e x_e^\top.
+$$
+
+Thus, adding one review contributes the rank-one matrix $x_e x_e^\top$ to the graph Laplacian and consequently changes the conditional posterior precision and covariance.
+
 The derivation conditions on $\sigma$, $\tau_\theta$ and $\tau_b$ to make this
 relationship explicit. In the fitted Bayesian model these parameters are
 unknown and estimated jointly by MCMC, as described in
@@ -2650,27 +3031,31 @@ For these fixed values, the conditional covariance matrix was constructed once,
 and the A-, D- and E-optimality reductions were recalculated for all 294
 currently unobserved reviewer--proposal assignments.
 
-| Criterion | Spearman correlation with posterior-averaged ranking | Top-five overlap |
-|---|---:|---:|
-| A-optimality | 0.873 | 5 / 5 |
-| D-optimality | 0.990 | 4 / 5 |
-| E-optimality | 0.894 | 4 / 5 |
+| Criterion | Spearman correlation with posterior-averaged ranking |
+|---|---:|
+| A-optimality | 0.873 |
+| D-optimality | 0.990 |
+| E-optimality | 0.894 |
 
 : Agreement between posterior-median plug-in and posterior-averaged candidate rankings. {#tbl-review-design-sensitivity}
 
-The highest-ranked part of the candidate ordering was therefore stable to the
-plug-in calculation. Under A-optimality, the same five assignments appeared in
-the top five under both approaches. Under D- and E-optimality, four of the five
-highest-ranked assignments were shared. The lower overall rank correlation for
-A-optimality indicates that some candidate positions further down the ranking
-are more sensitive to whether posterior uncertainty in the scale parameters is
-averaged over or replaced by a single representative value.
+The candidate rankings were therefore broadly stable to replacing posterior
+averaging over the scale parameters by posterior-median plug-in values.
+D-optimality showed the strongest overall agreement, followed by E-optimality
+and A-optimality. The leading A-optimal assignments were nevertheless retained
+under both approaches.
+
+The lower overall rank correlation for A-optimality indicates that candidate
+positions further down the ranking are more sensitive to whether posterior
+uncertainty in the scale parameters is averaged over or replaced by a single
+representative value.
 
 The sensitivity calculation does not compare the magnitudes of the
-posterior-averaged and plug-in utility reductions directly. Because the design criteria are nonlinear functions of the scale parameters,
-evaluating them at posterior-median parameter values need not reproduce their
-posterior means. The comparison is therefore used only to assess robustness of
-the candidate ordering.
+posterior-averaged and plug-in utility reductions directly. Because the design
+criteria are nonlinear functions of the scale parameters, evaluating them at
+posterior-median parameter values need not reproduce their posterior means. The
+comparison is therefore used only to assess robustness of the candidate
+ordering.
 
 # References {.unnumbered}
 

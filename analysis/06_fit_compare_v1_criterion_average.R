@@ -5,31 +5,7 @@
 # Run from the evaluation-data project root with:
 # source("analysis/06_fit_compare_v1_criterion_average.R")
 
-# 1. Make Homebrew JAGS visible to RStudio
-
-jags_path <- "/opt/homebrew/bin/jags"
-
-if (!file.exists(jags_path)) {
-  stop(
-    "JAGS was not found at ",
-    jags_path,
-    ". Check with `which jags` in Terminal."
-  )
-}
-
-Sys.setenv(
-  PATH = paste(
-    dirname(jags_path),
-    Sys.getenv("PATH"),
-    sep = ":"
-  )
-)
-
-runjags::runjags.options(
-  jagspath = jags_path
-)
-
-# 2. Packages
+# 1. Check packages
 
 required_packages <- c(
   "ERforResearch",
@@ -52,10 +28,41 @@ missing_packages <- required_packages[
 if (length(missing_packages) > 0) {
   stop(
     "Missing R packages: ",
-    paste(missing_packages, collapse = ", "),
+    paste(
+      missing_packages,
+      collapse = ", "
+    ),
     ". Run analysis/00_install_heyard_dependencies.R first."
   )
 }
+
+
+# 2. Locate JAGS
+
+jags_path <- Sys.which("jags")
+
+if (!nzchar(jags_path)) {
+  homebrew_jags <- "/opt/homebrew/bin/jags"
+
+  if (file.exists(homebrew_jags)) {
+    jags_path <- homebrew_jags
+  }
+}
+
+if (!nzchar(jags_path)) {
+  stop(
+    "JAGS executable not found. Install JAGS and ensure `jags` is available on PATH."
+  )
+}
+
+runjags::runjags.options(
+  jagspath = jags_path
+)
+
+message(
+  "Using JAGS executable: ",
+  jags_path
+)
 
 # 3. Paths
 
@@ -585,7 +592,7 @@ summarise_rank_uncertainty <- function(
     rank_columns,
     drop = FALSE
   ]
-  
+
   tibble::tibble(
     proposal_id = proposal_map$proposal_id,
     model = model_name,
@@ -692,7 +699,7 @@ summarise_scale_parameter <- function(
     parameter_name
 ) {
   x <- draws[, parameter_name]
-  
+
   tibble::tibble(
     model = model_name,
     parameter = parameter_name,
@@ -751,23 +758,23 @@ summarise_variance_shares <- function(
   tau_proposal <- draws[, "tau_proposal"]
   tau_assessor <- draws[, "tau_assessor"]
   sigma <- draws[, "sigma"]
-  
+
   total_variance <-
     tau_proposal^2 +
     tau_assessor^2 +
     sigma^2
-  
+
   share_data <- tibble::tibble(
     proposal = tau_proposal^2 / total_variance,
     reviewer = tau_assessor^2 / total_variance,
     residual = sigma^2 / total_variance
   )
-  
+
   lapply(
     names(share_data),
     function(component_name) {
       x <- share_data[[component_name]]
-      
+
       tibble::tibble(
         model = model_name,
         component = component_name,
@@ -817,7 +824,7 @@ convergence_row <- function(
 ) {
   psrf <- fit$summary[, "psrf"]
   ess <- fit$summary[, "SSeff"]
-  
+
   tibble::tibble(
     model = model_name,
     max_psrf = max(

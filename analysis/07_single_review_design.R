@@ -328,8 +328,9 @@ message(
 
 # Select posterior draws for the review-design calculation
 #
-# Start with 5,000 draws.
-# A previous 1,000-draw run was used to assess Monte Carlo stability and saved in the analysis folder for comparison: "review_design_1000".
+# Use 5,000 approximately evenly spaced posterior draws.
+# A previous 1,000-draw run was used to assess Monte Carlo stability.
+# Its derived outputs are stored under results/review_design_1000/ for comparison.
 
 n_design_draws <- min(
   5000L,

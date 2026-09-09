@@ -4,29 +4,62 @@
 # Run from the evaluation-data project root with:
 # source("analysis/01_fit_v0_heyard_reference.R")
 
-# 1. Make Homebrew JAGS visible to RStudio
-jags_path <- "/opt/homebrew/bin/jags"
+# 1. Check packages
 
-if (!file.exists(jags_path)) {
-  stop("JAGS was not found at ", jags_path, ". Check with `which jags` in Terminal.")
-}
+required_packages <- c(
+  "ERforResearch",
+  "runjags",
+  "dplyr",
+  "ggplot2"
+)
 
-Sys.setenv(PATH = paste(dirname(jags_path), Sys.getenv("PATH"), sep = ":"))
-runjags::runjags.options(jagspath = jags_path)
-
-# 2. Check packages
-required_packages <- c("ERforResearch", "runjags", "dplyr", "ggplot2")
 missing_packages <- required_packages[
-  !vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)
+  !vapply(
+    required_packages,
+    requireNamespace,
+    logical(1),
+    quietly = TRUE
+  )
 ]
 
 if (length(missing_packages) > 0) {
   stop(
     "Missing R packages: ",
-    paste(missing_packages, collapse = ", "),
+    paste(
+      missing_packages,
+      collapse = ", "
+    ),
     ". Run analysis/00_install_heyard_dependencies.R first."
   )
 }
+
+
+# 2. Locate JAGS
+
+jags_path <- Sys.which("jags")
+
+if (!nzchar(jags_path)) {
+  homebrew_jags <- "/opt/homebrew/bin/jags"
+
+  if (file.exists(homebrew_jags)) {
+    jags_path <- homebrew_jags
+  }
+}
+
+if (!nzchar(jags_path)) {
+  stop(
+    "JAGS executable not found. Install JAGS and ensure `jags` is available on PATH."
+  )
+}
+
+runjags::runjags.options(
+  jagspath = jags_path
+)
+
+message(
+  "Using JAGS executable: ",
+  jags_path
+)
 
 # 3. Paths
 
@@ -163,25 +196,25 @@ mcmc_fit <- ERforResearch::get_mcmc_samples(
   id_proposal = "proposal_id",
   id_assessor = "reviewer_id",
   grade_variable = "overall_grade",
-  
+
   path_to_jags_model = model_path,
-  
+
   ordinal_scale = FALSE,
   heterogeneous_residuals = FALSE,
-  
+
   n_chains = 4,
   n_iter = 50000,
   n_burnin = 10000,
   n_adapt = 10000,
-  
+
   # Same as n_iter: prevents repeated automatic extensions
   max_iter = 50000,
-  
+
   seed = 20260727,
-  
+
   # More practical for this first sparse-data fit
   rhat_threshold = 1.1,
-  
+
   inits_type = "random",
   runjags_method = "parallel",
   quiet = TRUE
