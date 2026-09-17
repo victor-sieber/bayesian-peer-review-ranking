@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Victor Sieber">
-<meta name="dcterms.date" content="2026-09-09">
+<meta name="dcterms.date" content="2026-09-17">
 
 <title>How Much Can Sparse Peer Review Tell Us?</title>
 <style>
@@ -2284,7 +2284,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 )) {"Symbol"in self&&"iterator"in Symbol&&"function"==typeof Array.prototype[Symbol.iterator]?CreateMethodProperty(Array.prototype,"values",Array.prototype[Symbol.iterator]):CreateMethodProperty(Array.prototype,"values",function r(){var r=ToObject(this);return new ArrayIterator(r,"value")});}if (!("Symbol"in self&&"iterator"in self.Symbol&&!!Array.prototype[self.Symbol.iterator]
 )) {CreateMethodProperty(Array.prototype,Symbol.iterator,Array.prototype.values);}var StringIterator=function(){var t=function(e){if(!(this instanceof t))return new t(e);e=String(e),Iterator.call(this,e),Object.defineProperty(this,"__length__",{value:e.length,configurable:!1,enumerable:!1,writable:!1})};return Object.setPrototypeOf&&Object.setPrototypeOf(t,Iterator),t.prototype=Object.create(Iterator.prototype,{constructor:{value:t,configurable:!0,enumerable:!1,writable:!0},_next:{value:function(){if(this.__list__)return this.__nextIndex__<this.__length__?this.__nextIndex__++:void this._unBind()},configurable:!0,enumerable:!1,writable:!0},_resolve:{value:function(t){var e,r=this.__list__[t];return this.__nextIndex__===this.__length__?r:(e=r.charCodeAt(0),e>=55296&&e<=56319?r+this.__list__[this.__nextIndex__++]:r)},configurable:!0,enumerable:!1,writable:!0},toString:{value:function(){return"[object String Iterator]"},configurable:!0,enumerable:!1,writable:!0}}),t}();if (!("Symbol"in self&&"iterator"in self.Symbol&&!!String.prototype[self.Symbol.iterator]
 )) {CreateMethodProperty(String.prototype,Symbol.iterator,function(){var r=RequireObjectCoercible(this),t=ToString(r);return new StringIterator(t)});}})('object' === typeof window && window || 'object' === typeof self && self || 'object' === typeof global && global || {});</script>
-
+  
   <script>
     (function () {
       var script = document.createElement("script");
@@ -2330,7 +2330,7 @@ window.Quarto = {
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
   <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
-
+   
   <ul class="collapse">
   <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract">Abstract</a></li>
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a>
@@ -2392,7 +2392,8 @@ window.Quarto = {
   <li><a href="#future-work" id="toc-future-work" class="nav-link" data-scroll-target="#future-work"><span class="header-section-number">7.6</span> Future work</a></li>
   </ul></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">8</span> Conclusion</a></li>
-
+  <li><a href="#statement-on-the-use-of-generative-ai" id="toc-statement-on-the-use-of-generative-ai" class="nav-link" data-scroll-target="#statement-on-the-use-of-generative-ai"><span class="header-section-number">9</span> Statement on the use of generative AI</a></li>
+  
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="technical-report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
@@ -2409,7 +2410,7 @@ window.Quarto = {
 <div class="quarto-title-meta-author">
   <div class="quarto-title-meta-heading">Author</div>
   <div class="quarto-title-meta-heading">Affiliation</div>
-
+  
     <div class="quarto-title-meta-contents">
     <p class="author">Victor Sieber </p>
   </div>
@@ -2422,17 +2423,17 @@ window.Quarto = {
 
 <div class="quarto-title-meta">
 
-
+      
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 9, 2026</p>
+      <p class="date">September 17, 2026</p>
     </div>
   </div>
-
-
+  
+    
   </div>
-
+  
 
 
 </header>
@@ -2508,7 +2509,7 @@ window.Quarto = {
 <section id="sec-criteria-overall" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="sec-criteria-overall"><span class="header-section-number">2.3</span> Criteria and holistic overall grade</h2>
 <p>Previous NIH analyses have shown that individual criterion scores can differ substantially in their association with holistic overall evaluations <span class="citation" data-cites="eblen2016 erosheva2020">(<a href="#ref-eblen2016" role="doc-biblioref">Eblen et al. 2016</a>; <a href="#ref-erosheva2020" role="doc-biblioref">Erosheva et al. 2020</a>)</span>. This motivates examining whether the four supporting CRS criteria correspond equally closely to the separately assigned holistic overall grade.</p>
-<p>Let <span class="math inline">\(C_{rc}\)</span> denote the score assigned in review <span class="math inline">\(r\)</span> to criterion <span class="math inline">\(c\)</span>, and let <span class="math inline">\(Y_r\)</span> denote the holistic overall grade. Their relationship was summarised descriptively using Pearson correlation for linear association and Spearman correlation for monotonic rank association. The sample definitions are given in <a href="#sec-app-correlation" class="quarto-xref">Section 9.1</a>. These correlations are interpreted descriptively because the 84 reviews are not independent with respect to proposals and reviewers.</p>
+<p>Let <span class="math inline">\(C_{rc}\)</span> denote the score assigned in review <span class="math inline">\(r\)</span> to criterion <span class="math inline">\(c\)</span>, and let <span class="math inline">\(Y_r\)</span> denote the holistic overall grade. Their relationship was summarised descriptively using Pearson correlation for linear association and Spearman correlation for monotonic rank association. The sample definitions are given in <a href="#sec-app-correlation" class="quarto-xref">Section 10.1</a>. These correlations are interpreted descriptively because the 84 reviews are not independent with respect to proposals and reviewers.</p>
 <div id="tbl-criterion-correlations" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-criterion-correlations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -2686,7 +2687,7 @@ b_j\sim\mathcal{N}(0,\tau_b^2),
 \qquad j=1,\ldots,9.
 \]</span> The proposal effects <span class="math inline">\(\theta_i\)</span> are the quantities used for ranking. Because reviewer assignments were based on expertise and availability rather than random allocation, the reviewer effects <span class="math inline">\(b_j\)</span> are interpreted descriptively as reviewer-associated scoring tendencies rather than as causal measures of reviewer bias.</p>
 <p>V1 is cross-classified because each grade belongs simultaneously to a proposal and a reviewer, with neither grouping nested within the other. Its hierarchical structure induces partial pooling: proposal effects are shrunk toward zero, which corresponds to the overall mean <span class="math inline">\(\bar Y\)</span> on the observed grade scale, while reviewer effects are pooled analogously. The amount of pooling is determined by the estimated between-proposal and between-reviewer variation, <span class="math inline">\(\tau_\theta^2\)</span> and <span class="math inline">\(\tau_b^2\)</span>. This regularisation is particularly relevant because each CRS proposal contributes only two grades.</p>
-<p>The likelihood and hierarchical priors are combined through Bayesian updating to obtain the joint posterior distribution of the model parameters. A detailed derivation of this updating and the resulting partial pooling is given in <a href="#sec-app-bayesian-updating" class="quarto-xref">Section 9.2</a>.</p>
+<p>The likelihood and hierarchical priors are combined through Bayesian updating to obtain the joint posterior distribution of the model parameters. A detailed derivation of this updating and the resulting partial pooling is given in <a href="#sec-app-bayesian-updating" class="quarto-xref">Section 10.2</a>.</p>
 </section>
 <section id="assumptions-and-prior-specification" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="assumptions-and-prior-specification"><span class="header-section-number">3.4</span> Assumptions and prior specification</h2>
@@ -2791,7 +2792,7 @@ Figure 3: Posterior expected ranks under the V0 Heyard reference model and the 
 \mathbb{P}(\theta_{032}&gt;\theta_{023}\mid Y)=0.500470
 \]</span></p>
 <p>under V1. The apparent reversal therefore reflects an almost exact posterior tie rather than meaningful disagreement between the models.</p>
-<p>Rank uncertainty was similarly stable. The mean width of the 90% posterior rank intervals was 36.50 positions under V0 and 36.74 under V1, with median width 37 under both models. Thus, simplifying V0 to V1 changes little about either the broad ordering or the conclusion that exact ranks are poorly identified. Detailed V0 results and computational diagnostics are provided in <a href="#sec-app-v0" class="quarto-xref">Section 9.3</a>.</p>
+<p>Rank uncertainty was similarly stable. The mean width of the 90% posterior rank intervals was 36.50 positions under V0 and 36.74 under V1, with median width 37 under both models. Thus, simplifying V0 to V1 changes little about either the broad ordering or the conclusion that exact ranks are poorly identified. Detailed V0 results and computational diagnostics are provided in <a href="#sec-app-v0" class="quarto-xref">Section 10.3</a>.</p>
 </section>
 <section id="bayesian-ranking-using-the-equal-weight-criterion-average" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="bayesian-ranking-using-the-equal-weight-criterion-average"><span class="header-section-number">4.3</span> Bayesian ranking using the equal-weight criterion average</h2>
@@ -2840,7 +2841,7 @@ Figure 4: Posterior expected ranks from V1 fitted to the holistic overall grade
 </section>
 <section id="sec-variance-diagnostics" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="sec-variance-diagnostics"><span class="header-section-number">5.2</span> Computational and variance diagnostics</h2>
-<p>The V1 posterior was sampled reliably. Across all monitored parameters, the maximum PSRF was 1.0017 and the minimum effective sample size was 1,627. The corresponding trace plots are provided in <a href="#sec-app-trace" class="quarto-xref">Section 9.4</a>.</p>
+<p>The V1 posterior was sampled reliably. Across all monitored parameters, the maximum PSRF was 1.0017 and the minimum effective sample size was 1,627. The corresponding trace plots are provided in <a href="#sec-app-trace" class="quarto-xref">Section 10.4</a>.</p>
 <p>Under V1, the marginal variance of an individual grade is</p>
 <p><span class="math display">\[
 \operatorname{Var}(Y_r)
@@ -2951,7 +2952,7 @@ b_{a(r)}^{(s)},
 \right).
 \]</span></p>
 <p>The observed mean absolute disagreement between the two reviews of a proposal was 1.095, compared with a posterior predictive mean of 1.064. Approximately 40% of replicated datasets produced at least as much mean disagreement as observed, so the observed value is not unusual under V1.</p>
-<p>A more detailed check showed that this close correspondence is not mechanically induced by the shared proposal effect, which cancels when the two reviews of a proposal are differenced. The resulting analytic expected disagreement was 1.066, close to the simulated value 1.064, and most model-implied disagreement arises from residual review-level variation rather than persistent reviewer effects. Mapping replicated grades to the observed integer-valued 1–5 grid did not improve agreement for mean absolute disagreement, but substantially reduced the apparent discrepancy in the proportion of proposals with disagreement of at least two score points: the corresponding posterior predictive probability increased from 0.0088 to 0.272. Full derivations and diagnostics are given in <a href="#sec-app-disagreement" class="quarto-xref">Section 9.5</a>.</p>
+<p>A more detailed check showed that this close correspondence is not mechanically induced by the shared proposal effect, which cancels when the two reviews of a proposal are differenced. The resulting analytic expected disagreement was 1.066, close to the simulated value 1.064, and most model-implied disagreement arises from residual review-level variation rather than persistent reviewer effects. Mapping replicated grades to the observed integer-valued 1–5 grid did not improve agreement for mean absolute disagreement, but substantially reduced the apparent discrepancy in the proportion of proposals with disagreement of at least two score points: the corresponding posterior predictive probability increased from 0.0088 to 0.272. Full derivations and diagnostics are given in <a href="#sec-app-disagreement" class="quarto-xref">Section 10.5</a>.</p>
 <p>The Gaussian likelihood also permits grades outside the admissible range: on average, 6.6% of replicated grades were below 1 or above 5. V1 is therefore retained as a continuous approximation for ranking latent proposal effects, rather than as a literal generative model for valid future score categories.</p>
 <div id="fig-v1-ppc" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
@@ -2971,7 +2972,7 @@ Figure 6: Posterior predictive checks for V1. Histograms show statistics calcul
 \sigma,\tau_\theta,\tau_b\sim\operatorname{Uniform}(0,2)
 \]</span></p>
 <p>were replaced by independent <span class="math inline">\(\operatorname{HalfNormal}(0,1)\)</span> priors. This follows the suggestion of Heyard et al. <span class="citation" data-cites="heyard2022">(<a href="#ref-heyard2022" role="doc-biblioref">2022</a>)</span> that half-normal priors provide a useful alternative specification for variance parameters. The <span class="math inline">\(\operatorname{HalfNormal}(0,1)\)</span> distribution is positive and unbounded, places more prior mass near small scale values, and still allows values above 2. It therefore provides a meaningfully different prior shape for the sensitivity analysis.</p>
-<p>The ranking was essentially unchanged. The Pearson correlation between expected ranks under the two prior specifications was 0.99994, the mean absolute expected-rank change was 0.093 positions, and the maximum was 0.283. The median width of the 90% posterior rank intervals remained 37 under both specifications. Additional parameter and ranking summaries are provided in <a href="#sec-app-prior" class="quarto-xref">Section 9.7</a>.</p>
+<p>The ranking was essentially unchanged. The Pearson correlation between expected ranks under the two prior specifications was 0.99994, the mean absolute expected-rank change was 0.093 positions, and the maximum was 0.283. The median width of the 90% posterior rank intervals remained 37 under both specifications. Additional parameter and ranking summaries are provided in <a href="#sec-app-prior" class="quarto-xref">Section 10.7</a>.</p>
 </section>
 <section id="validation-conclusion" class="level2" data-number="5.5">
 <h2 data-number="5.5" class="anchored" data-anchor-id="validation-conclusion"><span class="header-section-number">5.5</span> Validation conclusion</h2>
@@ -3076,7 +3077,7 @@ V=Q^{-1}.
 \]</span></p>
 <p>The assignment graph thus enters directly into posterior precision: changing an edge changes <span class="math inline">\(L_G\)</span> and therefore the conditional posterior covariance.</p>
 <p>The review-design calculation therefore follows a simple sequence: the assignment graph determines <span class="math inline">\(L_G\)</span>, <span class="math inline">\(L_G\)</span> enters the conditional posterior precision <span class="math inline">\(Q\)</span>, <span class="math inline">\(Q^{-1}\)</span> determines posterior covariance, and additional reviews are evaluated by how much they reduce uncertainty in the proposal-effect block of that covariance.</p>
-<p>A full derivation is given in <a href="#sec-app-graph-model" class="quarto-xref">Section 9.8</a>.</p>
+<p>A full derivation is given in <a href="#sec-app-graph-model" class="quarto-xref">Section 10.8</a>.</p>
 </section>
 <section id="sec-review-design-criteria" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="sec-review-design-criteria"><span class="header-section-number">6.4</span> Quantifying uncertainty for review design</h2>
@@ -3335,7 +3336,7 @@ S=5000.
 \]</span></p>
 <p>Larger values of <span class="math inline">\(\Delta_C(e)\)</span> indicate a greater posterior-averaged reduction in uncertainty under criterion <span class="math inline">\(C\)</span>.</p>
 <p>A 1,000-draw calculation gave materially similar highest-ranked assignments, supporting the use of 5,000 draws in the final analysis.</p>
-<p>As a further sensitivity check, posterior-median plug-in scale parameters produced broadly similar candidate rankings and retained the same leading A-optimal assignments. Detailed results are given in <a href="#sec-app-review-design-sensitivity" class="quarto-xref">Section 9.9</a>.</p>
+<p>As a further sensitivity check, posterior-median plug-in scale parameters produced broadly similar candidate rankings and retained the same leading A-optimal assignments. Detailed results are given in <a href="#sec-app-review-design-sensitivity" class="quarto-xref">Section 10.9</a>.</p>
 <p>This is not a full prospective refit of V1. Within each posterior draw, the scale parameters remain fixed; an actually observed additional grade could also update their posterior distributions.</p>
 </section>
 <section id="comparison-of-single-review-criteria" class="level2" data-number="6.6">
@@ -3552,6 +3553,13 @@ Figure 9: Posterior-averaged reduction in average pairwise proposal-contrast va
 <p>The analysis also showed that the definition of the evaluation outcome matters. Replacing the holistic overall grade with an equal-weight average of the four supporting criteria changed the proposal ordering more noticeably than changing from V0 to V1. This supports specifying clearly in advance which score or summary is intended to drive the decision.</p>
 <p>Finally, the reviewer–proposal assignment graph links the review design directly to posterior uncertainty under V1. A-, D- and E-optimality provide principled ways to evaluate hypothetical additional reviews, but for small review budgets the precise allocation strategy had little effect on the global A-optimality criterion in the present CRS design. The broader practical conclusion is therefore to combine transparent decision rules with explicit uncertainty summaries and to define clearly what additional review effort is intended to resolve before choosing an allocation strategy.</p>
 </section>
+<section id="statement-on-the-use-of-generative-ai" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Statement on the use of generative AI</h1>
+<p>Generative AI tools were used during this project as supporting tools for language editing, brainstorming, code troubleshooting, and discussion of statistical and mathematical concepts.</p>
+<p>All model specifications, analyses, code execution, numerical results, figures, interpretations, and final written content were reviewed and verified by the author. Generative AI was not used to make grant-evaluation decisions or to generate the underlying evaluation data.</p>
+<p>The confidential key linking pseudonymized proposal and reviewer identifiers to their original identities was not shared with generative AI tools.</p>
+<p>Responsibility for the analysis, interpretation, and contents of this report remains with the author.</p>
+</section>
 
 <section id="references" class="level1 unnumbered">
 <h1 class="unnumbered">References</h1>
@@ -3613,10 +3621,10 @@ Tsagris, Michail, Christina Beneki, and Hossein Hassani. 2014. <span>“On the F
 </div>
 </section>
 
-<div id="quarto-appendix" class="default"><section id="supplementary-methods-and-analyses" class="level1 appendix" data-number="9"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">9</span> Supplementary methods and analyses</h2><div class="quarto-appendix-contents">
+<div id="quarto-appendix" class="default"><section id="supplementary-methods-and-analyses" class="level1 appendix" data-number="10"><h2 class="anchored quarto-appendix-heading"><span class="header-section-number">10</span> Supplementary methods and analyses</h2><div class="quarto-appendix-contents">
 
-<section id="sec-app-correlation" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="sec-app-correlation"><span class="header-section-number">9.1</span> Correlation definitions</h2>
+<section id="sec-app-correlation" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="sec-app-correlation"><span class="header-section-number">10.1</span> Correlation definitions</h2>
 <p>For criterion <span class="math inline">\(c\)</span>, the sample Pearson correlation with the holistic overall grade is</p>
 <p><span class="math display">\[
 \operatorname{Cor}_{\mathrm P}(C_{\cdot c},Y)
@@ -3638,11 +3646,11 @@ Tsagris, Michail, Christina Beneki, and Hossein Hassani. 2014. <span>“On the F
 \]</span></p>
 <p>where <span class="math inline">\(R(\cdot)\)</span> denotes the rank transformation and average ranks are used for ties.</p>
 </section>
-<section id="sec-app-bayesian-updating" class="level2" data-number="9.2">
-<h2 data-number="9.2" class="anchored" data-anchor-id="sec-app-bayesian-updating"><span class="header-section-number">9.2</span> Bayesian updating and partial pooling in V1</h2>
+<section id="sec-app-bayesian-updating" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="sec-app-bayesian-updating"><span class="header-section-number">10.2</span> Bayesian updating and partial pooling in V1</h2>
 <p>This section gives a mathematical explanation of how the observed grades inform the proposal and reviewer effects in V1, making the Bayesian updating mechanism and resulting partial pooling explicit.</p>
-<section id="from-the-model-to-the-posterior-distribution" class="level3" data-number="9.2.1">
-<h3 data-number="9.2.1" class="anchored" data-anchor-id="from-the-model-to-the-posterior-distribution"><span class="header-section-number">9.2.1</span> From the model to the posterior distribution</h3>
+<section id="from-the-model-to-the-posterior-distribution" class="level3" data-number="10.2.1">
+<h3 data-number="10.2.1" class="anchored" data-anchor-id="from-the-model-to-the-posterior-distribution"><span class="header-section-number">10.2.1</span> From the model to the posterior distribution</h3>
 <p>Recall that V1 represents review <span class="math inline">\(r\)</span> as</p>
 <p><span class="math display">\[
 Y_r
@@ -3718,8 +3726,8 @@ p(\tau_\theta)p(\tau_b)p(\sigma).
 \]</span></p>
 <p>The posterior therefore combines the information in the observed grades, through the likelihood, with the hierarchical prior distributions.</p>
 </section>
-<section id="updating-one-proposal-effect" class="level3" data-number="9.2.2">
-<h3 data-number="9.2.2" class="anchored" data-anchor-id="updating-one-proposal-effect"><span class="header-section-number">9.2.2</span> Updating one proposal effect</h3>
+<section id="updating-one-proposal-effect" class="level3" data-number="10.2.2">
+<h3 data-number="10.2.2" class="anchored" data-anchor-id="updating-one-proposal-effect"><span class="header-section-number">10.2.2</span> Updating one proposal effect</h3>
 <p>The partial-pooling mechanism can be seen explicitly by considering one proposal <span class="math inline">\(i\)</span>. Let</p>
 <p><span class="math display">\[
 \mathcal{R}_i
@@ -3924,8 +3932,8 @@ v_i^{(\theta)}
 \right).
 \]</span></p>
 </section>
-<section id="partial-pooling" class="level3" data-number="9.2.3">
-<h3 data-number="9.2.3" class="anchored" data-anchor-id="partial-pooling"><span class="header-section-number">9.2.3</span> Partial pooling</h3>
+<section id="partial-pooling" class="level3" data-number="10.2.3">
+<h3 data-number="10.2.3" class="anchored" data-anchor-id="partial-pooling"><span class="header-section-number">10.2.3</span> Partial pooling</h3>
 <p>Define the shrinkage factor</p>
 <p><span class="math display">\[
 \kappa_i
@@ -3960,8 +3968,8 @@ n_i\tau_\theta^2
 \]</span></p>
 <p>Since <span class="math inline">\(\theta_i=0\)</span> corresponds to a proposal whose expected grade equals the overall mean <span class="math inline">\(\bar Y\)</span>, shrinking <span class="math inline">\(\theta_i\)</span> toward zero corresponds to shrinking the proposal’s fitted grade toward the overall evaluation mean.</p>
 </section>
-<section id="updating-reviewer-effects" class="level3" data-number="9.2.4">
-<h3 data-number="9.2.4" class="anchored" data-anchor-id="updating-reviewer-effects"><span class="header-section-number">9.2.4</span> Updating reviewer effects</h3>
+<section id="updating-reviewer-effects" class="level3" data-number="10.2.4">
+<h3 data-number="10.2.4" class="anchored" data-anchor-id="updating-reviewer-effects"><span class="header-section-number">10.2.4</span> Updating reviewer effects</h3>
 <p>Reviewer effects are updated in the same way. Let</p>
 <p><span class="math display">\[
 \mathcal{S}_j
@@ -4037,8 +4045,8 @@ d_j\tau_b^2
 \]</span></p>
 <p>Thus, the several proposals assessed by the same reviewer jointly inform that reviewer’s scoring tendency. Reviewers with more observed reviews are, all else equal, subject to less shrinkage toward zero.</p>
 </section>
-<section id="from-the-joint-posterior-to-proposal-ranks" class="level3" data-number="9.2.5">
-<h3 data-number="9.2.5" class="anchored" data-anchor-id="from-the-joint-posterior-to-proposal-ranks"><span class="header-section-number">9.2.5</span> From the joint posterior to proposal ranks</h3>
+<section id="from-the-joint-posterior-to-proposal-ranks" class="level3" data-number="10.2.5">
+<h3 data-number="10.2.5" class="anchored" data-anchor-id="from-the-joint-posterior-to-proposal-ranks"><span class="header-section-number">10.2.5</span> From the joint posterior to proposal ranks</h3>
 <p>The calculations above treat some quantities as known only to make the updating mechanism visible. In the fitted V1 model, the proposal effects, reviewer effects, <span class="math inline">\(\tau_\theta\)</span>, <span class="math inline">\(\tau_b\)</span>, and <span class="math inline">\(\sigma\)</span> are all unknown and are estimated jointly. Their posterior distributions therefore depend on one another.</p>
 <p>JAGS uses Markov chain Monte Carlo to generate draws from this joint posterior. A retained posterior draw <span class="math inline">\(s\)</span> contains</p>
 <p><span class="math display">\[
@@ -4066,8 +4074,8 @@ b_1^{(s)},\ldots,b_9^{(s)},
 <p>Partial pooling enters before the ranking step: the limited and noisy review information is combined with the hierarchical model before the proposal effects are ranked.</p>
 </section>
 </section>
-<section id="sec-app-v0" class="level2" data-number="9.3">
-<h2 data-number="9.3" class="anchored" data-anchor-id="sec-app-v0"><span class="header-section-number">9.3</span> V0 reference-model details</h2>
+<section id="sec-app-v0" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="sec-app-v0"><span class="header-section-number">10.3</span> V0 reference-model details</h2>
 <p>Under V0, P022 had posterior-mean rank 1 and expected rank 11.85. P023, P032 and P041 occupied posterior-mean ranks 2, 3 and 4, with expected ranks 15.45, 15.49 and 16.50. Their 90% posterior rank intervals were 1–35, 1–37, 1–37 and 2–38, respectively. The maximum PSRF across monitored V0 parameters was 1.0077 and the minimum effective sample size was 501.</p>
 <p>For completeness, <a href="#fig-v0-ranking-comparison" class="quarto-xref">Figure 10</a> shows the comparison between the observed-score rank, posterior-mean rank and expected rank under V0.</p>
 <div id="fig-v0-ranking-comparison" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
@@ -4081,8 +4089,8 @@ Figure 10: Proposal rankings under the observed-score ranking, posterior-mean r
 </figure>
 </div>
 </section>
-<section id="sec-app-trace" class="level2" data-number="9.4">
-<h2 data-number="9.4" class="anchored" data-anchor-id="sec-app-trace"><span class="header-section-number">9.4</span> V1 MCMC trace plots</h2>
+<section id="sec-app-trace" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="sec-app-trace"><span class="header-section-number">10.4</span> V1 MCMC trace plots</h2>
 <p><a href="#fig-v1-trace" class="quarto-xref">Figure 11</a> shows the final 5,000 retained iterations from each V1 chain, plotting every fifth value for readability. Numerical diagnostics in the main text are based on the full posterior sample.</p>
 <div id="fig-v1-trace" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
@@ -4095,8 +4103,8 @@ Figure 11: Trace plots for the V1 scale parameters <span class="math inline">\(
 </figure>
 </div>
 </section>
-<section id="sec-app-disagreement" class="level2" data-number="9.5">
-<h2 data-number="9.5" class="anchored" data-anchor-id="sec-app-disagreement"><span class="header-section-number">9.5</span> Detailed reviewer-disagreement diagnostic</h2>
+<section id="sec-app-disagreement" class="level2" data-number="10.5">
+<h2 data-number="10.5" class="anchored" data-anchor-id="sec-app-disagreement"><span class="header-section-number">10.5</span> Detailed reviewer-disagreement diagnostic</h2>
 <p>Consider proposal <span class="math inline">\(i\)</span>, reviewed by reviewers <span class="math inline">\(j\)</span> and <span class="math inline">\(k\)</span>. Under V1,</p>
 <p><span class="math display">\[
 Y_{ij}-Y_{ik}
@@ -4197,8 +4205,8 @@ Figure 12: Posterior predictive checks for several summaries of reviewer disagr
 </figure>
 </div>
 </section>
-<section id="sec-app-ppc" class="level2" data-number="9.6">
-<h2 data-number="9.6" class="anchored" data-anchor-id="sec-app-ppc"><span class="header-section-number">9.6</span> Additional posterior predictive summaries</h2>
+<section id="sec-app-ppc" class="level2" data-number="10.6">
+<h2 data-number="10.6" class="anchored" data-anchor-id="sec-app-ppc"><span class="header-section-number">10.6</span> Additional posterior predictive summaries</h2>
 <div id="tbl-app-ppc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-app-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -4251,8 +4259,8 @@ Table 4: Additional posterior predictive summaries for V1 based on 5,000 replic
 </div>
 <p>The interval limits are the 2.5th and 97.5th percentiles of each statistic across the 5,000 posterior predictive datasets.</p>
 </section>
-<section id="sec-app-prior" class="level2" data-number="9.7">
-<h2 data-number="9.7" class="anchored" data-anchor-id="sec-app-prior"><span class="header-section-number">9.7</span> Prior-sensitivity details</h2>
+<section id="sec-app-prior" class="level2" data-number="10.7">
+<h2 data-number="10.7" class="anchored" data-anchor-id="sec-app-prior"><span class="header-section-number">10.7</span> Prior-sensitivity details</h2>
 <p>Under the <span class="math inline">\(\operatorname{HalfNormal}(0,1)\)</span> scale priors, the posterior medians of <span class="math inline">\(\tau_\theta\)</span>, <span class="math inline">\(\tau_b\)</span> and <span class="math inline">\(\sigma\)</span> were 0.209, 0.154 and 0.916, compared with 0.220, 0.157 and 0.920 under the baseline specification. The maximum PSRF was 1.0011 and the minimum effective sample size was 1,306.</p>
 <p>Posterior median variance shares were also very similar: the proposal share changed from 0.050 to 0.046, the reviewer share from 0.026 to 0.025 and the residual share from 0.896 to 0.902.</p>
 <p>The Spearman correlation between posterior-mean ranks under the two prior specifications was 0.9990. Six proposals changed integer posterior-mean rank, but the changes were small: the mean absolute change was 0.19 positions and the maximum was two positions. The mean widths of the 90% posterior rank intervals were 36.74 and 36.83 under the baseline and half-normal specifications, respectively.</p>
@@ -4267,8 +4275,8 @@ Figure 13: Posterior expected ranks under the baseline V1 prior specification a
 </figure>
 </div>
 </section>
-<section id="sec-app-graph-model" class="level2" data-number="9.8">
-<h2 data-number="9.8" class="anchored" data-anchor-id="sec-app-graph-model"><span class="header-section-number">9.8</span> Graph representation and conditional posterior precision</h2>
+<section id="sec-app-graph-model" class="level2" data-number="10.8">
+<h2 data-number="10.8" class="anchored" data-anchor-id="sec-app-graph-model"><span class="header-section-number">10.8</span> Graph representation and conditional posterior precision</h2>
 <p>This section derives the connection between the reviewer–proposal assignment graph and conditional posterior uncertainty in V1. The construction follows the incidence-graph and graph-Laplacian representation used in incomplete block-design theory <span class="citation" data-cites="baileycameron2011">(<a href="#ref-baileycameron2011" role="doc-biblioref">Bailey and Cameron 2011</a>)</span>.</p>
 <p>Recall that V1 is</p>
 <p><span class="math display">\[
@@ -4505,10 +4513,10 @@ X^\top X + x_e x_e^\top.
 L_{G+e}=L_G+x_e x_e^\top.
 \]</span></p>
 <p>Thus, adding one review contributes the rank-one matrix <span class="math inline">\(x_e x_e^\top\)</span> to the graph Laplacian and consequently changes the conditional posterior precision and covariance.</p>
-<p>The derivation conditions on <span class="math inline">\(\sigma\)</span>, <span class="math inline">\(\tau_\theta\)</span> and <span class="math inline">\(\tau_b\)</span> to make this relationship explicit. In the fitted Bayesian model these parameters are unknown and estimated jointly by MCMC, as described in <a href="#sec-posterior-computation" class="quarto-xref">Section 3.6</a> and <a href="#sec-app-bayesian-updating" class="quarto-xref">Section 9.2</a>.</p>
+<p>The derivation conditions on <span class="math inline">\(\sigma\)</span>, <span class="math inline">\(\tau_\theta\)</span> and <span class="math inline">\(\tau_b\)</span> to make this relationship explicit. In the fitted Bayesian model these parameters are unknown and estimated jointly by MCMC, as described in <a href="#sec-posterior-computation" class="quarto-xref">Section 3.6</a> and <a href="#sec-app-bayesian-updating" class="quarto-xref">Section 10.2</a>.</p>
 </section>
-<section id="sec-app-review-design-sensitivity" class="level2" data-number="9.9">
-<h2 data-number="9.9" class="anchored" data-anchor-id="sec-app-review-design-sensitivity"><span class="header-section-number">9.9</span> Posterior-median sensitivity of the review-design calculation</h2>
+<section id="sec-app-review-design-sensitivity" class="level2" data-number="10.9">
+<h2 data-number="10.9" class="anchored" data-anchor-id="sec-app-review-design-sensitivity"><span class="header-section-number">10.9</span> Posterior-median sensitivity of the review-design calculation</h2>
 <p>As a sensitivity analysis, the single-review design calculation was repeated using posterior-median plug-in values for the V1 scale parameters rather than averaging utility over posterior draws. The posterior medians were</p>
 <p><span class="math display">\[
 \widetilde{\tau}_\theta = 0.220,
@@ -4566,7 +4574,7 @@ Table 5: Agreement between posterior-median plug-in and posterior-averaged cand
     anchorJS.add('.anchored');
     const isCodeAnnotation = (el) => {
       for (const clz of el.classList) {
-        if (clz.startsWith('code-annotation-')) {
+        if (clz.startsWith('code-annotation-')) {                     
           return true;
         }
       }
@@ -4586,11 +4594,11 @@ Table 5: Agreement between posterior-median plug-in and posterior-averaged cand
         button.setAttribute("data-bs-toggle", "tooltip");
         button.setAttribute("data-bs-placement", "left");
         button.setAttribute("data-bs-title", "Copied!");
-        tooltip = new bootstrap.Tooltip(button,
-          { trigger: "manual",
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
             customClass: "code-copy-button-tooltip",
             offset: [0, -8]});
-        tooltip.show();
+        tooltip.show();    
       }
       setTimeout(function() {
         if (tooltip) {
@@ -4667,7 +4675,7 @@ Table 5: Agreement between posterior-median plug-in and posterior-averaged cand
       if (onUntriggerFn) {
         config.onUntrigger = onUntriggerFn;
       }
-      window.tippy(el, config);
+      window.tippy(el, config); 
     }
     const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
     for (var i=0; i<noterefs.length; i++) {
@@ -4742,7 +4750,7 @@ Table 5: Agreement between posterior-median plug-in and posterior-averaged cand
       tippyHover(xref, undefined, function(instance) {
         instance.disable();
         let url = xref.getAttribute('href');
-        let hash = undefined;
+        let hash = undefined; 
         if (url.startsWith('#')) {
           hash = url;
         } else {
@@ -4770,7 +4778,7 @@ Table 5: Agreement between posterior-median plug-in and posterior-averaged cand
               if (note !== null) {
                 const html = processXRef(id, note);
                 instance.setContent(html);
-              }
+              } 
             }).finally(() => {
               instance.enable();
               instance.show();
@@ -4794,7 +4802,7 @@ Table 5: Agreement between posterior-median plug-in and posterior-averaged cand
               }
               const html = processXRef(null, note);
               instance.setContent(html);
-            }
+            } 
           }).finally(() => {
             instance.enable();
             instance.show();
@@ -4834,7 +4842,7 @@ Table 5: Agreement between posterior-median plug-in and posterior-averaged cand
               height = bottom - top;
             }
             if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it
+              // cook up a div (if necessary) and position it 
               let div = window.document.getElementById("code-annotation-line-highlight");
               if (div === null) {
                 div = window.document.createElement("div");

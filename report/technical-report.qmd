@@ -1889,6 +1889,16 @@ conclusion is therefore to combine transparent decision rules with explicit
 uncertainty summaries and to define clearly what additional review effort is
 intended to resolve before choosing an allocation strategy.
 
+# Statement on the use of generative AI
+
+Generative AI tools were used during this project as supporting tools for language editing, brainstorming, code troubleshooting, and discussion of statistical and mathematical concepts.
+
+All model specifications, analyses, code execution, numerical results, figures, interpretations, and final written content were reviewed and verified by the author. Generative AI was not used to make grant-evaluation decisions or to generate the underlying evaluation data.
+
+The confidential key linking pseudonymized proposal and reviewer identifiers to their original identities was not shared with generative AI tools.
+
+Responsibility for the analysis, interpretation, and contents of this report remains with the author.
+
 \newpage
 
 # Supplementary methods and analyses {.appendix}
