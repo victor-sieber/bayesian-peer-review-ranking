@@ -7,12 +7,9 @@ During project development, the dataset remains in approved local/UZH storage
 and is excluded from Git.
 
 Following final CRS review and authorization, the pseudonymized analytical
-dataset is intended to be archived separately on Zenodo.
+dataset archived separately on Zenodo
 
-**Zenodo:** link to be added
-
-Once the release has been finalized, this file will be updated with the final
-dataset citation, persistent identifier and access information.
+- [Zenodo record](https://doi.org/10.5281/zenodo.22808415)
 
 The existing analysis scripts expect the dataset locally under the filename
 

@@ -45,15 +45,14 @@ candidate set.
 
 ## Main report
 
-The technical report is available at
+The technical report is available in two formats:
 
-`report/technical-report.pdf`
+- [Read the HTML report](https://victor-sieber.github.io/bayesian-peer-review-ranking/)
+- [Download the PDF](report/technical-report.pdf)
 
-and its Quarto source is
+The Quarto source is available at [`report/technical-report.qmd`](report/technical-report.qmd).
 
-`report/technical-report.qmd`.
-
-The report can be rendered from the repository root with
+The report can be rendered from the repository root with:
 
 ```bash
 quarto render report/technical-report.qmd
@@ -61,26 +60,13 @@ quarto render report/technical-report.qmd
 
 ## Data availability
 
-The row-level **pseudonymized** analytical dataset is not stored in this Git
-repository.
+The public pseudonymized evaluation dataset used in this project is archived on Zenodo:
 
-During project development, the dataset remains in approved local/UZH storage.
-Following final CRS review and authorization, the pseudonymized analytical
-dataset is intended to be deposited separately on Zenodo. The resulting
-citation and persistent identifier will then be added to this repository.
+- [Zenodo record](https://doi.org/10.5281/zenodo.22808415)
 
-The analysis scripts currently expect the local filename
+The historical filename `evaluation_anonymized.csv` is retained for compatibility with the analysis code. The released data are pseudonymized rather than irreversibly anonymized because a separate re-identification key exists.
 
-`data/evaluation_anonymized.csv`
-
-when analyses requiring the row-level data are rerun.
-
-The historical filename contains the term `anonymized`, but the data are more
-accurately described as pseudonymized. The re-identification key is stored
-separately and is not part of this repository or the analytical workflow.
-
-Derived statistical summaries required to document the analyses are stored
-under `results/`.
+The re-identification key is stored separately and is not included in this repository or in the Zenodo release.
 
 See [`data/README.md`](data/README.md) for additional information.
 
@@ -89,12 +75,11 @@ See [`data/README.md`](data/README.md) for additional information.
 Detailed instructions for reproducing the analyses from a fresh clone are
 provided in [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
 
-After the Zenodo release, a user will be able to clone the repository, download
-the pseudonymized analytical dataset, save it as
+Through the Zenodo record (see above) download the dataset `evaluation_anonymized.csv` and save it under:
 
 `data/evaluation_anonymized.csv`
 
-and rerun the analysis pipeline.
+and rerun the analysis pipeline. Do not change the name of the dataset.
 
 ## Repository structure
 
